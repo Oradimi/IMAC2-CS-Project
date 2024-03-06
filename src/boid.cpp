@@ -6,13 +6,20 @@
 #include <p6/p6.h>
 #include <vector>
 
+glm::vec2 clampVectorSpeed(glm::vec2 vec, float max) {
+  std::cout << max / glm::length(vec) << std::endl;
+  if (glm::length(vec) > max)
+    return {vec.x * max / glm::length(vec), vec.y * max / glm::length(vec)};
+  return vec;
+}
+
 Boid::Boid() {
   pos = {static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f)};
 
   vel = {static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f)};
-  vel *= 0.02f;
+  vel *= 200.f;
   std::cout << pos.x << " " << pos.y << std::endl;
   std::cout << vel.x << " " << vel.y << std::endl;
 }
@@ -20,9 +27,8 @@ Boid::Boid() {
 glm::vec2 Boid::move() {
   pos += vel;
   vel *= 0.999;
-  float max_speed = 0.05f;
-  vel = {std::clamp(vel.x, -max_speed, max_speed),
-         std::clamp(vel.y, -max_speed, max_speed)};
+  float max_speed = 0.02f;
+  vel = clampVectorSpeed(vel, max_speed);
   if (pos.x > 1.0f) {
     pos.x += -2.0f - radius;
   } else if (pos.x < -1.0f) {

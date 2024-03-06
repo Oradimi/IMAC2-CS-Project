@@ -4,6 +4,8 @@
 #include <p6/p6.h>
 #include <vector>
 
+glm::vec2 clampVectorSpeed(glm::vec2 vec);
+
 class Boid {
 private:
   glm::vec2 pos;
@@ -18,4 +20,5 @@ public:
   glm::vec2 move();
   void avoid(const std::vector<Boid> &otherBoids);
   float getRadius() const { return radius; };
+  p6::Angle getAngle() const { return p6::Angle(vel); };
 };
