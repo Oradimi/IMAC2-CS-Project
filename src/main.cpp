@@ -25,10 +25,18 @@ int main() {
     ctx.background(p6::NamedColor::Blue);
     for (Boid &boid : swarm) {
       boid.avoid(swarm);
-      ctx.circle(p6::Center{boid.move()}, p6::Radius{boid.getRadius()});
+      // Dessiner un triangle à la place d'un cercle
+      glm::vec2 pos = boid.move();
+      float size = boid.getRadius();
+      glm::vec2 p1 = pos + glm::vec2(size, 0.0f);
+      glm::vec2 p2 = pos + glm::vec2(-size, size);
+      glm::vec2 p3 = pos + glm::vec2(-size, -size);
+      ctx.triangle({p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y});
     }
   };
 
   // Should be done last. It starts the infinite loop.
   ctx.start();
+
+  return 0;
 }
