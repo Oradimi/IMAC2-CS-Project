@@ -2,10 +2,11 @@
 cmake_minimum_required(VERSION 3.20)
 
 # ---Choose project name---
-project(Simple-p6-Setup)
+project(IMAC2-CS-Project)
 
 # ---Declare source files---
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS src/*)
+message(${SOURCE_FILES})
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
