@@ -3,6 +3,16 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "boid.hpp"
 #include "doctest/doctest.h"
+#include "glimac/TrackballCamera.hpp"
+#include "glimac/common.hpp"
+#include "glimac/sphere_vertices.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/matrix.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/random.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <vector>
 
 int main() {
   // Run the tests

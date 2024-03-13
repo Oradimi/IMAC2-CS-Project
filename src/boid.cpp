@@ -29,16 +29,16 @@ glm::vec2 Boid::move() {
   vel *= 0.999;
   float max_speed = 0.02f;
   vel = clampVectorSpeed(vel, max_speed);
-  if (pos.x > 1.0f) {
-    pos.x += -2.0f - radius;
-  } else if (pos.x < -1.0f) {
-    pos.x += 2.0f + radius;
+  if (pos.x > 1.0f + radius) {
+    pos.x = -1.0f - radius;
+  } else if (pos.x < -1.0f - radius) {
+    pos.x = 1.0f + radius;
   }
 
-  if (pos.y > 1.0f) {
-    pos.y += -2.0f - radius;
-  } else if (pos.y < -1.0f) {
-    pos.y += 2.0f + radius;
+  if (pos.y > 1.0f + radius) {
+    pos.y = -1.0f - radius;
+  } else if (pos.y < -1.0f - radius) {
+    pos.y = 1.0f + radius;
   }
   return pos;
 }

@@ -32,7 +32,7 @@ BreakStringLiterals: 'true'
 ColumnLimit: '0'
 CompactNamespaces: 'true'
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
-ConstructorInitializerIndentWidth: '4'
+ConstructorInitializerIndentWidth: '2'
 ContinuationIndentWidth: '4'
 Cpp11BracedListStyle: 'true'
 DerivePointerAlignment: 'false'
@@ -42,7 +42,7 @@ FixNamespaceComments: 'true'
 IncludeBlocks: Merge
 IndentCaseLabels: 'false'
 IndentPPDirectives: None
-IndentWidth: '4'
+IndentWidth: '2'
 IndentWrappedFunctionNames: 'true'
 KeepEmptyLinesAtTheStartOfBlocks: 'false'
 Language: Cpp
@@ -69,5 +69,5 @@ SpacesInContainerLiterals: 'false'
 SpacesInParentheses: 'false'
 SpacesInSquareBrackets: 'false'
 Standard: Auto
-TabWidth: '4'
+TabWidth: '2'
 UseTab: Never
