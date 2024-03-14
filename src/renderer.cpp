@@ -51,57 +51,89 @@
 //   }
 // };
 
+// class Texture {
+// private:
+//   std::string path;
+
+// public:
+//   Texture(std::vector<GLuint> textureIDList, std::string path) {
+//     const img::Image image = p6::load_image_buffer("assets/textures/" +
+//     path);
+
+//     GLuint newElementID = textureIDList.size();
+//     textureIDList.emplace_back(newElementID);
+
+//     glBindTexture(GL_TEXTURE_2D, textureIDList[newElementID]);
+//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0,
+//                  GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//     glBindTexture(GL_TEXTURE_2D, 0);
+//   }
+// };
+
 // class Renderer {
 // private:
 //   p6::Context ctx;
+//   std::vector<GLuint> textureIDList;
+//   std::vector<Texture> textureList;
 
 // public:
+//   TrackballCamera camera;
+
 //   Renderer() {
 //     ctx = p6::Context{{1280, 720, "Amazing Oradimi Parzi_Val Boids"}};
 //     ctx.maximize_window();
+
+//     glEnable(GL_DEPTH_TEST);
 //   };
 
-//   EarthProgram earthProgram{};
-//   MoonProgram moonProgram{};
+//   //   EarthProgram earthProgram{};
+//   //   MoonProgram moonProgram{};
 
-//   const img::Image imageEarth =
-//       p6::load_image_buffer("assets/textures/EarthMap.jpg");
-//   const img::Image imageMoon =
-//       p6::load_image_buffer("assets/textures/MoonMap.jpg");
-//   const img::Image imageCloud =
-//       p6::load_image_buffer("assets/textures/CloudMap.jpg");
+//   //   const img::Image imageEarth =
+//   //       p6::load_image_buffer("assets/textures/EarthMap.jpg");
+//   //   const img::Image imageMoon =
+//   //       p6::load_image_buffer("assets/textures/MoonMap.jpg");
+//   //   const img::Image imageCloud =
+//   //       p6::load_image_buffer("assets/textures/CloudMap.jpg");
 
 //   // Texture
-//   std::vector<GLuint> textures(3);
-//   glGenTextures(3, textures.data());
+//   void defineTextures() {
+//     glGenTextures(textureIDList.size(), textureIDList.data());
+//   }
 
-//   glBindTexture(GL_TEXTURE_2D, textures[0]);
-//   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageEarth.width(),
-//                imageEarth.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
-//                imageEarth.data());
-//   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//   glBindTexture(GL_TEXTURE_2D, 0);
+//   void addTexture(std::string path) {
+//     Texture newTexture(textureIDList, path);
+//     textureList.emplace_back(newTexture);
+//   }
 
-//   glBindTexture(GL_TEXTURE_2D, textures[1]);
-//   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageCloud.width(),
-//                imageCloud.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
-//                imageCloud.data());
-//   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//   glBindTexture(GL_TEXTURE_2D, 0);
+//   //   glBindTexture(GL_TEXTURE_2D, textures[0]);
+//   //   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageEarth.width(),
+//   //                imageEarth.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+//   //                imageEarth.data());
+//   //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//   //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//   //   glBindTexture(GL_TEXTURE_2D, 0);
 
-//   glBindTexture(GL_TEXTURE_2D, textures[2]);
-//   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageMoon.width(),
-//   imageMoon.height(),
-//                0, GL_RGBA, GL_UNSIGNED_BYTE, imageMoon.data());
-//   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//   glBindTexture(GL_TEXTURE_2D, 0);
+//   //   glBindTexture(GL_TEXTURE_2D, textures[1]);
+//   //   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageCloud.width(),
+//   //                imageCloud.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+//   //                imageCloud.data());
+//   //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//   //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//   //   glBindTexture(GL_TEXTURE_2D, 0);
+
+//   //   glBindTexture(GL_TEXTURE_2D, textures[2]);
+//   //   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageMoon.width(),
+//   //   imageMoon.height(),
+//   //                0, GL_RGBA, GL_UNSIGNED_BYTE, imageMoon.data());
+//   //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//   //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//   //   glBindTexture(GL_TEXTURE_2D, 0);
 
 //   // VBOs
-//   void defineVbo() {
-//     GLuint vbo;
+//   void defineVBO(GLuint &vbo) {
 //     glGenBuffers(1, &vbo);
 //     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -113,43 +145,42 @@
 //   }
 
 //   // VAOs
-//   GLuint vao;
-//   glGenVertexArrays(1, &vao);
-//   glBindVertexArray(vao);
+//   void defineVAO(GLuint &vao, GLuint &vbo) {
+//     glGenVertexArrays(1, &vao);
+//     glBindVertexArray(vao);
 
-//   static constexpr GLuint vertex_attr_position = 0;
-//   static constexpr GLuint vertex_attr_normal = 1;
-//   static constexpr GLuint vertex_attr_texcoords = 2;
-//   glEnableVertexAttribArray(vertex_attr_position);
-//   glEnableVertexAttribArray(vertex_attr_normal);
-//   glEnableVertexAttribArray(vertex_attr_texcoords);
+//     static constexpr GLuint vertex_attr_position = 0;
+//     static constexpr GLuint vertex_attr_normal = 1;
+//     static constexpr GLuint vertex_attr_texcoords = 2;
+//     glEnableVertexAttribArray(vertex_attr_position);
+//     glEnableVertexAttribArray(vertex_attr_normal);
+//     glEnableVertexAttribArray(vertex_attr_texcoords);
 
-//   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//   glVertexAttribPointer(vertex_attr_position, 3, GL_FLOAT, GL_FALSE,
-//                         sizeof(glimac::ShapeVertex),
-//                         (const GLvoid *)offsetof(glimac::ShapeVertex,
-//                                                  position));
-//   glVertexAttribPointer(vertex_attr_normal, 3, GL_FLOAT, GL_FALSE,
-//                         sizeof(glimac::ShapeVertex),
-//                         (const GLvoid *)offsetof(glimac::ShapeVertex,
-//                         normal));
-//   glVertexAttribPointer(vertex_attr_texcoords, 2, GL_FLOAT, GL_FALSE,
-//                         sizeof(glimac::ShapeVertex),
-//                         (const GLvoid *)offsetof(glimac::ShapeVertex,
-//                                                  texCoords));
-//   glBindBuffer(GL_ARRAY_BUFFER, 0);
+//     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//     glVertexAttribPointer(
+//         vertex_attr_position, 3, GL_FLOAT, GL_FALSE,
+//         sizeof(glimac::ShapeVertex),
+//         (const GLvoid *)offsetof(glimac::ShapeVertex, position));
+//     glVertexAttribPointer(
+//         vertex_attr_normal, 3, GL_FLOAT, GL_FALSE,
+//         sizeof(glimac::ShapeVertex), (const GLvoid
+//         *)offsetof(glimac::ShapeVertex, normal));
+//     glVertexAttribPointer(
+//         vertex_attr_texcoords, 2, GL_FLOAT, GL_FALSE,
+//         sizeof(glimac::ShapeVertex),
+//         (const GLvoid *)offsetof(glimac::ShapeVertex, texCoords));
+//     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-//   glBindVertexArray(0);
-
-//   glEnable(GL_DEPTH_TEST);
-
-//   // may need to
-//   std::vector<glm::vec3> randomAxes{glm::sphericalRand(2.f)};
-//   for (int i = 1; i < 32; i++) {
-//     randomAxes.emplace_back(glm::sphericalRand(2.f));
+//     glBindVertexArray(0);
 //   }
 
-//   TrackballCamera camera;
+//   // may need to
+//   void createRandomlySpreadSpheres() {
+//     std::vector<glm::vec3> randomAxes{glm::sphericalRand(2.f)};
+//     for (int i = 1; i < 32; i++) {
+//       randomAxes.emplace_back(glm::sphericalRand(2.f));
+//     }
+//   }
 
 //   // Declare your infinite update loop.
 //   ctx.update = [&]() {
