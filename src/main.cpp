@@ -3,12 +3,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "boid.hpp"
 #include "doctest/doctest.h"
-#include "glimac/TrackballCamera.hpp"
-#include "glimac/common.hpp"
-#include "glimac/sphere_vertices.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/matrix.hpp"
+// #include "renderer.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -19,7 +14,14 @@ int main() {
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  // Actual application code
+  // const img::Image imageEarth =
+  //     p6::load_image_buffer("assets/textures/EarthMap.jpg");
+  // const img::Image imageMoon =
+  //     p6::load_image_buffer("assets/textures/MoonMap.jpg");
+  // const img::Image imageCloud =
+  //     p6::load_image_buffer("assets/textures/CloudMap.jpg");
+
+  // // Actual application code
   auto ctx = p6::Context{{.title = "IMAC2-CS-Project"}};
   ctx.maximize_window();
 
@@ -29,6 +31,8 @@ int main() {
   for (int i = 0; i < 5; i++) {
     swarm.emplace_back();
   }
+
+  // Renderer r;
 
   // Declare your infinite update loop.
   ctx.update = [&]() {
@@ -45,7 +49,25 @@ int main() {
     }
   };
 
-  // Should be done last. It starts the infinite loop.
+  // r.defineTextures();
+
+  // r.addTexture("EarthMap.jpg");
+  // r.addTexture("CloudMap.jpg");
+  // r.addTexture("MoonMap.jpg");
+
+  // r.ctx.update = [&]() {
+  //   r.clearAll();
+  //   // Earth
+  //   r.drawEarth();
+
+  //   // Moons
+  //   std::cout << "welsh4" << std::endl;
+  //   r.drawMoon();
+  // };
+
+  // // Should be done last. It starts the infinite loop.
+  // r.start();
+
   ctx.start();
 
   return 0;
