@@ -4,6 +4,7 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/matrix.hpp"
+#include "img/src/Image.h"
 #include "p6/p6.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
@@ -52,10 +53,13 @@ struct MoonProgram {
 
 class Texture {
 private:
-  std::string path;
+  img::Image image;
 
 public:
-  Texture(std::vector<GLuint> &textureIDList, std::string path);
+  explicit Texture(std::string path);
+  const img::Image& getImage() const {
+    return image;
+  }
 };
 
 class Renderer {
@@ -65,18 +69,17 @@ private:
   GLuint vao{};
 
 public:
-  p6::Context ctx = p6::Context{{1280, 720, "Amazing Oradimi Parzi_Val Boids"}};
+  p6::Context ctx = p6::Context{{.title = "Amazing Oradimi Parzi_Val Boids"}};
   ;
   std::vector<GLuint> textureIDList;
-
   TrackballCamera camera;
 
   Renderer();
 
   // Texture
-  void defineTextures();
-
   void addTexture(std::string path);
+
+  void defineTextures();
 
   // VBOs
   void defineVBO();
@@ -92,9 +95,8 @@ public:
 
   void drawEarth();
 
-  void drawMoon();
+  void drawMoon(std::vector<glm::vec3> randomAxes);
 
-  // Should be done last. It starts the infinite loop.
   void start() { ctx.start(); };
 
   void close() {

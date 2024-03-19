@@ -22,23 +22,8 @@ std::vector<glm::vec3> createRandomlySpreadSpheres() {
   return randomAxes;
 };
 
-Texture::Texture(std::vector<GLuint> &textureIDList, std::string path) {
-  const img::Image image = p6::load_image_buffer("assets/textures/" + path);
-
-  std::cout << "welsh3.05" << std::endl;
-  GLuint newElementID = textureIDList.size();
-  std::cout << newElementID << std::endl;
-  textureIDList.emplace_back(newElementID);
-
-  std::cout << "welsh3.1" << std::endl;
-  glBindTexture(GL_TEXTURE_2D, textureIDList[newElementID]);
-  std::cout << "welsh3.2" << std::endl;
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0,
-               GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glBindTexture(GL_TEXTURE_2D, 0);
-}
+Texture::Texture(std::string path)
+  :image(p6::load_image_buffer("assets/textures/" + path)){}
 
 Renderer::Renderer() {
   ctx.maximize_window();
@@ -49,24 +34,24 @@ Renderer::Renderer() {
   glEnable(GL_DEPTH_TEST);
 };
 
-//   EarthProgram earthProgram{};
-//   MoonProgram moonProgram{};
-
-//   const img::Image imageEarth =
-//       p6::load_image_buffer("assets/textures/EarthMap.jpg");
-//   const img::Image imageMoon =
-//       p6::load_image_buffer("assets/textures/MoonMap.jpg");
-//   const img::Image imageCloud =
-//       p6::load_image_buffer("assets/textures/CloudMap.jpg");
-
 // Texture
 void Renderer::defineTextures() {
-  glGenTextures(textureIDList.size(), textureIDList.data());
+  textureIDList.insert(textureIDList.end(), textureList.size(), 0);
+  glGenTextures(textureList.size(), textureIDList.data());
+  for (int i = 0; i < textureList.size(); i++) {
+    textureList[i].getImage();
+    glBindTexture(GL_TEXTURE_2D, textureIDList[i]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureList[i].getImage().width(), textureList[i].getImage().height(), 0,
+                GL_RGBA, GL_UNSIGNED_BYTE, textureList[i].getImage().data());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+  }
 }
 
 void Renderer::addTexture(std::string path) {
-  Texture newTexture(textureIDList, path);
-  textureList.emplace_back(newTexture);
+  Texture newTexture(path);
+  textureList.emplace_back(std::move(newTexture));
 }
 
 // VBOs
@@ -108,10 +93,10 @@ void Renderer::defineVAO() {
 }
 
 void Renderer::clearAll() {
-  //   for (long i = 33984; i < 33992; i++) {
-  //     glActiveTexture(i);
-  //     glBindTexture(GL_TEXTURE_2D, 0);
-  //   }
+  for (long i = 33984; i < 33992; i++) {
+    glActiveTexture(i);
+    glBindTexture(GL_TEXTURE_2D, 0);
+  }
   glBindVertexArray(0);
   ctx.background({});
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -140,10 +125,10 @@ void Renderer::drawEarth() {
   glm::mat4 MVMatrix = camera.getViewMatrix();
 
   EarthProgram earthProgram{};
+  glBindVertexArray(vao);
   earthProgram._Program.use();
   glUniform1i(earthProgram.uEarthTexture, 0);
   glUniform1i(earthProgram.uCloudTexture, 1);
-  std::cout << "welsh3.1" << std::endl;
 
   glm::mat4 earthMVMatrix = glm::translate(glm::mat4{1.f}, {0.f, 0.f, -1.f}) *
                             glm::rotate(MVMatrix, ctx.time(), {0.f, 1.f, 0.f});
@@ -156,24 +141,17 @@ void Renderer::drawEarth() {
   glUniformMatrix4fv(earthProgram.uMVPMatrix, 1, GL_FALSE,
                      glm::value_ptr(ProjMatrix * earthMVMatrix));
 
-  std::cout << "welsh3.2" << std::endl;
-  std::cout << textureIDList[1] << std::endl;
-  std::cout << "welsh3.25" << std::endl;
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textureIDList[0]);
-  std::cout << "welsh3.3" << std::endl;
   glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, textureIDList[1]);
-  std::cout << "welsh3.4" << std::endl;
   glDrawArrays(GL_TRIANGLES, 0, sphere.size());
 };
 
-void Renderer::drawMoon() {
+void Renderer::drawMoon(std::vector<glm::vec3> randomAxes) {
   glm::mat4 ProjMatrix =
       glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f);
   glm::mat4 MVMatrix = camera.getViewMatrix();
-
-  std::vector<glm::vec3> randomAxes = createRandomlySpreadSpheres();
 
   MoonProgram moonProgram{};
   moonProgram._Program.use();
