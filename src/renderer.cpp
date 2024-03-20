@@ -5,10 +5,12 @@
 #include "glimac/sphere_vertices.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/gtx/quaternion.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
 #include "programs.hpp"
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
@@ -49,28 +51,37 @@ void Renderer::handleZoom() {
   };
 };
 
-void Renderer::drawObject(/*RenderedObject &object*/) const {
-  glm::mat4 ProjMatrix =
+void Renderer::drawObject(glm::vec3 position, glm::vec3 velocity,
+                          RenderedObject &object) const {
+
+  glm::mat4 modelMatrix = glm::translate(glm::mat4{1.f}, position) *
+                          computeRotationMatrix(velocity) *
+                          glm::scale(glm::mat4{1.f}, glm::vec3{0.2f});
+  glm::mat4 viewMatrix = camera.getViewMatrix();
+  glm::mat4 projMatrix =
       glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f);
-  glm::mat4 MVMatrix = camera.getViewMatrix();
-  for (const RenderedObject &object : objectList) {
-    glBindVertexArray(object.getVAO());
-    object.shader.use();
-    glUniform1i(object.uTexture, 0);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, object.getTexturePointer(0));
 
-    glm::mat4 objectMVMatrix =
-        glm::translate(glm::mat4{1.f}, {0.f, 0.f, -1.f}) * MVMatrix;
-    objectMVMatrix = glm::rotate(objectMVMatrix, ctx.time(), {0.f, 1.f, 0.f});
-    // objectMVMatrix = glm::translate(objectMVMatrix, object._randomAxes[i]);
-    objectMVMatrix = glm::scale(objectMVMatrix, glm::vec3{0.2f});
+  glBindVertexArray(object.getVAO());
+  object.shader.use();
+  glUniform1i(object.uTexture, 0);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, object.getTexturePointer(0));
 
-    glUniformMatrix4fv(object.uMVMatrix, 1, GL_FALSE,
-                       glm::value_ptr(objectMVMatrix));
-    glUniformMatrix4fv(object.uMVPMatrix, 1, GL_FALSE,
-                       glm::value_ptr(ProjMatrix * objectMVMatrix));
+  glUniformMatrix4fv(object.uMVMatrix, 1, GL_FALSE,
+                     glm::value_ptr(viewMatrix * modelMatrix));
+  glUniformMatrix4fv(object.uMVPMatrix, 1, GL_FALSE,
+                     glm::value_ptr(projMatrix * viewMatrix * modelMatrix));
 
-    glDrawArrays(GL_TRIANGLES, 0, object.getMesh().size());
-  }
+  glDrawArrays(GL_TRIANGLES, 0, object.getMesh().size());
+};
+
+glm::mat4 computeRotationMatrix(const glm::vec3 &velocity) {
+  glm::vec3 direction = glm::normalize(velocity);
+
+  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+  glm::quat rotation = glm::rotation(up, direction);
+
+  glm::mat4 rotationMatrix = glm::mat4_cast(rotation);
+
+  return rotationMatrix;
 };

@@ -9,8 +9,7 @@
 glm::vec3 clampVectorSpeed(glm::vec3 vec, float max) {
   // std::cout << max / glm::length(vec) << std::endl;
   if (glm::length(vec) > max)
-    return {vec.x * max / glm::length(vec),
-            vec.y * max / glm::length(vec),
+    return {vec.x * max / glm::length(vec), vec.y * max / glm::length(vec),
             vec.z * max / glm::length(vec)};
   return vec;
 }
@@ -23,32 +22,23 @@ Boid::Boid() {
   vel = {static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f)};
-  vel *= 200.f;
+  // vel *= 200.f;
   // std::cout << pos.x << " " << pos.y << std::endl;
   // std::cout << vel.x << " " << vel.y << std::endl;
 }
 
 glm::vec3 Boid::move() {
+  float bounds = 2.f;
   pos += vel;
-  vel *= 0.999;
+  vel *= 0.9999;
   float max_speed = 0.02f;
   vel = clampVectorSpeed(vel, max_speed);
-  if (pos.x > 1.0f + radius) {
-    pos.x = -1.0f - radius;
-  } else if (pos.x < -1.0f - radius) {
-    pos.x = 1.0f + radius;
-  }
-
-  if (pos.y > 1.0f + radius) {
-    pos.y = -1.0f - radius;
-  } else if (pos.y < -1.0f - radius) {
-    pos.y = 1.0f + radius;
-  }
-
-  if (pos.z > 1.0f + radius) {
-    pos.z = -1.0f - radius;
-  } else if (pos.z < -1.0f - radius) {
-    pos.z = 1.0f + radius;
+  for (int i = 0; i < 3; i++) {
+    if (pos[i] > bounds + radius) {
+      pos[i] = -bounds - radius;
+    } else if (pos[i] < -bounds - radius) {
+      pos[i] = bounds + radius;
+    }
   }
   return pos;
 }

@@ -36,7 +36,8 @@ public:
 
   void handleZoom();
 
-  void drawObject() const;
+  void drawObject(glm::vec3 position, glm::vec3 velocity,
+                  RenderedObject &object) const;
 
   void start() { ctx.start(); };
 
@@ -46,3 +47,5 @@ public:
     }
   };
 };
+
+glm::mat4 computeRotationMatrix(const glm::vec3 &velocity);

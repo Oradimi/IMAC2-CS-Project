@@ -22,17 +22,14 @@ int main() {
   }
 
   Renderer renderer;
-  // RenderedObject boid_mesh;
-
-  renderer.addObject(RenderedObject{glimac::cone_vertices(2.f, 2.f, 4.f, 4.f)});
+  RenderedObject boid_mesh{glimac::cone_vertices(2.f, 1.2f, 6.f, 6.f)};
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
-    // for (Boid boid : swarm) {
-    //   boid.dothing();
-    //   renderer.drawObject(boid.positionStuff, boid_mesh);
-    // }
-    renderer.drawObject();
+    for (Boid &boid : swarm) {
+      boid.move();
+      renderer.drawObject(boid.getPosition(), boid.getVelocity(), boid_mesh);
+    }
   };
 
   renderer.handleLookAround();
