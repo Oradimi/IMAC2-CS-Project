@@ -12,34 +12,43 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class Object {
+/// A class that stores everything needed to render an RenderedObject
+class RenderedObject {
 private:
-    std::vector<glimac::ShapeVertex> mesh;
-    std::vector<Texture> textureList;
-    GLuint vbo{};
-    GLuint vao{};
+  std::vector<glimac::ShapeVertex> mesh;
+  std::vector<Texture> textureList;
+  GLuint vbo{};
+  GLuint vao{};
 
 public:
-    explicit Object(std::vector<glimac::ShapeVertex> mesh);
+  p6::Shader shader;
+  GLint uMVPMatrix;
+  GLint uMVMatrix;
+  GLint uNormalMatrix;
+  GLint uTexture;
 
-    void addTexture(std::string path);
+  explicit RenderedObject(std::vector<glimac::ShapeVertex> mesh);
 
-    void defineTextures();
+  void addTexture(std::string path);
 
-    void defineVBO();
+  void defineTextures();
 
-    void defineVAO();
+  void defineVBO();
 
-    std::vector<glimac::ShapeVertex> getMesh() { return mesh; };
+  void defineVAO();
 
-    GLuint getVAO() { return vao; };
+  std::vector<glimac::ShapeVertex> getMesh() const { return mesh; };
 
-    int getTextureCount() { return textureList.size(); };
+  GLuint getVAO() const { return vao; };
 
-    int getTexturePointer(int i) { return textureList[i].getImagePointer(); };
+  int getTextureCount() const { return textureList.size(); };
 
-    void close() {
-        glDeleteBuffers(1, &vbo);
-        glDeleteVertexArrays(1, &vao);
-    };
+  int getTexturePointer(int i) const {
+    return textureList[i].getImagePointer();
+  };
+
+  void clear() {
+    glDeleteBuffers(1, &vbo);
+    glDeleteVertexArrays(1, &vao);
+  };
 };

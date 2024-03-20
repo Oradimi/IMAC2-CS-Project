@@ -1,13 +1,13 @@
 #include "renderer.hpp"
-#include "programs.hpp"
 #include "glimac/TrackballCamera.hpp"
 #include "glimac/common.hpp"
-#include "glimac/sphere_vertices.hpp"
 #include "glimac/cone_vertices.hpp"
+#include "glimac/sphere_vertices.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
+#include "programs.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,7 +18,7 @@ Renderer::Renderer() {
   glEnable(GL_DEPTH_TEST);
 };
 
-void Renderer::addObject(Object& object) {
+void Renderer::addObject(RenderedObject object) {
   objectList.emplace_back(std::move(object));
 }
 
@@ -49,54 +49,28 @@ void Renderer::handleZoom() {
   };
 };
 
-void Renderer::drawEarth(EarthProgram& earthProgram) const {
+void Renderer::drawObject(/*RenderedObject &object*/) const {
   glm::mat4 ProjMatrix =
       glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f);
   glm::mat4 MVMatrix = camera.getViewMatrix();
-  glBindVertexArray(earthProgram._Object.getVAO());
-  earthProgram._Program.use();
-  glUniform1i(earthProgram.uEarthTexture, 0);
-  glUniform1i(earthProgram.uCloudTexture, 1);
+  for (const RenderedObject &object : objectList) {
+    glBindVertexArray(object.getVAO());
+    object.shader.use();
+    glUniform1i(object.uTexture, 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, object.getTexturePointer(0));
 
-  glm::mat4 earthMVMatrix = glm::translate(glm::mat4{1.f}, {0.f, 0.f, -1.f}) *
-                            glm::rotate(MVMatrix, ctx.time(), {0.f, 1.f, 0.f});
-
-  glUniformMatrix4fv(
-      earthProgram.uNormalMatrix, 1, GL_FALSE,
-      glm::value_ptr(glm::transpose(glm::inverse(earthMVMatrix))));
-  glUniformMatrix4fv(earthProgram.uMVMatrix, 1, GL_FALSE,
-                     glm::value_ptr(earthMVMatrix));
-  glUniformMatrix4fv(earthProgram.uMVPMatrix, 1, GL_FALSE,
-                     glm::value_ptr(ProjMatrix * earthMVMatrix));
-
-  for (int i = 0; i < earthProgram._Object.getTextureCount(); i++) {
-    glActiveTexture(GL_TEXTURE0 + i);
-    glBindTexture(GL_TEXTURE_2D, earthProgram._Object.getTexturePointer(i));
-  }
-  glDrawArrays(GL_TRIANGLES, 0, earthProgram._Object.getMesh().size());
-};
-
-void Renderer::drawMoon(MoonProgram& moonProgram) const {
-  glm::mat4 ProjMatrix =
-      glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f);
-  glm::mat4 MVMatrix = camera.getViewMatrix();
-  glBindVertexArray(moonProgram._Object.getVAO());
-  moonProgram._Program.use();
-  glUniform1i(moonProgram.uTexture, 0);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, moonProgram._Object.getTexturePointer(0));
-  for (int i = 0; i < 32; i++) {
-    glm::mat4 moonMVMatrix =
+    glm::mat4 objectMVMatrix =
         glm::translate(glm::mat4{1.f}, {0.f, 0.f, -1.f}) * MVMatrix;
-    moonMVMatrix = glm::rotate(moonMVMatrix, ctx.time(), {0.f, 1.f, 0.f});
-    moonMVMatrix = glm::translate(moonMVMatrix, moonProgram._randomAxes[i]);
-    moonMVMatrix = glm::scale(moonMVMatrix, glm::vec3{0.2f});
+    objectMVMatrix = glm::rotate(objectMVMatrix, ctx.time(), {0.f, 1.f, 0.f});
+    // objectMVMatrix = glm::translate(objectMVMatrix, object._randomAxes[i]);
+    objectMVMatrix = glm::scale(objectMVMatrix, glm::vec3{0.2f});
 
-    glUniformMatrix4fv(moonProgram.uMVMatrix, 1, GL_FALSE,
-                       glm::value_ptr(moonMVMatrix));
-    glUniformMatrix4fv(moonProgram.uMVPMatrix, 1, GL_FALSE,
-                       glm::value_ptr(ProjMatrix * moonMVMatrix));
+    glUniformMatrix4fv(object.uMVMatrix, 1, GL_FALSE,
+                       glm::value_ptr(objectMVMatrix));
+    glUniformMatrix4fv(object.uMVPMatrix, 1, GL_FALSE,
+                       glm::value_ptr(ProjMatrix * objectMVMatrix));
 
-    glDrawArrays(GL_TRIANGLES, 0, moonProgram._Object.getMesh().size());
+    glDrawArrays(GL_TRIANGLES, 0, object.getMesh().size());
   }
-}
+};

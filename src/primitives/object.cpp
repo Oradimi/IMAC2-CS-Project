@@ -1,26 +1,40 @@
-#include "object.hpp"
+#include "Object.hpp"
 #include <utility>
 
-Object::Object(std::vector<glimac::ShapeVertex> mesh) :mesh(std::move(mesh)) {};
+RenderedObject::RenderedObject(std::vector<glimac::ShapeVertex> mesh)
+    : mesh(std::move(mesh)),
+      shader{p6::load_shader("shaders/3D.vs.glsl", "shaders/tex3D.fs.glsl")},
+      uMVPMatrix(glGetUniformLocation(shader.id(), "uMVPMatrix")),
+      uMVMatrix(glGetUniformLocation(shader.id(), "uMVMatrix")),
+      uNormalMatrix(glGetUniformLocation(shader.id(), "uNormalMatrix")),
+      uTexture(glGetUniformLocation(shader.id(), "uTexture")) {
+  addTexture("EarthMap.jpg");
 
-void Object::defineTextures() {
+  defineVBO();
+  defineVAO();
+
+  defineTextures();
+};
+
+void RenderedObject::defineTextures() {
   for (int i = 0; i < getTextureCount(); i++) {
     textureList[i].getImage();
     glBindTexture(GL_TEXTURE_2D, textureList[i].getImagePointer());
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureList[i].getImage().width(), textureList[i].getImage().height(), 0,
-                GL_RGBA, GL_UNSIGNED_BYTE, textureList[i].getImage().data());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureList[i].getImage().width(),
+                 textureList[i].getImage().height(), 0, GL_RGBA,
+                 GL_UNSIGNED_BYTE, textureList[i].getImage().data());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 }
 
-void Object::addTexture(std::string path) {
+void RenderedObject::addTexture(std::string path) {
   Texture newTexture(path);
   textureList.emplace_back(std::move(newTexture));
 }
 
-void Object::defineVBO() {
+void RenderedObject::defineVBO() {
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -30,7 +44,7 @@ void Object::defineVBO() {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Object::defineVAO() {
+void RenderedObject::defineVAO() {
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
 

@@ -21,24 +21,26 @@ int main() {
     swarm.emplace_back();
   }
 
-  Renderer r;
+  Renderer renderer;
+  // RenderedObject boid_mesh;
 
-  EarthProgram earthProgram{};
-  MoonProgram moonProgram{};
+  renderer.addObject(RenderedObject{glimac::cone_vertices(2.f, 2.f, 4.f, 4.f)});
 
-  r.ctx.update = [&]() {
-    r.clearAll();
-    r.drawEarth(earthProgram);
-    r.drawMoon(moonProgram);
+  renderer.ctx.update = [&]() {
+    renderer.clearAll();
+    // for (Boid boid : swarm) {
+    //   boid.dothing();
+    //   renderer.drawObject(boid.positionStuff, boid_mesh);
+    // }
+    renderer.drawObject();
   };
 
-  r.handleLookAround();
-  r.handleZoom();
+  renderer.handleLookAround();
+  renderer.handleZoom();
 
-  r.start();
+  renderer.start();
 
-  earthProgram._Object.close();
-  moonProgram._Object.close();
+  renderer.close();
 
   return 0;
 }
