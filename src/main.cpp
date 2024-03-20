@@ -40,6 +40,9 @@ int main() {
     r.drawMoon(randomAxes);
   };
 
+  r.handleLookAround();
+  r.handleZoom();
+
   r.start();
 
   r.close();

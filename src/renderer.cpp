@@ -22,9 +22,6 @@ std::vector<glm::vec3> createRandomlySpreadSpheres() {
   return randomAxes;
 };
 
-Texture::Texture(std::string path)
-  :image(p6::load_image_buffer("assets/textures/" + path)){}
-
 Renderer::Renderer() {
   ctx.maximize_window();
 

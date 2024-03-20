@@ -1,3 +1,5 @@
+#pragma once
+
 #include "glimac/TrackballCamera.hpp"
 #include "glimac/common.hpp"
 #include "glimac/sphere_vertices.hpp"
@@ -6,6 +8,7 @@
 #include "glm/matrix.hpp"
 #include "img/src/Image.h"
 #include "p6/p6.h"
+#include "primitives/texture.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -48,17 +51,6 @@ struct MoonProgram {
     uMVMatrix = glGetUniformLocation(_Program.id(), "uMVMatrix");
     uNormalMatrix = glGetUniformLocation(_Program.id(), "uNormalMatrix");
     uTexture = glGetUniformLocation(_Program.id(), "uTexture");
-  }
-};
-
-class Texture {
-private:
-  img::Image image;
-
-public:
-  explicit Texture(std::string path);
-  const img::Image& getImage() const {
-    return image;
   }
 };
 
