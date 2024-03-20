@@ -23,15 +23,13 @@ int main() {
 
   Renderer r;
 
-  std::vector<glm::vec3> randomAxes = createRandomlySpreadSpheres();
-
   EarthProgram earthProgram{};
   MoonProgram moonProgram{};
 
   r.ctx.update = [&]() {
     r.clearAll();
     r.drawEarth(earthProgram);
-    r.drawMoon(moonProgram, randomAxes);
+    r.drawMoon(moonProgram);
   };
 
   r.handleLookAround();
@@ -39,8 +37,8 @@ int main() {
 
   r.start();
 
-  earthProgram.earthObject.close();
-  moonProgram.moonObject.close();
+  earthProgram._Object.close();
+  moonProgram._Object.close();
 
   return 0;
 }
