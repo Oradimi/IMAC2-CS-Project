@@ -23,21 +23,15 @@ int main() {
 
   Renderer r;
 
-  r.addTexture("EarthMap.jpg");
-  r.addTexture("CloudMap.jpg");
-  r.addTexture("MoonMap.jpg");
-
-  r.defineTextures();
-
   std::vector<glm::vec3> randomAxes = createRandomlySpreadSpheres();
+
+  EarthProgram earthProgram{};
+  MoonProgram moonProgram{};
 
   r.ctx.update = [&]() {
     r.clearAll();
-    // Earth
-    r.drawEarth();
-
-    // Moons
-    r.drawMoon(randomAxes);
+    r.drawEarth(earthProgram);
+    r.drawMoon(moonProgram, randomAxes);
   };
 
   r.handleLookAround();
@@ -45,7 +39,8 @@ int main() {
 
   r.start();
 
-  r.close();
+  earthProgram.earthObject.close();
+  moonProgram.moonObject.close();
 
   return 0;
 }

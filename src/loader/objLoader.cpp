@@ -40,7 +40,8 @@ void loadOBJ(const char* filename) {
             std::vector<int> face;
             int vIndex, tIndex, nIndex;
             while (iss >> vIndex >> tIndex >> nIndex) {
-                face.push_back(vIndex - 1); // OBJ files are 1-based, convert to 0-based
+                // OBJ files are 1-based, convert to 0-based
+                face.push_back(vIndex - 1);
             }
             faces.push_back(face);
         }
