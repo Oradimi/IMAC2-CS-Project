@@ -8,18 +8,30 @@ glm::vec2 clampVectorSpeed(glm::vec3 vec);
 
 class Boid {
 private:
+  static float turn_factor;
+  static float vision_range;
+  static float protected_range;
+  static float centering_factor;
+  static float avoid_factor;
+  static float matching_factor;
+  static float max_speed;
+  static float min_speed;
+  static float max_bias;
+  static float bias_increment;
+
   glm::vec3 pos;
   glm::vec3 vel;
-  float radius = 0.f;
-  float repulse_threshold = 0.4f;
-  float repulse_power = 1.f;
 
 public:
   Boid();
 
-  glm::vec3 move();
-  void avoid(const std::vector<Boid> &otherBoids);
-  float getRadius() const { return radius; };
-  glm::vec3 getPosition() const { return pos; }
+  static void initializeUIElements();
+
+  void move();
+  void separation(const std::vector<Boid> &swarm);
+  void alignment(const std::vector<Boid> &swarm);
+  void cohesion(const std::vector<Boid> &swarm);
+
+  glm::vec3 getPosition() const { return pos; };
   glm::vec3 getVelocity() const { return vel; };
 };
