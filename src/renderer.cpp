@@ -13,6 +13,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <imgui.h>
 #include <vector>
 
 Renderer::Renderer() {
@@ -36,6 +37,8 @@ void Renderer::clearAll() {
 
 void Renderer::handleLookAround() {
   ctx.mouse_dragged = [&](p6::MouseDrag mouse_drag) {
+    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+      return;
     camera.rotateLeft(-mouse_drag.delta.x * 90.f);
     camera.rotateUp(mouse_drag.delta.y * 90.f);
   };
@@ -44,9 +47,9 @@ void Renderer::handleLookAround() {
 void Renderer::handleZoom() {
   ctx.mouse_scrolled = [&](p6::MouseScroll scroll) {
     if (scroll.dy > 0) {
-      camera.moveFront(0.48f);
+      camera.moveFront(4.8f);
     } else if (scroll.dy < 0) {
-      camera.moveFront(-0.48f);
+      camera.moveFront(-4.8f);
     }
   };
 };
@@ -55,8 +58,7 @@ void Renderer::drawObject(glm::vec3 position, glm::vec3 velocity,
                           RenderedObject &object) const {
 
   glm::mat4 modelMatrix = glm::translate(glm::mat4{1.f}, position) *
-                          computeRotationMatrix(velocity) *
-                          glm::scale(glm::mat4{1.f}, glm::vec3{0.2f});
+                          computeRotationMatrix(velocity);
   glm::mat4 viewMatrix = camera.getViewMatrix();
   glm::mat4 projMatrix =
       glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f);

@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-
 class TrackballCamera {
 private:
   float m_Distance;
@@ -13,12 +12,12 @@ private:
   float m_AngleY;
 
 public:
-  TrackballCamera() : m_Distance(5.32f), m_AngleX(0.f), m_AngleY(0.f){};
+  TrackballCamera() : m_Distance(53.2f), m_AngleX(0.f), m_AngleY(0.f){};
   TrackballCamera(const float distance, const float angleX, const float angleY)
       : m_Distance(distance), m_AngleX(angleX), m_AngleY(angleY){};
 
   void moveFront(float delta) {
-    m_Distance = std::clamp(m_Distance - delta, 1.f, 5.32f);
+    m_Distance = std::clamp(m_Distance - delta, 10.f, 53.2f);
     // std::cout << m_Distance << std::endl;
   }
 

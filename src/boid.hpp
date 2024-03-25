@@ -27,10 +27,10 @@ public:
 
   static void initializeUIElements();
 
-  void move();
   void separation(const std::vector<Boid> &swarm);
   void alignment(const std::vector<Boid> &swarm);
   void cohesion(const std::vector<Boid> &swarm);
+  void move();
 
   glm::vec3 getPosition() const { return pos; };
   glm::vec3 getVelocity() const { return vel; };
