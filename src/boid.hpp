@@ -4,18 +4,19 @@
 #include <p6/p6.h>
 #include <vector>
 
-glm::vec2 clampVectorSpeed(glm::vec3 vec);
+void clampVectorMagnitude(glm::vec3 &vec, float min, float max);
 
 class Boid {
 private:
+  static float bounds;
   static float turn_factor;
-  static float vision_range;
   static float protected_range;
-  static float centering_factor;
+  static float vision_range;
   static float avoid_factor;
-  static float matching_factor;
-  static float max_speed;
+  static float match_factor;
+  static float center_factor;
   static float min_speed;
+  static float max_speed;
   static float max_bias;
   static float bias_increment;
 
@@ -27,10 +28,9 @@ public:
 
   static void initializeUIElements();
 
-  void separation(const std::vector<Boid> &swarm);
-  void alignment(const std::vector<Boid> &swarm);
-  void cohesion(const std::vector<Boid> &swarm);
-  void move();
+  void move(const std::vector<Boid> &swarm);
+  void flock(const std::vector<Boid> &swarm);
+  void avoidBounds();
 
   glm::vec3 getPosition() const { return pos; };
   glm::vec3 getVelocity() const { return vel; };

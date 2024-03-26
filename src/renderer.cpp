@@ -61,7 +61,7 @@ void Renderer::drawObject(glm::vec3 position, glm::vec3 velocity,
                           computeRotationMatrix(velocity);
   glm::mat4 viewMatrix = camera.getViewMatrix();
   glm::mat4 projMatrix =
-      glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 100.f);
+      glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 1000.f);
 
   glBindVertexArray(object.getVAO());
   object.shader.use();

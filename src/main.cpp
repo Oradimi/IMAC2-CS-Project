@@ -19,7 +19,7 @@ int main() {
     return EXIT_FAILURE;
 
   std::srand(std::time(nullptr));
-  std::vector<Boid> swarm(20);
+  std::vector<Boid> swarm(200);
 
   Renderer renderer;
   RenderedObject boid_mesh{glimac::cone_vertices(2.f, 1.2f, 6.f, 6.f)};
@@ -27,16 +27,10 @@ int main() {
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
-    // ImGui::Begin("Parameters");
-    // Boid::initializeUIElements();
-    // ImGui::End();
     renderer.drawObject(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f), cube_mesh);
 
     for (Boid &boid : swarm) {
-      boid.move();
-      boid.separation(swarm);
-      boid.alignment(swarm);
-      boid.cohesion(swarm);
+      boid.move(swarm);
       renderer.drawObject(boid.getPosition(), boid.getVelocity(), boid_mesh);
     }
   };
