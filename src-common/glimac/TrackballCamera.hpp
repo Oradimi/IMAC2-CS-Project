@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glimac/math.hpp"
+#include "glm/ext/quaternion_exponential.hpp"
 #include "glm/gtx/transform.hpp"
 #include <algorithm>
 #include <glm/glm.hpp>
@@ -16,12 +18,15 @@ public:
   TrackballCamera(const float distance, const float angleX, const float angleY)
       : m_Distance(distance), m_AngleX(angleX), m_AngleY(angleY){};
 
-  void moveFront(float delta) {
-    m_Distance = std::clamp(m_Distance - delta, 10.f, 293.2f);
-    // std::cout << m_Distance << std::endl;
+  void moveFront(const float &delta) {
+    constexpr float min_val = 0.4f;
+    constexpr float max_val = 293.2f;
+    constexpr auto max_val_sqrt = ConstexprMath::sqrt<float>(max_val);
+    m_Distance = std::clamp(m_Distance - delta * m_Distance / max_val_sqrt,
+                            min_val, max_val);
   }
 
-  void rotateLeft(float degrees) {
+  void rotateLeft(const float &degrees) {
     m_AngleY += degrees;
     // std::cout << m_AngleY << " " << m_AngleX << std::endl;
   }

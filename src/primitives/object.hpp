@@ -27,7 +27,9 @@ public:
   GLint uNormalMatrix;
   GLint uTexture;
 
-  explicit RenderedObject(std::vector<glimac::ShapeVertex> mesh);
+  explicit RenderedObject(std::vector<glimac::ShapeVertex> mesh,
+                          std::string texturePath, std::string vertexShaderPath,
+                          std::string fragmentShaderPath);
 
   void addTexture(std::string path);
 

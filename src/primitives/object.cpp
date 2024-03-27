@@ -1,14 +1,18 @@
 #include "Object.hpp"
 #include <utility>
 
-RenderedObject::RenderedObject(std::vector<glimac::ShapeVertex> mesh)
+RenderedObject::RenderedObject(std::vector<glimac::ShapeVertex> mesh,
+                               std::string texturePath,
+                               std::string vertexShaderPath,
+                               std::string fragmentShaderPath)
     : mesh(std::move(mesh)),
-      shader{p6::load_shader("shaders/3D.vs.glsl", "shaders/tex3D.fs.glsl")},
+      shader{p6::load_shader("assets/shaders/" + vertexShaderPath,
+                             "assets/shaders/" + fragmentShaderPath)},
       uMVPMatrix(glGetUniformLocation(shader.id(), "uMVPMatrix")),
       uMVMatrix(glGetUniformLocation(shader.id(), "uMVMatrix")),
       uNormalMatrix(glGetUniformLocation(shader.id(), "uNormalMatrix")),
       uTexture(glGetUniformLocation(shader.id(), "uTexture")) {
-  addTexture("EarthMap.jpg");
+  addTexture(texturePath);
 
   defineVBO();
   defineVAO();

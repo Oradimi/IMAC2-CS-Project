@@ -50,11 +50,10 @@ function(add_exercise EXERCISE_NAME)
 
     # ---Set the output folder---
     set_target_properties(${TARGET_NAME} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${EXERCISE_NAME})
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
     # ---Copy the assets and the shaders to the output folder (where the executable is created)---
     Cool__target_copy_folder(${TARGET_NAME} assets)
-    Cool__target_copy_folder(${TARGET_NAME} ${EXERCISE_NAME}/shaders shaders)
 endfunction(add_exercise)
 
 add_exercise(src)

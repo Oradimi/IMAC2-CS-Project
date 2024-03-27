@@ -1,3 +1,4 @@
+#include "glimac/common.hpp"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
@@ -6,17 +7,18 @@
 #include <sstream>
 #include <vector>
 
-void loadOBJ(const char *filename) {
-  std::ifstream file(filename);
+std::vector<glimac::ShapeVertex> loadOBJ(const std::string &filename) {
+  std::ifstream file("assets/models/" + filename);
   if (!file.is_open()) {
-    std::cerr << "Failed to open file: " << filename << std::endl;
-    return;
+    std::cerr << "Failed to open file: " << filename << '\n';
+    return {};
   }
 
   std::vector<glm::vec3> positions;
   std::vector<glm::vec3> normals;
   std::vector<glm::vec2> texCoords;
-  std::vector<std::vector<int>> faces;
+
+  std::vector<glimac::ShapeVertex> vertices{};
 
   std::string line;
   while (std::getline(file, line)) {
@@ -37,19 +39,24 @@ void loadOBJ(const char *filename) {
       iss >> texCoord.s >> texCoord.t;
       texCoords.push_back(texCoord);
     } else if (type == "f") {
-      std::vector<int> face;
-      int vIndex, tIndex, nIndex;
-      //   char c;
-      //   for (int i = 0; i < 3; ++i) {
-      //     iss >> face.vertexIndex[i] >> c >> face.texCoordIndex[i] >> c >>
-      //         face.normalIndex[i];
-      //     // Decrement indices by 1 to match 0-based indexing
-      //     --face.vertexIndex[i];
-      //     --face.texCoordIndex[i];
-      //     --face.normalIndex[i];
-      //   }
-      faces.push_back(face);
+      int vIndex = 0;
+      int vtIndex = 0;
+      int vnIndex = 0;
+      char c = 0;
+      for (int i = 0; i < 3; ++i) {
+        iss >> vIndex >> c >> vtIndex >> c >> vnIndex;
+
+        // Decrement indices by 1 to match 0-based indexing
+        --vIndex;
+        --vtIndex;
+        --vnIndex;
+
+        vertices.emplace_back(glimac::ShapeVertex{
+            {positions[vIndex]}, {normals[vnIndex]}, {texCoords[vtIndex]}});
+      }
     }
   }
   file.close();
+
+  return vertices;
 }

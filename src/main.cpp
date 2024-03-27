@@ -1,3 +1,4 @@
+#include "glm/fwd.hpp"
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <cstdlib>
@@ -7,6 +8,7 @@
 #include "boid.hpp"
 #include "doctest/doctest.h"
 #include "glimac/cube_vertices.hpp"
+#include "loader/objLoader.hpp"
 #include "renderer.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
@@ -19,15 +21,20 @@ int main() {
     return EXIT_FAILURE;
 
   std::srand(std::time(nullptr));
-  std::vector<Boid> swarm(200);
+  std::vector<Boid> swarm(20);
 
   Renderer renderer;
-  RenderedObject boid_mesh{glimac::cone_vertices(2.f, 1.2f, 6.f, 6.f)};
-  RenderedObject cube_mesh{glimac::cube_vertices(1.0f, 1.0f, 1.0f)};
+
+  RenderedObject boid_mesh{loadOBJ("meina.obj"), "MeinaDiffuse.png",
+                           "3D.vs.glsl", "tex3D.fs.glsl"};
+
+  // RenderedObject cube_mesh{loadOBJ("cube.obj"), "MeinaDiffuse.png",
+  //                          "3D.vs.glsl", "tex3D.fs.glsl"};
+
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
-    renderer.drawObject(glm::vec3(1.f, 1.f, 1.f), glm::vec3(0.f), cube_mesh);
+    // renderer.drawObject(glm::vec3{0.f}, glm::vec3{0.f}, cube_mesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
