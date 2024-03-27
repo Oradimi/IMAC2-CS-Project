@@ -27,7 +27,7 @@ int main() {
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
-    renderer.drawObject(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f), cube_mesh);
+    renderer.drawObject(glm::vec3(1.f, 1.f, 1.f), glm::vec3(0.f), cube_mesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);

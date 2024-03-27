@@ -4,7 +4,6 @@
 namespace glimac {
 
 std::vector<ShapeVertex> cube_vertices(float x, float y, float z) {
-  // Définition des sommets du cube
   std::vector<ShapeVertex> vertices{
       // Face avant
       {{-x, -y, z}, {0.f, 0.f, 1.f}, {0.f, 0.f}},

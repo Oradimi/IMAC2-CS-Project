@@ -1,5 +1,4 @@
-#ifndef FC4516CB_16EF_45F0_9856_3D98609CF934
-#define FC4516CB_16EF_45F0_9856_3D98609CF934
+#pragma once
 #include "common.hpp"
 #include <vector>
 
@@ -11,5 +10,3 @@ namespace glimac {
 std::vector<ShapeVertex> cube_vertices(float x, float y, float z);
 
 } // namespace glimac
-
-#endif /* FC4516CB_16EF_45F0_9856_3D98609CF934 */
