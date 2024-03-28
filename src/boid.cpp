@@ -30,6 +30,7 @@ void clampVectorMagnitude(glm::vec3 &vec, float min, float max) {
 }
 
 Boid::Boid() {
+
   pos =
       glm::vec3{
           static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),

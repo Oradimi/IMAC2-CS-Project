@@ -1,18 +1,20 @@
+#define DOCTEST_CONFIG_IMPLEMENT
+
+#include "boid.hpp"
+#include "doctest/doctest.h"
+#include "glimac/cube_vertices.hpp"
+#include "glimac/math.hpp"
 #include "glm/fwd.hpp"
+#include "loader/objLoader.hpp"
+#include "renderer.hpp"
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <cstdlib>
 #include <ctime>
-#include <imgui.h>
-#define DOCTEST_CONFIG_IMPLEMENT
-#include "boid.hpp"
-#include "doctest/doctest.h"
-#include "glimac/cube_vertices.hpp"
-#include "loader/objLoader.hpp"
-#include "renderer.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <imgui.h>
 #include <vector>
 
 int main() {
@@ -20,8 +22,11 @@ int main() {
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  std::srand(std::time(nullptr));
-  std::vector<Boid> swarm(20);
+  std::mt19937 generator = RandomMath::getRandomGenerator();
+
+  double random_number = RandomMath::generateUniform(generator);
+
+  std::vector<Boid> swarm(20 /*, Boid{generator}*/);
 
   Renderer renderer;
 
