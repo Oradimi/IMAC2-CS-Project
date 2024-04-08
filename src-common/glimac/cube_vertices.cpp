@@ -5,32 +5,32 @@ namespace glimac {
 
 std::vector<ShapeVertex> cube_vertices(float x, float y, float z) {
   std::vector<ShapeVertex> vertices{
-      // Face avant
+      // Front face
       {{-x, -y, z}, {0.f, 0.f, 1.f}, {0.f, 0.f}},
       {{x, -y, z}, {0.f, 0.f, 1.f}, {1.f, 0.f}},
       {{x, y, z}, {0.f, 0.f, 1.f}, {1.f, 1.f}},
       {{-x, y, z}, {0.f, 0.f, 1.f}, {0.f, 1.f}},
-      // Face arrière
+      // Back face
       {{-x, -y, -z}, {0.f, 0.f, -1.f}, {1.f, 0.f}},
       {{x, -y, -z}, {0.f, 0.f, -1.f}, {0.f, 0.f}},
       {{x, y, -z}, {0.f, 0.f, -1.f}, {0.f, 1.f}},
       {{-x, y, -z}, {0.f, 0.f, -1.f}, {1.f, 1.f}},
-      // Face gauche
+      // Left face
       {{-x, -y, -z}, {-1.f, 0.f, 0.f}, {0.f, 0.f}},
       {{-x, y, -z}, {-1.f, 0.f, 0.f}, {1.f, 0.f}},
       {{-x, y, z}, {-1.f, 0.f, 0.f}, {1.f, 1.f}},
       {{-x, -y, z}, {-1.f, 0.f, 0.f}, {0.f, 1.f}},
-      // Face droite
+      // Right face
       {{x, -y, -z}, {1.f, 0.f, 0.f}, {1.f, 0.f}},
       {{x, y, -z}, {1.f, 0.f, 0.f}, {0.f, 0.f}},
       {{x, y, z}, {1.f, 0.f, 0.f}, {0.f, 1.f}},
       {{x, -y, z}, {1.f, 0.f, 0.f}, {1.f, 1.f}},
-      // Face haut
+      // Upper face
       {{-x, y, -z}, {0.f, 1.f, 0.f}, {0.f, 0.f}},
       {{x, y, -z}, {0.f, 1.f, 0.f}, {1.f, 0.f}},
       {{x, y, z}, {0.f, 1.f, 0.f}, {1.f, 1.f}},
       {{-x, y, z}, {0.f, 1.f, 0.f}, {0.f, 1.f}},
-      // Face bas
+      // Low face
       {{-x, -y, -z}, {0.f, -1.f, 0.f}, {1.f, 0.f}},
       {{x, -y, -z}, {0.f, -1.f, 0.f}, {0.f, 0.f}},
       {{x, -y, z}, {0.f, -1.f, 0.f}, {0.f, 1.f}},
