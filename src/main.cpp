@@ -44,10 +44,12 @@ int main() {
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
+    glEnable(GL_CULL_FACE);
     glm::mat4 cubeModelMatrix =
         glm::translate(glm::mat4{1.f}, glm::vec3{0.f, 0.f, 0.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds()});
     renderer.drawObject(cubeModelMatrix, cubeMesh);
+    glDisable(GL_CULL_FACE);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);

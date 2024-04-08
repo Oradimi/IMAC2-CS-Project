@@ -19,6 +19,7 @@
 Renderer::Renderer() {
   ctx.maximize_window();
   glEnable(GL_DEPTH_TEST);
+  glCullFace(GL_BACK);
 };
 
 void Renderer::addObject(RenderedObject object) {
