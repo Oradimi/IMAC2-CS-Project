@@ -2,6 +2,7 @@
 
 #include "glm/fwd.hpp"
 #include <p6/p6.h>
+#include <random>
 #include <vector>
 
 void clampVectorMagnitude(glm::vec3 &vec, float min, float max);
@@ -24,7 +25,7 @@ private:
   glm::vec3 vel;
 
 public:
-  Boid();
+  explicit Boid(std::mt19937 &generator);
 
   static void initializeUIElements();
 
@@ -32,6 +33,7 @@ public:
   void flock(const std::vector<Boid> &swarm);
   void avoidBounds();
 
+  static float getBounds() { return bounds; };
   glm::vec3 getPosition() const { return pos; };
   glm::vec3 getVelocity() const { return vel; };
 };

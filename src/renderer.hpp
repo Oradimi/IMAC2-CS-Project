@@ -36,8 +36,7 @@ public:
 
   void handleZoom();
 
-  void drawObject(glm::vec3 position, glm::vec3 velocity,
-                  RenderedObject &object) const;
+  void drawObject(glm::mat4 &modelMatrix, RenderedObject &object) const;
 
   void start() { ctx.start(); };
 

@@ -22,28 +22,39 @@ int main() {
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  std::mt19937 generator = RandomMath::getRandomGenerator();
+  std::mt19937 generator(RandomMath::getRandomGenerator());
 
   double random_number = RandomMath::generateUniform(generator);
 
-  std::vector<Boid> swarm(20 /*, Boid{generator}*/);
+  std::vector<Boid> swarm;
+  swarm.reserve(20);
+
+  for (int i = 0; i < 20; ++i) {
+    swarm.emplace_back(generator);
+  }
 
   Renderer renderer;
 
-  RenderedObject boid_mesh{loadOBJ("meina.obj"), "MeinaDiffuse.png",
-                           "3D.vs.glsl", "tex3D.fs.glsl"};
+  RenderedObject boidMesh{loadOBJ("meina.obj"), "MeinaDiffuse.png",
+                          "3D.vs.glsl", "tex3D.fs.glsl"};
 
-  // RenderedObject cube_mesh{loadOBJ("cube.obj"), "MeinaDiffuse.png",
-  //                          "3D.vs.glsl", "tex3D.fs.glsl"};
+  RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "White.png",
+                          "3D.vs.glsl", "tex3D.fs.glsl"};
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
-    // renderer.drawObject(glm::vec3{0.f}, glm::vec3{0.f}, cube_mesh);
+    glm::mat4 cubeModelMatrix =
+        glm::translate(glm::mat4{1.f}, glm::vec3{0.f, 0.f, 0.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds()});
+    renderer.drawObject(cubeModelMatrix, cubeMesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
-      renderer.drawObject(boid.getPosition(), boid.getVelocity(), boid_mesh);
+      glm::mat4 boidModelMatrix =
+          glm::translate(glm::mat4{1.f}, boid.getPosition()) *
+          computeRotationMatrix(boid.getVelocity());
+      renderer.drawObject(boidModelMatrix, boidMesh);
     }
   };
 

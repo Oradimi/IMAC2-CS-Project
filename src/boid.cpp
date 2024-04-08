@@ -1,6 +1,7 @@
 #pragma once
 
 #include "boid.hpp"
+#include "glimac/math.hpp"
 #include "glm/common.hpp"
 #include "glm/fwd.hpp"
 #include "glm/geometric.hpp"
@@ -29,24 +30,23 @@ void clampVectorMagnitude(glm::vec3 &vec, float min, float max) {
     vec = (vec / speed) * max;
 }
 
-Boid::Boid() {
+Boid::Boid(std::mt19937 &generator) {
+  pos = glm::vec3(RandomMath::generateUniform(generator) * 2.0f - 1.0f,
+                  RandomMath::generateUniform(generator) * 2.0f - 1.0f,
+                  RandomMath::generateUniform(generator) * 2.0f - 1.0f) *
+        bounds;
 
-  pos =
-      glm::vec3{
-          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
-          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
-          static_cast<float>(std::rand() - RAND_MAX * 0.5f) /
-              (RAND_MAX * 0.5f)} *
-      bounds;
+  vel = glm::vec3(RandomMath::generateUniform(generator) * 2.0f - 1.0f,
+                  RandomMath::generateUniform(generator) * 2.0f - 1.0f,
+                  RandomMath::generateUniform(generator) * 2.0f - 1.0f) *
+            (max_speed - min_speed) +
+        min_speed;
 
-  vel =
-      glm::vec3{
-          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
-          static_cast<float>(std::rand() - RAND_MAX * 0.5f) / (RAND_MAX * 0.5f),
-          static_cast<float>(std::rand() - RAND_MAX * 0.5f) /
-              (RAND_MAX * 0.5f)} *
-          (max_speed - min_speed) +
-      min_speed;
+  // std::cout << "Boid created at (" << pos.x << ", " << pos.y << ", " << pos.z
+  //           << ")" << '\n';
+  // std::cout << "Velocity: (" << vel.x << ", " << vel.y << ", " << vel.z <<
+  // ")"
+  //           << '\n';
 }
 
 void Boid::initializeUIElements() {
