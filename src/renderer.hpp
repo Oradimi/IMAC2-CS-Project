@@ -21,6 +21,12 @@ class Renderer {
 private:
   std::vector<RenderedObject> objectList;
 
+  static float uKd;
+  static float uKs;
+  static float uLightIntensity;
+  static float uShininess;
+  static glm::vec3 lightDir;
+
 public:
   p6::Context ctx = p6::Context{{.title = "Amazing Oradimi Parzi_Val Boids"}};
 
@@ -37,6 +43,8 @@ public:
   void handleZoom();
 
   void drawObject(glm::mat4 &modelMatrix, RenderedObject &object) const;
+
+  static void initializeUIElements();
 
   void start() { ctx.start(); };
 

@@ -16,6 +16,12 @@
 #include <imgui.h>
 #include <vector>
 
+float Renderer::uKd = 1.f;
+float Renderer::uKs = 3.f;
+float Renderer::uLightIntensity = 0.36f;
+float Renderer::uShininess = 4.f;
+glm::vec3 Renderer::lightDir{0.5f, 0.5f, 0.5f};
+
 Renderer::Renderer() {
   ctx.maximize_window();
   glEnable(GL_DEPTH_TEST);
@@ -58,8 +64,6 @@ void Renderer::handleZoom() {
 void Renderer::drawObject(glm::mat4 &modelMatrix,
                           RenderedObject &object) const {
 
-  glm::vec3 lightDir{0.f, 1.f, 1.f};
-
   lightDir = glm::vec4(lightDir, 1.f) *
              glm::rotate(glm::mat4(1.f), 0.f, {0.f, 1.f, 0.f});
 
@@ -70,10 +74,6 @@ void Renderer::drawObject(glm::mat4 &modelMatrix,
   glBindVertexArray(object.getVAO());
   object.shader.use();
 
-  float uKd = 4.f;
-  float uKs = 4.f;
-  float uLightIntensity = 0.36f;
-  float uShininess = 50.f;
   glUniform3f(object.uKd, uKd, uKd, uKd);
   glUniform3f(object.uKs, uKs, uKs, uKs);
   glUniform3fv(
@@ -106,4 +106,14 @@ glm::mat4 computeRotationMatrix(const glm::vec3 &velocity) {
   glm::mat4 rotationMatrix = glm::mat4_cast(rotation);
 
   return rotationMatrix;
+};
+
+void Renderer::initializeUIElements() {
+  ImGui::SliderFloat("Diffuse Reflection", &uKd, 0.f, 10.f);
+  ImGui::SliderFloat("Glossy Reflection", &uKs, 0.f, 10.f);
+  ImGui::SliderFloat("Light Intensity", &uLightIntensity, 0.f, 2.f);
+  ImGui::SliderFloat("Shininess", &uShininess, 0.f, 100.f);
+  ImGui::SliderFloat("Light Direction X", &lightDir.x, -1.f, 1.f);
+  ImGui::SliderFloat("Light Direction Y", &lightDir.y, -1.f, 1.f);
+  ImGui::SliderFloat("Light Direction Z", &lightDir.z, -1.f, 1.f);
 };

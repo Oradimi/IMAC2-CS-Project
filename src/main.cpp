@@ -38,7 +38,7 @@ int main() {
   RenderedObject boidMesh{loadOBJ("meina.obj"), "MeinaDiffuse.png",
                           "3D.vs.glsl", "tex3D.fs.glsl"};
 
-  RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "White.png",
+  RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
                           "3D.vs.glsl", "directionalLight.fs.glsl"};
 
   renderer.ctx.update = [&]() {
@@ -47,7 +47,7 @@ int main() {
     glEnable(GL_CULL_FACE);
     glm::mat4 cubeModelMatrix =
         glm::translate(glm::mat4{1.f}, glm::vec3{0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds()});
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 1.2f});
     renderer.drawObject(cubeModelMatrix, cubeMesh);
     glDisable(GL_CULL_FACE);
 
@@ -62,8 +62,11 @@ int main() {
   };
 
   renderer.ctx.imgui = [&]() {
-    ImGui::Begin("Parameters");
+    ImGui::Begin("Boid Parameters");
     Boid::initializeUIElements();
+    ImGui::End();
+    ImGui::Begin("Light Parameters");
+    Renderer::initializeUIElements();
     ImGui::End();
   };
 
