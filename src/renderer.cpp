@@ -64,6 +64,8 @@ void Renderer::handleZoom() {
 void Renderer::drawObject(glm::mat4 &modelMatrix,
                           RenderedObject &object) const {
 
+  glm::vec3 lightPos{0.f, 0.f, 0.f};
+
   lightDir = glm::vec4(lightDir, 1.f) *
              glm::rotate(glm::mat4(1.f), 0.f, {0.f, 1.f, 0.f});
 
@@ -76,9 +78,10 @@ void Renderer::drawObject(glm::mat4 &modelMatrix,
 
   glUniform3f(object.uKd, uKd, uKd, uKd);
   glUniform3f(object.uKs, uKs, uKs, uKs);
-  glUniform3fv(
-      object.uLightDir_vs, 1,
-      glm::value_ptr(glm::vec4(lightDir, 1.f) * camera.getViewMatrix()));
+  glUniform3fv(object.uLightDir_vs, 1,
+               glm::value_ptr(glm::vec4(lightDir, 1.f) * viewMatrix));
+  glUniform3fv(object.uLightPos_vs, 1,
+               glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
   glUniform3f(object.uLightIntensity, uLightIntensity, uLightIntensity,
               uLightIntensity);
   glUniform1f(object.uShininess, uShininess);
