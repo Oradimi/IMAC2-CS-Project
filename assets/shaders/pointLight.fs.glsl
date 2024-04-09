@@ -1,7 +1,6 @@
 #version 330
 
-uniform sampler2D uEarthTexture;
-uniform sampler2D uCloudTexture;
+uniform sampler2D uTexture;
 uniform vec3 uKd;
 uniform vec3 uKs;
 uniform float uShininess;
@@ -25,7 +24,6 @@ vec3 blinnPhong() {
 
 void main()
 {
-    vec4 textureColorEarth = texture(uEarthTexture, vUV.xy);
-    vec4 textureColorCloud = texture(uCloudTexture, vec2(0.05f * uTime + vUV.x, vUV.y));
-    fFragColor = vec4((textureColorEarth.xyz + textureColorCloud.xyz) * blinnPhong(), 1.);
+    vec4 textureColor = texture(uTexture, vUV.xy);
+    fFragColor = vec4(textureColor.xyz * blinnPhong(), 1.);
 }

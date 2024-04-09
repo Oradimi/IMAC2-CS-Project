@@ -1,4 +1,4 @@
-#include "Object.hpp"
+#include "object.hpp"
 #include <utility>
 
 RenderedObject::RenderedObject(std::vector<glimac::ShapeVertex> mesh,
@@ -11,7 +11,13 @@ RenderedObject::RenderedObject(std::vector<glimac::ShapeVertex> mesh,
       uMVPMatrix(glGetUniformLocation(shader.id(), "uMVPMatrix")),
       uMVMatrix(glGetUniformLocation(shader.id(), "uMVMatrix")),
       uNormalMatrix(glGetUniformLocation(shader.id(), "uNormalMatrix")),
-      uTexture(glGetUniformLocation(shader.id(), "uTexture")) {
+      uTexture(glGetUniformLocation(shader.id(), "uTexture")),
+      uKd(glGetUniformLocation(shader.id(), "uKd")),
+      uKs(glGetUniformLocation(shader.id(), "uKs")),
+      uShininess(glGetUniformLocation(shader.id(), "uShininess")),
+      uLightDir_vs(glGetUniformLocation(shader.id(), "uLightDir_vs")),
+      uLightPos_vs(glGetUniformLocation(shader.id(), "uLightPos_vs")),
+      uLightIntensity(glGetUniformLocation(shader.id(), "uLightIntensity")) {
   addTexture(texturePath);
 
   defineVBO();

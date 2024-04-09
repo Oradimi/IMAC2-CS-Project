@@ -39,14 +39,14 @@ int main() {
                           "3D.vs.glsl", "tex3D.fs.glsl"};
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "White.png",
-                          "3D.vs.glsl", "tex3D.fs.glsl"};
+                          "3D.vs.glsl", "directionalLight.fs.glsl"};
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
     glEnable(GL_CULL_FACE);
     glm::mat4 cubeModelMatrix =
-        glm::translate(glm::mat4{1.f}, glm::vec3{0.f, 0.f, 0.f}) *
+        glm::translate(glm::mat4{1.f}, glm::vec3{0.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds()});
     renderer.drawObject(cubeModelMatrix, cubeMesh);
     glDisable(GL_CULL_FACE);
@@ -55,7 +55,8 @@ int main() {
       boid.move(swarm);
       glm::mat4 boidModelMatrix =
           glm::translate(glm::mat4{1.f}, boid.getPosition()) *
-          computeRotationMatrix(boid.getVelocity());
+          computeRotationMatrix(boid.getVelocity()) *
+          glm::scale(glm::mat4{1.f}, glm::vec3{2.f});
       renderer.drawObject(boidModelMatrix, boidMesh);
     }
   };

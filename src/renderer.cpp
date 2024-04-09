@@ -58,16 +58,37 @@ void Renderer::handleZoom() {
 void Renderer::drawObject(glm::mat4 &modelMatrix,
                           RenderedObject &object) const {
 
+  glm::vec3 lightDir{0.f, 1.f, 1.f};
+
+  lightDir = glm::vec4(lightDir, 1.f) *
+             glm::rotate(glm::mat4(1.f), 0.f, {0.f, 1.f, 0.f});
+
   glm::mat4 viewMatrix = camera.getViewMatrix();
   glm::mat4 projMatrix =
       glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 1000.f);
 
   glBindVertexArray(object.getVAO());
   object.shader.use();
+
+  float uKd = 4.f;
+  float uKs = 4.f;
+  float uLightIntensity = 0.36f;
+  float uShininess = 50.f;
+  glUniform3f(object.uKd, uKd, uKd, uKd);
+  glUniform3f(object.uKs, uKs, uKs, uKs);
+  glUniform3fv(
+      object.uLightDir_vs, 1,
+      glm::value_ptr(glm::vec4(lightDir, 1.f) * camera.getViewMatrix()));
+  glUniform3f(object.uLightIntensity, uLightIntensity, uLightIntensity,
+              uLightIntensity);
+  glUniform1f(object.uShininess, uShininess);
   glUniform1i(object.uTexture, 0);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, object.getTexturePointer(0));
 
+  glUniformMatrix4fv(
+      object.uNormalMatrix, 1, GL_FALSE,
+      glm::value_ptr(glm::transpose(glm::inverse(viewMatrix * modelMatrix))));
   glUniformMatrix4fv(object.uMVMatrix, 1, GL_FALSE,
                      glm::value_ptr(viewMatrix * modelMatrix));
   glUniformMatrix4fv(object.uMVPMatrix, 1, GL_FALSE,

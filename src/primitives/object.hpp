@@ -26,6 +26,12 @@ public:
   GLint uMVMatrix;
   GLint uNormalMatrix;
   GLint uTexture;
+  GLint uKd;
+  GLint uKs;
+  GLint uShininess;
+  GLint uLightDir_vs;
+  GLint uLightPos_vs;
+  GLint uLightIntensity;
 
   explicit RenderedObject(std::vector<glimac::ShapeVertex> mesh,
                           std::string texturePath, std::string vertexShaderPath,
