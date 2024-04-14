@@ -62,15 +62,35 @@ std::vector<glimac::ShapeVertex> loadOBJ(const std::string &filename) {
 
       if (vIndices.size() >= 3) {
         for (size_t i = 1; i < vIndices.size() - 1; ++i) {
-          vertices.emplace_back(glimac::ShapeVertex{positions[vIndices[0]],
-                                                    normals[vnIndices[0]],
-                                                    texCoords[vtIndices[0]]});
-          vertices.emplace_back(glimac::ShapeVertex{positions[vIndices[i]],
-                                                    normals[vnIndices[i]],
-                                                    texCoords[vtIndices[i]]});
-          vertices.emplace_back(glimac::ShapeVertex{
-              positions[vIndices[i + 1]], normals[vnIndices[i + 1]],
-              texCoords[vtIndices[i + 1]]});
+          size_t pos0 = vIndices[0];
+          size_t pos1 = vIndices[i];
+          size_t pos2 = vIndices[i + 1];
+
+          glm::vec3 normal0(0.f);
+          glm::vec3 normal1(0.f);
+          glm::vec3 normal2(0.f);
+          glm::vec2 texCoord0(0.f);
+          glm::vec2 texCoord1(0.f);
+          glm::vec2 texCoord2(0.f);
+
+          if (!vnIndices.empty() && i < vnIndices.size()) {
+            normal0 = normals[vnIndices[0]];
+            normal1 = normals[vnIndices[i]];
+            normal2 = normals[vnIndices[i + 1]];
+          }
+
+          if (!vtIndices.empty() && i < vtIndices.size()) {
+            texCoord0 = texCoords[vtIndices[0]];
+            texCoord1 = texCoords[vtIndices[i]];
+            texCoord2 = texCoords[vtIndices[i + 1]];
+          }
+
+          vertices.emplace_back(
+              glimac::ShapeVertex{positions[pos0], normal0, texCoord0});
+          vertices.emplace_back(
+              glimac::ShapeVertex{positions[pos1], normal1, texCoord1});
+          vertices.emplace_back(
+              glimac::ShapeVertex{positions[pos2], normal2, texCoord2});
         }
       }
     }

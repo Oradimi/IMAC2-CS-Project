@@ -41,6 +41,9 @@ int main() {
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
                           "3D.vs.glsl", "directionalLight.fs.glsl"};
 
+  RenderedObject treeMesh{loadOBJ("tree.obj"), "Gray.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
@@ -50,6 +53,12 @@ int main() {
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 1.2f});
     renderer.drawObject(cubeModelMatrix, cubeMesh);
     glDisable(GL_CULL_FACE);
+
+    glm::mat4 treeModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+    renderer.drawObject(treeModelMatrix, treeMesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
