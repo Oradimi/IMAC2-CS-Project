@@ -39,20 +39,39 @@ std::vector<glimac::ShapeVertex> loadOBJ(const std::string &filename) {
       iss >> texCoord.s >> texCoord.t;
       texCoords.push_back(texCoord);
     } else if (type == "f") {
-      int vIndex = 0;
-      int vtIndex = 0;
-      int vnIndex = 0;
-      char c = 0;
-      for (int i = 0; i < 3; ++i) {
-        iss >> vIndex >> c >> vtIndex >> c >> vnIndex;
+      std::vector<int> vIndices;
+      std::vector<int> vtIndices;
+      std::vector<int> vnIndices;
 
-        // Decrement indices by 1 to match 0-based indexing
-        --vIndex;
-        --vtIndex;
-        --vnIndex;
+      int index;
+      while (iss >> index) {
+        vIndices.push_back(index - 1); // Convert to 0-based index
+        if (iss.peek() == '/') {
+          iss.ignore();
+          if (iss.peek() != '/') {
+            iss >> index;
+            vtIndices.push_back(index - 1);
+          }
+          if (iss.peek() == '/') {
+            iss.ignore();
+            iss >> index;
+            vnIndices.push_back(index - 1);
+          }
+        }
+      }
 
-        vertices.emplace_back(glimac::ShapeVertex{
-            {positions[vIndex]}, {normals[vnIndex]}, {texCoords[vtIndex]}});
+      if (vIndices.size() >= 3) {
+        for (size_t i = 1; i < vIndices.size() - 1; ++i) {
+          vertices.emplace_back(glimac::ShapeVertex{positions[vIndices[0]],
+                                                    normals[vnIndices[0]],
+                                                    texCoords[vtIndices[0]]});
+          vertices.emplace_back(glimac::ShapeVertex{positions[vIndices[i]],
+                                                    normals[vnIndices[i]],
+                                                    texCoords[vtIndices[i]]});
+          vertices.emplace_back(glimac::ShapeVertex{
+              positions[vIndices[i + 1]], normals[vnIndices[i + 1]],
+              texCoords[vtIndices[i + 1]]});
+        }
       }
     }
   }
