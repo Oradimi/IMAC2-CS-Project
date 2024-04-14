@@ -35,7 +35,7 @@ int main() {
 
   Renderer renderer;
 
-  RenderedObject boidMesh{loadOBJ("spaceship.obj"), "SaucerBaseColor.png",
+  RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
                           "3D.vs.glsl", "tex3D.fs.glsl"};
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
