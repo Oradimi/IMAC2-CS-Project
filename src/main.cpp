@@ -35,7 +35,7 @@ int main() {
 
   Renderer renderer;
 
-  RenderedObject boidMesh{loadOBJ("flyingsaucer.obj"), "MeinaDiffuse.png",
+  RenderedObject boidMesh{loadOBJ("alien.obj"), "MeinaDiffuse.png",
                           "3D.vs.glsl", "tex3D.fs.glsl"};
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
