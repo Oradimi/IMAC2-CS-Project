@@ -1,0 +1,7 @@
+# Blender 3.6.2
+# www.blender.org
+mtllib bench.mtl
+o Cube
+o Object
+v 0.000000 0.000000 0.000000
+v 0.000000 0.000000 0.000000
