@@ -47,6 +47,9 @@ int main() {
   RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "Gray.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
 
+  RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"), "Gray.png",
+                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
+
   RenderedObject alienMesh{loadOBJ("alien.obj"), "Gray.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
@@ -71,6 +74,12 @@ int main() {
                        glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
     renderer.drawObject(firehydrantModelMatrix, firehydrantMesh);
+
+    glm::mat4 trafficconeModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+    renderer.drawObject(trafficconeModelMatrix, trafficconeMesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
