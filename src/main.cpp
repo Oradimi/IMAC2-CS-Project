@@ -65,6 +65,9 @@ int main() {
   RenderedObject benchMesh{loadOBJ("bench.obj"), "Gray.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
+  RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "Gray.png", "3D.vs.glsl",
+                             "directionalLight.fs.glsl"};
+
   RenderedObject alienMesh{loadOBJ("alien.obj"), "Gray.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
@@ -125,6 +128,12 @@ int main() {
                        glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
     renderer.drawObject(benchModelMatrix, benchMesh);
+
+    glm::mat4 mailboxModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+    renderer.drawObject(mailboxModelMatrix, mailboxMesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
