@@ -80,6 +80,9 @@ int main() {
   RenderedObject garbagecanMesh{loadOBJ("garbagecan.obj"), "Gray.png",
                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
+  RenderedObject gasstationMesh{loadOBJ("gasstation.obj"), "Gray.png",
+                                "3D.vs.glsl", "directionalLight.fs.glsl"};
+
   RenderedObject alienMesh{loadOBJ("alien.obj"), "Gray.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
@@ -170,6 +173,12 @@ int main() {
                        glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
     renderer.drawObject(garbagecanModelMatrix, garbagecanMesh);
+
+    glm::mat4 gasstationModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+    renderer.drawObject(gasstationModelMatrix, gasstationMesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
