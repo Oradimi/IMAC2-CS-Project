@@ -192,7 +192,7 @@ int main() {
     glm::mat4 busstopModelMatrix =
         glm::translate(glm::mat4{1.f},
                        glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+        glm::scale(glm::mat4{5.f}, glm::vec3{Boid::getBounds() * 0.1f});
     renderer.drawObject(busstopModelMatrix, busstopMesh);
 
     glm::mat4 intersectionModelMatrix =
@@ -203,8 +203,8 @@ int main() {
 
     glm::mat4 spiderrobotModelMatrix =
         glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
     renderer.drawObject(spiderrobotModelMatrix, spiderrobotMesh);
 
     for (Boid &boid : swarm) {
