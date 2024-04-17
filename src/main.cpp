@@ -82,7 +82,7 @@ int main() {
   RenderedObject gasstationMesh{loadOBJ("gasstation.obj"), "GasStation.png",
                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject busstopMesh{loadOBJ("busstop.obj"), "BusStop.png",
+  RenderedObject busstopMesh{loadOBJ("busstop.obj"), "BusStation.png",
                              "3D.vs.glsl", "directionalLight.fs.glsl"};
 
   RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
