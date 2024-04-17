@@ -56,9 +56,6 @@ int main() {
   RenderedObject stopsignMesh{loadOBJ("stopsign.obj"), "StopSign.png",
                               "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
-                         "directionalLight.fs.glsl"};
-
   RenderedObject trafficlightMesh{loadOBJ("trafficlight.obj"),
                                   "TrafficLight.png", "3D.vs.glsl",
                                   "directionalLight.fs.glsl"};
@@ -94,6 +91,42 @@ int main() {
 
   RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+  RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
+                         "directionalLight.fs.glsl"};
+
+  RenderedObject car2Mesh{loadOBJ("Car2.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car3Mesh{loadOBJ("Car3.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car4Mesh{loadOBJ("Car4.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car5Mesh{loadOBJ("Car5.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car6Mesh{loadOBJ("Car6.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car7Mesh{loadOBJ("Car7.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car8Mesh{loadOBJ("Car8.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car9Mesh{loadOBJ("Car9.obj"), "cartexture.png", "3D.vs.glsl",
+                          "directionalLight.fs.glsl"};
+
+  RenderedObject car10Mesh{loadOBJ("Car10.obj"), "cartexture.png", "3D.vs.glsl",
+                           "directionalLight.fs.glsl"};
+
+  RenderedObject car11Mesh{loadOBJ("Car11.obj"), "cartexture.png", "3D.vs.glsl",
+                           "directionalLight.fs.glsl"};
+
+  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "cartexture.png",
+                            "3D.vs.glsl", "directionalLight.fs.glsl"};
 
   RenderedObject alienMesh{loadOBJ("alien.obj"), "Alien.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
@@ -137,12 +170,6 @@ int main() {
                        glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
     renderer.drawObject(stopsignModelMatrix, stopsignMesh);
-
-    glm::mat4 carModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(carModelMatrix, carMesh);
 
     glm::mat4 trafficlightModelMatrix =
         glm::translate(glm::mat4{1.f},
@@ -209,6 +236,78 @@ int main() {
                        glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
         glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
     renderer.drawObject(spiderrobotModelMatrix, spiderrobotMesh);
+
+    glm::mat4 carModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
+    renderer.drawObject(carModelMatrix, carMesh);
+
+    glm::mat4 car2ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car2ModelMatrix, car2Mesh);
+
+    glm::mat4 car3ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car3ModelMatrix, car3Mesh);
+
+    glm::mat4 car4ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car4ModelMatrix, car4Mesh);
+
+    glm::mat4 car5ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car5ModelMatrix, car5Mesh);
+
+    glm::mat4 car6ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car6ModelMatrix, car6Mesh);
+
+    glm::mat4 car7ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car7ModelMatrix, car7Mesh);
+
+    glm::mat4 car8ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car8ModelMatrix, car8Mesh);
+
+    glm::mat4 car9ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car9ModelMatrix, car9Mesh);
+
+    glm::mat4 car10ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car10ModelMatrix, car10Mesh);
+
+    glm::mat4 car11ModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(car11ModelMatrix, car11Mesh);
+
+    glm::mat4 coffeeModelMatrix =
+        glm::translate(glm::mat4{1.f},
+                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
+        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
+    renderer.drawObject(coffeeModelMatrix, coffeeMesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
