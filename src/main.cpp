@@ -56,43 +56,46 @@ int main() {
   RenderedObject stopsignMesh{loadOBJ("stopsign.obj"), "StopSign.png",
                               "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject carMesh{loadOBJ("car.obj"), "Car.png", "3D.vs.glsl",
+  RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
                          "directionalLight.fs.glsl"};
 
-  RenderedObject trafficlightMesh{loadOBJ("trafficlight.obj"), "Gray.png",
-                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
+  RenderedObject trafficlightMesh{loadOBJ("trafficlight.obj"),
+                                  "TrafficLight.png", "3D.vs.glsl",
+                                  "directionalLight.fs.glsl"};
 
-  RenderedObject benchMesh{loadOBJ("bench.obj"), "Gray.png", "3D.vs.glsl",
+  RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
-  RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "Gray.png", "3D.vs.glsl",
-                             "directionalLight.fs.glsl"};
+  RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "MailBox.png",
+                             "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "Gray.png",
+  RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject buildingMesh{loadOBJ("building.obj"), "Gray.png", "3D.vs.glsl",
-                              "directionalLight.fs.glsl"};
+  RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
+                              "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"), "Gray.png",
-                                    "3D.vs.glsl", "directionalLight.fs.glsl"};
+  RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
+                                    "OutdoorSeating.png", "3D.vs.glsl",
+                                    "directionalLight.fs.glsl"};
 
-  RenderedObject garbagecanMesh{loadOBJ("garbagecan.obj"), "Gray.png",
+  RenderedObject garbagecanMesh{loadOBJ("garbagecan.obj"), "GarbageCan.png",
                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject gasstationMesh{loadOBJ("gasstation.obj"), "Gray.png",
+  RenderedObject gasstationMesh{loadOBJ("gasstation.obj"), "GasStation.png",
                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject busstopMesh{loadOBJ("busstop.obj"), "Gray.png", "3D.vs.glsl",
-                             "directionalLight.fs.glsl"};
+  RenderedObject busstopMesh{loadOBJ("busstop.obj"), "BusStop.png",
+                             "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject intersectionMesh{loadOBJ("intersection.obj"), "Gray.png",
-                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
+  RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
+                                  "Intersection.png", "3D.vs.glsl",
+                                  "directionalLight.fs.glsl"};
 
   RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject alienMesh{loadOBJ("alien.obj"), "Gray.png", "3D.vs.glsl",
+  RenderedObject alienMesh{loadOBJ("alien.obj"), "Alien.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
   renderer.ctx.update = [&]() {
