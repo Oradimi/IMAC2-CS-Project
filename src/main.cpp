@@ -41,22 +41,22 @@ int main() {
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
                           "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject treeMesh{loadOBJ("tree.obj"), "Gray.png", "3D.vs.glsl",
+  RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
                           "directionalLight.fs.glsl"};
 
-  RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "Gray.png",
+  RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"), "Gray.png",
+  RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"), "TrafficCone.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject trashbagsMesh{loadOBJ("trashbags.obj"), "Gray.png",
+  RenderedObject trashbagsMesh{loadOBJ("trashbags.obj"), "TrashBag.png",
                                "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject stopsignMesh{loadOBJ("stopsign.obj"), "Gray.png", "3D.vs.glsl",
-                              "directionalLight.fs.glsl"};
+  RenderedObject stopsignMesh{loadOBJ("stopsign.obj"), "StopSign.png",
+                              "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-  RenderedObject carMesh{loadOBJ("car.obj"), "Gray.png", "3D.vs.glsl",
+  RenderedObject carMesh{loadOBJ("car.obj"), "Car.png", "3D.vs.glsl",
                          "directionalLight.fs.glsl"};
 
   RenderedObject trafficlightMesh{loadOBJ("trafficlight.obj"), "Gray.png",
