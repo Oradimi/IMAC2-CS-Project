@@ -6,6 +6,7 @@
 #include "glimac/math.hpp"
 #include "glm/fwd.hpp"
 #include "loader/objLoader.hpp"
+#include "primitives/transform.hpp"
 #include "renderer.hpp"
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -92,6 +93,9 @@ int main() {
   RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
                                  "3D.vs.glsl", "directionalLight.fs.glsl"};
 
+  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "cartexture.png",
+                            "3D.vs.glsl", "directionalLight.fs.glsl"};
+
   RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
                          "directionalLight.fs.glsl"};
 
@@ -125,197 +129,59 @@ int main() {
   RenderedObject car11Mesh{loadOBJ("Car11.obj"), "cartexture.png", "3D.vs.glsl",
                            "directionalLight.fs.glsl"};
 
-  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "cartexture.png",
-                            "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject alienMesh{loadOBJ("alien.obj"), "Alien.png", "3D.vs.glsl",
-                           "directionalLight.fs.glsl"};
-
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
+    Transform commonTransform{{0.f, -Boid::getBounds() * 1.2f, 0.f},
+                              {0.f, 0.f, 0.f},
+                              Boid::getBounds() * 0.1f};
+
+    Transform carTransform{{0.f, -Boid::getBounds() * 1.2f, 0.f},
+                           {0.f, 0.f, 0.f},
+                           Boid::getBounds() * 0.05f};
+
     glEnable(GL_CULL_FACE);
-    glm::mat4 cubeModelMatrix =
-        glm::translate(glm::mat4{1.f}, glm::vec3{0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 1.2f});
-    renderer.drawObject(cubeModelMatrix, cubeMesh);
+    Transform cubeTransform{
+        {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, Boid::getBounds() * 1.2f};
+    renderer.drawObject(cubeTransform.getTransform(), cubeMesh);
     glDisable(GL_CULL_FACE);
 
-    glm::mat4 treeModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(treeModelMatrix, treeMesh);
+    renderer.drawObject(commonTransform.getTransform(), treeMesh);
+    renderer.drawObject(commonTransform.getTransform(), firehydrantMesh);
+    renderer.drawObject(commonTransform.getTransform(), trafficconeMesh);
+    renderer.drawObject(commonTransform.getTransform(), trashbagsMesh);
+    renderer.drawObject(commonTransform.getTransform(), stopsignMesh);
+    renderer.drawObject(commonTransform.getTransform(), trafficlightMesh);
+    renderer.drawObject(commonTransform.getTransform(), benchMesh);
+    renderer.drawObject(commonTransform.getTransform(), mailboxMesh);
+    renderer.drawObject(commonTransform.getTransform(), streetlightMesh);
+    renderer.drawObject(commonTransform.getTransform(), buildingMesh);
+    renderer.drawObject(commonTransform.getTransform(), outdoorseatingMesh);
+    renderer.drawObject(commonTransform.getTransform(), garbagecanMesh);
+    renderer.drawObject(commonTransform.getTransform(), gasstationMesh);
+    renderer.drawObject(commonTransform.getTransform(), busstopMesh);
+    renderer.drawObject(commonTransform.getTransform(), intersectionMesh);
+    renderer.drawObject(commonTransform.getTransform(), spiderrobotMesh);
+    renderer.drawObject(commonTransform.getTransform(), coffeeMesh);
 
-    glm::mat4 firehydrantModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(firehydrantModelMatrix, firehydrantMesh);
-
-    glm::mat4 trafficconeModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(trafficconeModelMatrix, trafficconeMesh);
-
-    glm::mat4 trashbagsModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(trashbagsModelMatrix, trashbagsMesh);
-
-    glm::mat4 stopsignModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(stopsignModelMatrix, stopsignMesh);
-
-    glm::mat4 trafficlightModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(trafficlightModelMatrix, trafficlightMesh);
-
-    glm::mat4 benchModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(benchModelMatrix, benchMesh);
-
-    glm::mat4 mailboxModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(mailboxModelMatrix, mailboxMesh);
-
-    glm::mat4 streetlightModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(streetlightModelMatrix, streetlightMesh);
-
-    glm::mat4 buildingModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(buildingModelMatrix, buildingMesh);
-
-    glm::mat4 outdoorseatingModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(outdoorseatingModelMatrix, outdoorseatingMesh);
-
-    glm::mat4 garbagecanModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(garbagecanModelMatrix, garbagecanMesh);
-
-    glm::mat4 gasstationModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(gasstationModelMatrix, gasstationMesh);
-
-    glm::mat4 busstopModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{5.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(busstopModelMatrix, busstopMesh);
-
-    glm::mat4 intersectionModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(intersectionModelMatrix, intersectionMesh);
-
-    glm::mat4 spiderrobotModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(spiderrobotModelMatrix, spiderrobotMesh);
-
-    glm::mat4 carModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 0.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.1f});
-    renderer.drawObject(carModelMatrix, carMesh);
-
-    glm::mat4 car2ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car2ModelMatrix, car2Mesh);
-
-    glm::mat4 car3ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car3ModelMatrix, car3Mesh);
-
-    glm::mat4 car4ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car4ModelMatrix, car4Mesh);
-
-    glm::mat4 car5ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car5ModelMatrix, car5Mesh);
-
-    glm::mat4 car6ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car6ModelMatrix, car6Mesh);
-
-    glm::mat4 car7ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car7ModelMatrix, car7Mesh);
-
-    glm::mat4 car8ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car8ModelMatrix, car8Mesh);
-
-    glm::mat4 car9ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car9ModelMatrix, car9Mesh);
-
-    glm::mat4 car10ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car10ModelMatrix, car10Mesh);
-
-    glm::mat4 car11ModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(car11ModelMatrix, car11Mesh);
-
-    glm::mat4 coffeeModelMatrix =
-        glm::translate(glm::mat4{1.f},
-                       glm::vec3{0.f, -Boid::getBounds() * 1.2f, 30.f}) *
-        glm::scale(glm::mat4{1.f}, glm::vec3{Boid::getBounds() * 0.05f});
-    renderer.drawObject(coffeeModelMatrix, coffeeMesh);
+    renderer.drawObject(carTransform.getTransform(), carMesh);
+    renderer.drawObject(carTransform.getTransform(), car2Mesh);
+    renderer.drawObject(carTransform.getTransform(), car3Mesh);
+    renderer.drawObject(carTransform.getTransform(), car4Mesh);
+    renderer.drawObject(carTransform.getTransform(), car5Mesh);
+    renderer.drawObject(carTransform.getTransform(), car6Mesh);
+    renderer.drawObject(carTransform.getTransform(), car7Mesh);
+    renderer.drawObject(carTransform.getTransform(), car8Mesh);
+    renderer.drawObject(carTransform.getTransform(), car9Mesh);
+    renderer.drawObject(carTransform.getTransform(), car10Mesh);
+    renderer.drawObject(carTransform.getTransform(), car11Mesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
-      glm::mat4 boidModelMatrix =
-          glm::translate(glm::mat4{1.f}, boid.getPosition()) *
-          computeRotationMatrix(boid.getVelocity()) *
-          glm::scale(glm::mat4{1.f}, glm::vec3{2.f});
-      renderer.drawObject(boidModelMatrix, boidMesh);
+      Transform boidTransform = {boid.getPosition(),
+                                 velocityToRotationVector(boid.getVelocity()),
+                                 {1.f, 1.f, 1.f}};
+      renderer.drawObject(boidTransform.getTransform(), boidMesh);
     }
   };
 
