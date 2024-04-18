@@ -13,3 +13,14 @@ Transform::Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
           glm::rotate(glm::mat4{1.f}, glm::radians(rotation.z),
                       glm::vec3{0.f, 0.f, 1.f}) *
           glm::scale(glm::mat4{1.f}, glm::vec3{scale.x, scale.y, scale.z})){};
+
+glm::mat4 computeRotationMatrix(const glm::vec3 &velocity) {
+  glm::vec3 direction = glm::normalize(velocity);
+
+  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+  glm::quat rotation = glm::rotation(up, direction);
+
+  glm::mat4 rotationMatrix = glm::mat4_cast(rotation);
+
+  return rotationMatrix;
+};

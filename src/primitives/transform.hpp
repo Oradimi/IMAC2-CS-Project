@@ -5,12 +5,14 @@
 #include "glimac/sphere_vertices.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/gtx/quaternion.hpp"
 #include "glm/matrix.hpp"
 #include "img/src/Image.h"
 #include "p6/p6.h"
 #include "texture.hpp"
 #include <glm/glm.hpp>
 #include <vector>
+
 
 /// A class that creates a model matrix
 class Transform {
@@ -26,3 +28,5 @@ public:
 
   glm::mat4 getTransform() const { return transform; };
 };
+
+glm::mat4 computeRotationMatrix(const glm::vec3 &velocity);

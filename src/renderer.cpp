@@ -100,17 +100,6 @@ void Renderer::drawObject(const glm::mat4 &modelMatrix,
   glDrawArrays(GL_TRIANGLES, 0, object.getMesh().size());
 };
 
-glm::mat4 computeRotationMatrix(const glm::vec3 &velocity) {
-  glm::vec3 direction = glm::normalize(velocity);
-
-  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-  glm::quat rotation = glm::rotation(up, direction);
-
-  glm::mat4 rotationMatrix = glm::mat4_cast(rotation);
-
-  return rotationMatrix;
-};
-
 void Renderer::initializeUIElements() {
   ImGui::SliderFloat("Diffuse Reflection", &uKd, 0.f, 10.f);
   ImGui::SliderFloat("Glossy Reflection", &uKs, 0.f, 10.f);

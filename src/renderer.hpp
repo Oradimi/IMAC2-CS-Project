@@ -55,5 +55,3 @@ public:
     }
   };
 };
-
-glm::mat4 computeRotationMatrix(const glm::vec3 &velocity);
