@@ -61,8 +61,8 @@ void Renderer::handleZoom() {
   };
 };
 
-void Renderer::drawObject(glm::mat4 &modelMatrix,
-                          RenderedObject &object) const {
+void Renderer::drawObject(const glm::mat4 &modelMatrix,
+                          const RenderedObject &object) const {
 
   glm::vec3 lightPos{0.f, 0.f, 0.f};
 

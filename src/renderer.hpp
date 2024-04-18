@@ -42,7 +42,8 @@ public:
 
   void handleZoom();
 
-  void drawObject(glm::mat4 &modelMatrix, RenderedObject &object) const;
+  void drawObject(const glm::mat4 &modelMatrix,
+                  const RenderedObject &object) const;
 
   static void initializeUIElements();
 
