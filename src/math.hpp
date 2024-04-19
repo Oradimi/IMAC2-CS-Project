@@ -1,8 +1,7 @@
 #pragma once
 
-#include "glm/fwd.hpp"
 #include <cmath>
-#include <cstdlib>
+#include <glm/glm.hpp>
 #include <limits>
 #include <random>
 
@@ -20,7 +19,6 @@ inline double generateUniform(std::mt19937 &generator) {
 inline double generateExponential(std::mt19937 &generator, double lambda) {
   double u = generateUniform(generator);
 
-  // loi exponentielle
   double x = -std::log(u) / lambda;
 
   return x;
@@ -32,8 +30,66 @@ inline double expectedValueExponential(std::mt19937 &generator, double lambda) {
     double rand_num = generateExponential(generator, lambda);
     sum += rand_num;
   }
-  return 0.0;
+  return sum;
 }
+
+// glm::vec2 randomGradient(std::mt19937 &generator) {
+//   auto u = static_cast<float>(generateUniform(generator));
+
+//   glm::vec2 v;
+//   v.x = sinf(u);
+//   v.y = cosf(u);
+
+//   return v;
+// }
+
+// // Computes the dot product of the distance and gradient vectors.
+// float dotGridGradient(int ix, int iy, float x, float y) {
+//   // Get gradient from integer coordinates
+//   glm::vec2 gradient; /* = randomGradient(generator, ix, iy);*/
+
+//   // Compute the distance vector
+//   float dx = x - (float)ix;
+//   float dy = y - (float)iy;
+
+//   // Compute the dot-product
+//   return (dx * gradient.x + dy * gradient.y);
+// }
+
+// float interpolate(float a0, float a1, float w) {
+//   return (a1 - a0) * (3.0 - w * 2.0) * w * w + a0;
+// }
+
+// // Sample Perlin noise at coordinates x, y
+// float perlin(float x, float y) {
+
+//   // Determine grid cell corner coordinates
+//   int x0 = static_cast<int>(x);
+//   int y0 = static_cast<int>(y);
+//   int x1 = x0 + 1;
+//   int y1 = y0 + 1;
+
+//   // Compute Interpolation weights
+//   float sx = x - static_cast<float>(x0);
+//   float sy = y - static_cast<float>(y0);
+
+//   // Compute and interpolate top two corners
+//   float n0 = dotGridGradient(x0, y0, x, y);
+//   float n1 = dotGridGradient(x1, y0, x, y);
+//   float ix0 = interpolate(n0, n1, sx);
+
+//   // Compute and interpolate bottom two corners
+//   n0 = dotGridGradient(x0, y1, x, y);
+//   n1 = dotGridGradient(x1, y1, x, y);
+//   float ix1 = interpolate(n0, n1, sx);
+
+//   // Final step: interpolate between the two previously interpolated values,
+//   now
+//   // in y
+//   float value = interpolate(ix0, ix1, sy);
+
+//   return value;
+// }
 
 // int main() {
 //   std::srand(rdtsc());

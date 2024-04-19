@@ -1,9 +1,10 @@
 #pragma once
 
-#include "glimac/math.hpp"
 #include "glm/gtx/transform.hpp"
+#include "math.hpp"
 #include <algorithm>
 #include <glm/glm.hpp>
+
 
 struct ViewAngle {
   float x;

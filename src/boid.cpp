@@ -1,14 +1,13 @@
 #pragma once
 
 #include "boid.hpp"
-#include "glimac/math.hpp"
-#include "glm/common.hpp"
 #include "glm/fwd.hpp"
 #include "glm/geometric.hpp"
-#include <cstdlib>
+#include "math.hpp"
 #include <imgui.h>
 #include <p6/p6.h>
 #include <vector>
+
 
 float Boid::bounds = 80.f;
 float Boid::turn_factor = 0.2f;

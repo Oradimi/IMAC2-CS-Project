@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-#include "p6/p6.h"
 #include "img/src/Image.h"
+#include "p6/p6.h"
+#include <string>
 
 class Texture {
 private:
@@ -10,11 +10,7 @@ private:
   GLuint imagePointer;
 
 public:
-  explicit Texture(std::string path);
-  const img::Image& getImage() const {
-    return image;
-  };
-  const GLuint& getImagePointer() const {
-    return imagePointer;
-  };
+  explicit Texture(std::string &path);
+  const img::Image &getImage() const { return image; };
+  const GLuint &getImagePointer() const { return imagePointer; };
 };

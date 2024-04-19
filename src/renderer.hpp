@@ -1,17 +1,8 @@
 #pragma once
 
-#include "glimac/TrackballCamera.hpp"
-#include "glimac/common.hpp"
-#include "glimac/cone_vertices.hpp"
-#include "glimac/sphere_vertices.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/matrix.hpp"
-#include "img/src/Image.h"
+#include "camera/TrackballCamera.hpp"
 #include "p6/p6.h"
 #include "primitives/object.hpp"
-#include "primitives/texture.hpp"
-#include "programs.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -28,7 +19,9 @@ private:
   static glm::vec3 lightDir;
 
 public:
-  p6::Context ctx = p6::Context{{.title = "Amazing Oradimi Parzi_Val Boids"}};
+  p6::Context ctx = p6::Context{{.width = 1600,
+                                 .height = 900,
+                                 .title = "Amazing Oradimi Parzi_Val Boids"}};
 
   TrackballCamera camera;
 

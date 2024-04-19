@@ -1,14 +1,9 @@
 #include "renderer.hpp"
-#include "glimac/TrackballCamera.hpp"
-#include "glimac/common.hpp"
-#include "glimac/cone_vertices.hpp"
-#include "glimac/sphere_vertices.hpp"
+#include "camera/TrackballCamera.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
-#include "glm/gtx/quaternion.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
-#include "programs.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
@@ -23,7 +18,7 @@ float Renderer::uShininess = 4.f;
 glm::vec3 Renderer::lightDir{0.5f, 0.5f, 0.5f};
 
 Renderer::Renderer() {
-  ctx.maximize_window();
+  // ctx.maximize_window();
   glEnable(GL_DEPTH_TEST);
   glCullFace(GL_BACK);
 };

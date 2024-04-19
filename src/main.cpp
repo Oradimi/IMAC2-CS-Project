@@ -2,21 +2,19 @@
 
 #include "boid.hpp"
 #include "doctest/doctest.h"
-#include "glimac/cube_vertices.hpp"
-#include "glimac/math.hpp"
-#include "glm/fwd.hpp"
-#include "loader/objLoader.hpp"
+#include "math.hpp"
+#include "primitives/objLoader.hpp"
 #include "primitives/transform.hpp"
 #include "renderer.hpp"
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <cstdlib>
-#include <ctime>
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 #include <vector>
+
 
 int main() {
   // Run the tests
@@ -178,9 +176,9 @@ int main() {
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
-      Transform boidTransform = {boid.getPosition(),
-                                 velocityToRotationVector(boid.getVelocity()),
-                                 {1.f, 1.f, 1.f}};
+      Transform boidTransform{boid.getPosition(),
+                              velocityToRotationVector(boid.getVelocity()),
+                              {1.f, 1.f, 1.f}};
       renderer.drawObject(boidTransform.getTransform(), boidMesh);
     }
   };

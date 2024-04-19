@@ -1,6 +1,5 @@
 #include "transform.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include <utility>
+#include "glm/gtx/quaternion.hpp"
 
 Transform::Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
     : position(position), rotation(rotation), scale(scale),

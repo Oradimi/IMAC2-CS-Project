@@ -21,8 +21,8 @@ private:
   static float max_bias;
   static float bias_increment;
 
-  glm::vec3 pos;
-  glm::vec3 vel;
+  glm::vec3 pos{0.f, 0.f, 0.f};
+  glm::vec3 vel{0.f, 0.f, 0.f};
 
 public:
   explicit Boid(std::mt19937 &generator);
