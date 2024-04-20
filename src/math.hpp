@@ -5,116 +5,133 @@
 #include <limits>
 #include <random>
 
-namespace RandomMath {
+class RandomMath {
+private:
+  std::mt19937 generator = getRandomGenerator();
 
-inline std::mt19937 getRandomGenerator() {
-  return std::mt19937(std::random_device{}());
-}
-
-inline double generateUniform(std::mt19937 &generator) {
-  return std::generate_canonical<double, std::numeric_limits<double>::digits>(
-      generator);
-}
-
-inline double generateExponential(std::mt19937 &generator, double lambda) {
-  double u = generateUniform(generator);
-
-  double x = -std::log(u) / lambda;
-
-  return x;
-}
-
-inline double expectedValueExponential(std::mt19937 &generator, double lambda) {
-  double sum = 0;
-  for (int i = 0; i < 10; ++i) {
-    double rand_num = generateExponential(generator, lambda);
-    sum += rand_num;
+public:
+  static inline std::mt19937 getRandomGenerator() {
+    return std::mt19937(std::random_device{}());
   }
-  return sum;
-}
 
-// glm::vec2 randomGradient(std::mt19937 &generator) {
-//   auto u = static_cast<float>(generateUniform(generator));
+  /// Base random function. Returns a number strictly between 0 and 1
+  inline double generateRandom() {
+    return std::generate_canonical<double, std::numeric_limits<double>::digits>(
+        generator);
+  }
 
-//   glm::vec2 v;
-//   v.x = sinf(u);
-//   v.y = cosf(u);
+  /// Uniform distribution. Returns a number strictly between min and max
+  inline double generateUniform(double min, double max) {
+    double x = generateRandom();
 
-//   return v;
-// }
+    return x * (max - min) + min;
+  }
 
-// // Computes the dot product of the distance and gradient vectors.
-// float dotGridGradient(int ix, int iy, float x, float y) {
-//   // Get gradient from integer coordinates
-//   glm::vec2 gradient; /* = randomGradient(generator, ix, iy);*/
+  /// Bernoulli distribution.
+  /// Returns true if the random number is strictly below p
+  /// p represents the probability of success of an event
+  inline bool generateBernoulli(double p) {
+    double x = generateRandom();
 
-//   // Compute the distance vector
-//   float dx = x - (float)ix;
-//   float dy = y - (float)iy;
+    return x < p;
+  }
 
-//   // Compute the dot-product
-//   return (dx * gradient.x + dy * gradient.y);
-// }
+  inline double generateExponential(double lambda) {
+    double x = generateRandom();
 
-// float interpolate(float a0, float a1, float w) {
-//   return (a1 - a0) * (3.0 - w * 2.0) * w * w + a0;
-// }
+    return -std::log(x) / lambda;
+  }
 
-// // Sample Perlin noise at coordinates x, y
-// float perlin(float x, float y) {
+  inline double expectedValueExponential(double lambda) {
+    double sum = 0;
+    for (int i = 0; i < 10; ++i) {
+      double rand_num = generateExponential(lambda);
+      sum += rand_num;
+    }
+    return sum;
+  }
 
-//   // Determine grid cell corner coordinates
-//   int x0 = static_cast<int>(x);
-//   int y0 = static_cast<int>(y);
-//   int x1 = x0 + 1;
-//   int y1 = y0 + 1;
+  // glm::vec2 randomGradient(std::mt19937 &generator) {
+  //   auto u = static_cast<float>(generateUniform(generator));
 
-//   // Compute Interpolation weights
-//   float sx = x - static_cast<float>(x0);
-//   float sy = y - static_cast<float>(y0);
+  //   glm::vec2 v;
+  //   v.x = sinf(u);
+  //   v.y = cosf(u);
 
-//   // Compute and interpolate top two corners
-//   float n0 = dotGridGradient(x0, y0, x, y);
-//   float n1 = dotGridGradient(x1, y0, x, y);
-//   float ix0 = interpolate(n0, n1, sx);
+  //   return v;
+  // }
 
-//   // Compute and interpolate bottom two corners
-//   n0 = dotGridGradient(x0, y1, x, y);
-//   n1 = dotGridGradient(x1, y1, x, y);
-//   float ix1 = interpolate(n0, n1, sx);
+  // // Computes the dot product of the distance and gradient vectors.
+  // float dotGridGradient(int ix, int iy, float x, float y) {
+  //   // Get gradient from integer coordinates
+  //   glm::vec2 gradient; /* = randomGradient(generator, ix, iy);*/
 
-//   // Final step: interpolate between the two previously interpolated values,
-//   now
-//   // in y
-//   float value = interpolate(ix0, ix1, sy);
+  //   // Compute the distance vector
+  //   float dx = x - (float)ix;
+  //   float dy = y - (float)iy;
 
-//   return value;
-// }
+  //   // Compute the dot-product
+  //   return (dx * gradient.x + dy * gradient.y);
+  // }
 
-// int main() {
-//   std::srand(rdtsc());
+  // float interpolate(float a0, float a1, float w) {
+  //   return (a1 - a0) * (3.0 - w * 2.0) * w * w + a0;
+  // }
 
-//   const double lambda = 0.5;
-//   int num_samples = 10000;
+  // // Sample Perlin noise at coordinates x, y
+  // float perlin(float x, float y) {
 
-//   double sum = 0.0;
-//   for (int i = 0; i < num_samples; ++i) {
-//     sum += generateExponential(lambda);
-//   }
+  //   // Determine grid cell corner coordinates
+  //   int x0 = static_cast<int>(x);
+  //   int y0 = static_cast<int>(y);
+  //   int x1 = x0 + 1;
+  //   int y1 = y0 + 1;
 
-//   double average = sum / num_samples;
+  //   // Compute Interpolation weights
+  //   float sx = x - static_cast<float>(x0);
+  //   float sy = y - static_cast<float>(y0);
 
-//   double expected_value = 1.0 / lambda;
+  //   // Compute and interpolate top two corners
+  //   float n0 = dotGridGradient(x0, y0, x, y);
+  //   float n1 = dotGridGradient(x1, y0, x, y);
+  //   float ix0 = interpolate(n0, n1, sx);
 
-//   return 0;
-// }
+  //   // Compute and interpolate bottom two corners
+  //   n0 = dotGridGradient(x0, y1, x, y);
+  //   n1 = dotGridGradient(x1, y1, x, y);
+  //   float ix1 = interpolate(n0, n1, sx);
 
-// // pile ou face
-// float p = 0.5;
-// float random_number_2 = std::rand() / (float)RAND_MAX - p;
-// std::cout << random_number_2 << std::endl;
+  //   // Final step: interpolate between the two previously interpolated
+  //   values, now
+  //   // in y
+  //   float value = interpolate(ix0, ix1, sy);
 
-} // namespace RandomMath
+  //   return value;
+  // }
+
+  // int main() {
+  //   std::srand(rdtsc());
+
+  //   const double lambda = 0.5;
+  //   int num_samples = 10000;
+
+  //   double sum = 0.0;
+  //   for (int i = 0; i < num_samples; ++i) {
+  //     sum += generateExponential(lambda);
+  //   }
+
+  //   double average = sum / num_samples;
+
+  //   double expected_value = 1.0 / lambda;
+
+  //   return 0;
+  // }
+
+  // // pile ou face
+  // float p = 0.5;
+  // float random_number_2 = std::rand() / (float)RAND_MAX - p;
+  // std::cout << random_number_2 << std::endl;
+};
 
 namespace ConstexprMath {
 
@@ -126,8 +143,8 @@ template <typename T> T constexpr sqrtNewtonRaphson(T x, T curr, T prev) {
 
 /** Constexpr version of the square root
  * Return value:
- *   - For a finite and non-negative value of "x", returns an approximation for
- * the square root of "x"
+ *   - For a finite and non-negative value of "x", returns an approximation
+ * for the square root of "x"
  *   - Otherwise, returns NaN
  */
 template <typename T> T constexpr sqrt(T x) {

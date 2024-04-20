@@ -15,21 +15,23 @@
 #include <imgui.h>
 #include <vector>
 
-
 int main() {
   // Run the tests
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  std::mt19937 generator(RandomMath::getRandomGenerator());
+  RandomMath rand;
 
-  double random_number = RandomMath::generateUniform(generator);
+  for (int i = 0; i < 100; i++) {
+    std::cout << rand.generateUniform(-1.0, 1.0) << '\n';
+    std::cout << rand.generateBernoulli(0.5) << '\n';
+  }
 
   std::vector<Boid> swarm;
   swarm.reserve(20);
 
   for (int i = 0; i < 20; ++i) {
-    swarm.emplace_back(generator);
+    swarm.emplace_back(rand);
   }
 
   Renderer renderer;
@@ -39,93 +41,6 @@ int main() {
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
                           "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
-                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"), "TrafficCone.png",
-                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject trashbagsMesh{loadOBJ("trashbags.obj"), "TrashBag.png",
-                               "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject stopsignMesh{loadOBJ("stopsign.obj"), "StopSign.png",
-                              "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject trafficlightMesh{loadOBJ("trafficlight.obj"),
-                                  "TrafficLight.png", "3D.vs.glsl",
-                                  "directionalLight.fs.glsl"};
-
-  RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
-                           "directionalLight.fs.glsl"};
-
-  RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "MailBox.png",
-                             "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
-                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
-                              "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
-                                    "OutdoorSeating.png", "3D.vs.glsl",
-                                    "directionalLight.fs.glsl"};
-
-  RenderedObject garbagecanMesh{loadOBJ("garbagecan.obj"), "GarbageCan.png",
-                                "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject gasstationMesh{loadOBJ("gasstation.obj"), "GasStation.png",
-                                "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject busstopMesh{loadOBJ("busstop.obj"), "BusStation.png",
-                             "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
-                                  "Intersection.png", "3D.vs.glsl",
-                                  "directionalLight.fs.glsl"};
-
-  RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
-                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "cartexture.png",
-                            "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-  RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
-                         "directionalLight.fs.glsl"};
-
-  RenderedObject car2Mesh{loadOBJ("Car2.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car3Mesh{loadOBJ("Car3.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car4Mesh{loadOBJ("Car4.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car5Mesh{loadOBJ("Car5.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car6Mesh{loadOBJ("Car6.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car7Mesh{loadOBJ("Car7.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car8Mesh{loadOBJ("Car8.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car9Mesh{loadOBJ("Car9.obj"), "cartexture.png", "3D.vs.glsl",
-                          "directionalLight.fs.glsl"};
-
-  RenderedObject car10Mesh{loadOBJ("Car10.obj"), "cartexture.png", "3D.vs.glsl",
-                           "directionalLight.fs.glsl"};
-
-  RenderedObject car11Mesh{loadOBJ("Car11.obj"), "cartexture.png", "3D.vs.glsl",
-                           "directionalLight.fs.glsl"};
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
@@ -143,36 +58,6 @@ int main() {
         {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, Boid::getBounds() * 1.2f};
     renderer.drawObject(cubeTransform.getTransform(), cubeMesh);
     glDisable(GL_CULL_FACE);
-
-    renderer.drawObject(commonTransform.getTransform(), treeMesh);
-    renderer.drawObject(commonTransform.getTransform(), firehydrantMesh);
-    renderer.drawObject(commonTransform.getTransform(), trafficconeMesh);
-    renderer.drawObject(commonTransform.getTransform(), trashbagsMesh);
-    renderer.drawObject(commonTransform.getTransform(), stopsignMesh);
-    renderer.drawObject(commonTransform.getTransform(), trafficlightMesh);
-    renderer.drawObject(commonTransform.getTransform(), benchMesh);
-    renderer.drawObject(commonTransform.getTransform(), mailboxMesh);
-    renderer.drawObject(commonTransform.getTransform(), streetlightMesh);
-    renderer.drawObject(commonTransform.getTransform(), buildingMesh);
-    renderer.drawObject(commonTransform.getTransform(), outdoorseatingMesh);
-    renderer.drawObject(commonTransform.getTransform(), garbagecanMesh);
-    renderer.drawObject(commonTransform.getTransform(), gasstationMesh);
-    renderer.drawObject(commonTransform.getTransform(), busstopMesh);
-    renderer.drawObject(commonTransform.getTransform(), intersectionMesh);
-    renderer.drawObject(commonTransform.getTransform(), spiderrobotMesh);
-    renderer.drawObject(commonTransform.getTransform(), coffeeMesh);
-
-    renderer.drawObject(carTransform.getTransform(), carMesh);
-    renderer.drawObject(carTransform.getTransform(), car2Mesh);
-    renderer.drawObject(carTransform.getTransform(), car3Mesh);
-    renderer.drawObject(carTransform.getTransform(), car4Mesh);
-    renderer.drawObject(carTransform.getTransform(), car5Mesh);
-    renderer.drawObject(carTransform.getTransform(), car6Mesh);
-    renderer.drawObject(carTransform.getTransform(), car7Mesh);
-    renderer.drawObject(carTransform.getTransform(), car8Mesh);
-    renderer.drawObject(carTransform.getTransform(), car9Mesh);
-    renderer.drawObject(carTransform.getTransform(), car10Mesh);
-    renderer.drawObject(carTransform.getTransform(), car11Mesh);
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
@@ -201,3 +86,122 @@ int main() {
 
   return 0;
 }
+
+// RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
+//                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"), "TrafficCone.png",
+//                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject trashbagsMesh{loadOBJ("trashbags.obj"), "TrashBag.png",
+//                               "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject stopsignMesh{loadOBJ("stopsign.obj"), "StopSign.png",
+//                             "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject trafficlightMesh{loadOBJ("trafficlight.obj"),
+//                                 "TrafficLight.png", "3D.vs.glsl",
+//                                 "directionalLight.fs.glsl"};
+
+// RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
+//                           "directionalLight.fs.glsl"};
+
+// RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "MailBox.png",
+//                             "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
+//                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
+//                             "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
+//                                   "OutdoorSeating.png", "3D.vs.glsl",
+//                                   "directionalLight.fs.glsl"};
+
+// RenderedObject garbagecanMesh{loadOBJ("garbagecan.obj"), "GarbageCan.png",
+//                               "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject gasstationMesh{loadOBJ("gasstation.obj"), "GasStation.png",
+//                               "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject busstopMesh{loadOBJ("busstop.obj"), "BusStation.png",
+//                             "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
+//                                 "Intersection.png", "3D.vs.glsl",
+//                                 "directionalLight.fs.glsl"};
+
+// RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
+//                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "cartexture.png",
+//                           "3D.vs.glsl", "directionalLight.fs.glsl"};
+
+// RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car2Mesh{loadOBJ("Car2.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car3Mesh{loadOBJ("Car3.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car4Mesh{loadOBJ("Car4.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car5Mesh{loadOBJ("Car5.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car6Mesh{loadOBJ("Car6.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car7Mesh{loadOBJ("Car7.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car8Mesh{loadOBJ("Car8.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car9Mesh{loadOBJ("Car9.obj"), "cartexture.png", "3D.vs.glsl",
+//                         "directionalLight.fs.glsl"};
+
+// RenderedObject car10Mesh{loadOBJ("Car10.obj"), "cartexture.png",
+// "3D.vs.glsl",
+//                           "directionalLight.fs.glsl"};
+
+// RenderedObject car11Mesh{loadOBJ("Car11.obj"), "cartexture.png",
+// "3D.vs.glsl",
+//                           "directionalLight.fs.glsl"};
+
+// renderer.drawObject(commonTransform.getTransform(), treeMesh);
+// renderer.drawObject(commonTransform.getTransform(), firehydrantMesh);
+// renderer.drawObject(commonTransform.getTransform(), trafficconeMesh);
+// renderer.drawObject(commonTransform.getTransform(), trashbagsMesh);
+// renderer.drawObject(commonTransform.getTransform(), stopsignMesh);
+// renderer.drawObject(commonTransform.getTransform(), trafficlightMesh);
+// renderer.drawObject(commonTransform.getTransform(), benchMesh);
+// renderer.drawObject(commonTransform.getTransform(), mailboxMesh);
+// renderer.drawObject(commonTransform.getTransform(), streetlightMesh);
+// renderer.drawObject(commonTransform.getTransform(), buildingMesh);
+// renderer.drawObject(commonTransform.getTransform(), outdoorseatingMesh);
+// renderer.drawObject(commonTransform.getTransform(), garbagecanMesh);
+// renderer.drawObject(commonTransform.getTransform(), gasstationMesh);
+// renderer.drawObject(commonTransform.getTransform(), busstopMesh);
+// renderer.drawObject(commonTransform.getTransform(), intersectionMesh);
+// renderer.drawObject(commonTransform.getTransform(), spiderrobotMesh);
+// renderer.drawObject(commonTransform.getTransform(), coffeeMesh);
+
+// renderer.drawObject(carTransform.getTransform(), carMesh);
+// renderer.drawObject(carTransform.getTransform(), car2Mesh);
+// renderer.drawObject(carTransform.getTransform(), car3Mesh);
+// renderer.drawObject(carTransform.getTransform(), car4Mesh);
+// renderer.drawObject(carTransform.getTransform(), car5Mesh);
+// renderer.drawObject(carTransform.getTransform(), car6Mesh);
+// renderer.drawObject(carTransform.getTransform(), car7Mesh);
+// renderer.drawObject(carTransform.getTransform(), car8Mesh);
+// renderer.drawObject(carTransform.getTransform(), car9Mesh);
+// renderer.drawObject(carTransform.getTransform(), car10Mesh);
+// renderer.drawObject(carTransform.getTransform(), car11Mesh);

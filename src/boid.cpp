@@ -8,7 +8,6 @@
 #include <p6/p6.h>
 #include <vector>
 
-
 float Boid::bounds = 80.f;
 float Boid::turn_factor = 0.2f;
 float Boid::protected_range = 4.0f;
@@ -29,15 +28,15 @@ void clampVectorMagnitude(glm::vec3 &vec, float min, float max) {
     vec = (vec / speed) * max;
 }
 
-Boid::Boid(std::mt19937 &generator) {
-  pos = glm::vec3(RandomMath::generateUniform(generator) * 2.0f - 1.0f,
-                  RandomMath::generateUniform(generator) * 2.0f - 1.0f,
-                  RandomMath::generateUniform(generator) * 2.0f - 1.0f) *
+Boid::Boid(RandomMath &rand) {
+  pos = glm::vec3(rand.generateUniform(-1.0, 1.0),
+                  rand.generateUniform(-1.0, 1.0),
+                  rand.generateUniform(-1.0, 1.0)) *
         bounds;
 
-  vel = glm::vec3(RandomMath::generateUniform(generator) * 2.0f - 1.0f,
-                  RandomMath::generateUniform(generator) * 2.0f - 1.0f,
-                  RandomMath::generateUniform(generator) * 2.0f - 1.0f) *
+  vel = glm::vec3(rand.generateUniform(-1.0, 1.0),
+                  rand.generateUniform(-1.0, 1.0),
+                  rand.generateUniform(-1.0, 1.0)) *
             (max_speed - min_speed) +
         min_speed;
 

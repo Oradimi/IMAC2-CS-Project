@@ -1,8 +1,8 @@
 #pragma once
 
 #include "glm/fwd.hpp"
+#include "math.hpp"
 #include <p6/p6.h>
-#include <random>
 #include <vector>
 
 void clampVectorMagnitude(glm::vec3 &vec, float min, float max);
@@ -25,7 +25,7 @@ private:
   glm::vec3 vel{0.f, 0.f, 0.f};
 
 public:
-  explicit Boid(std::mt19937 &generator);
+  explicit Boid(RandomMath &rand);
 
   static void initializeUIElements();
 
