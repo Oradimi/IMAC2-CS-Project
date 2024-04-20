@@ -3,6 +3,7 @@
 #include "boid.hpp"
 #include "doctest/doctest.h"
 #include "math.hpp"
+#include "math_tests.hpp"
 #include "primitives/objLoader.hpp"
 #include "primitives/transform.hpp"
 #include "renderer.hpp"
@@ -13,19 +14,15 @@
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-#include <vector>
 
 int main() {
   // Run the tests
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  RandomMath rand;
+  MathTests math_test;
 
-  for (int i = 0; i < 100; i++) {
-    std::cout << rand.generateUniform(-1.0, 1.0) << '\n';
-    std::cout << rand.generateBernoulli(0.5) << '\n';
-  }
+  RandomMath rand;
 
   std::vector<Boid> swarm;
   swarm.reserve(20);
@@ -80,6 +77,8 @@ int main() {
     ImGui::Begin("Light Parameters");
     Renderer::initializeUIElements();
     ImGui::End();
+
+    math_test.displayTestsGUI();
   };
 
   renderer.handleLookAround();

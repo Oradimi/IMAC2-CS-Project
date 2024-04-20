@@ -65,12 +65,26 @@ public:
   /// Irwin-Hall distribution
   /// n represents the number of iterations, mu is the position
   /// defaut values approximate a normal distribution between -6 and 6
-  inline double generateIrwinHall(double n = 12.0, double mu = -6.0) {
+  inline double generateIrwinHall(int n = 12, double mu = -6.0) {
     double x = 0.0;
     for (int i = 0; i < n; i++) {
       x += generateRandom();
     }
     return x + mu;
+  }
+
+  inline double generateBeta(double alpha, double beta, int n = 2000) {
+    double x = 0.0;
+
+    for (int i = 0; i < n; i++) {
+      x = generateRandom();
+      if (x < beta / (beta + alpha))
+        beta += 1.0;
+      else
+        alpha += 1.0;
+    }
+
+    return alpha / (beta + alpha);
   }
 
   // glm::vec2 randomGradient(std::mt19937 &generator) {

@@ -18,6 +18,7 @@ float Renderer::uShininess = 4.f;
 glm::vec3 Renderer::lightDir{0.5f, 0.5f, 0.5f};
 
 Renderer::Renderer() {
+  ImPlot::CreateContext();
   // ctx.maximize_window();
   glEnable(GL_DEPTH_TEST);
   glCullFace(GL_BACK);

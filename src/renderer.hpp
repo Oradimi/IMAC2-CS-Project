@@ -1,6 +1,7 @@
 #pragma once
 
 #include "camera/TrackballCamera.hpp"
+#include "implot/implot.h"
 #include "p6/p6.h"
 #include "primitives/object.hpp"
 #include <glm/glm.hpp>
@@ -44,6 +45,7 @@ public:
 
   void close() {
     for (RenderedObject &object : objectList) {
+      ImPlot::DestroyContext();
       object.clear();
     }
   };
