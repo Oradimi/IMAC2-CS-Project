@@ -14,20 +14,22 @@ public:
     return std::mt19937(std::random_device{}());
   }
 
-  /// Base random function. Returns a number strictly between 0 and 1
+  /// Base random function
+  /// Returns a number strictly between 0 and 1 in uniform distribution
   inline double generateRandom() {
     return std::generate_canonical<double, std::numeric_limits<double>::digits>(
         generator);
   }
 
-  /// Uniform distribution. Returns a number strictly between min and max
+  ///* DISTRIBUTION FUNCTIONS *///
+
+  /// Returns a number strictly between min and max
   inline double generateUniform(double min, double max) {
     double x = generateRandom();
 
     return x * (max - min) + min;
   }
 
-  /// Bernoulli distribution.
   /// Returns true if the random number is strictly below p
   /// p represents the probability of success of an event
   inline bool generateBernoulli(double p) {
@@ -36,19 +38,39 @@ public:
     return x < p;
   }
 
+  inline int generateBinomial(double p, double n) {
+    int x = 0; // number of successes
+    for (int i = 0; i < n; i++) {
+      generateBernoulli(p) && x++;
+    }
+    return x;
+  }
+
+  /// lambda represents the frequency of an event
   inline double generateExponential(double lambda) {
     double x = generateRandom();
 
-    return -std::log(x) / lambda;
+    return -std::log(1.0 - x) / lambda;
   }
 
-  inline double expectedValueExponential(double lambda) {
-    double sum = 0;
-    for (int i = 0; i < 10; ++i) {
-      double rand_num = generateExponential(lambda);
-      sum += rand_num;
+  /// Laplace distibution with position mu and scale b
+  inline double generateLaplace(double mu, double b) {
+    double x = generateRandom();
+
+    if (x < 0.5)
+      return mu + b * std::log(2.0 * x);
+    return mu - b * std::log(2.0 - 2.0 * x);
+  }
+
+  /// Irwin-Hall distribution
+  /// n represents the number of iterations, mu is the position
+  /// defaut values approximate a normal distribution between -6 and 6
+  inline double generateIrwinHall(double n = 12.0, double mu = -6.0) {
+    double x = 0.0;
+    for (int i = 0; i < n; i++) {
+      x += generateRandom();
     }
-    return sum;
+    return x + mu;
   }
 
   // glm::vec2 randomGradient(std::mt19937 &generator) {
