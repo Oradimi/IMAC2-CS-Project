@@ -143,41 +143,41 @@ int main() {
 // RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-// RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "cartexture.png",
+// RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "Coffee.png",
 //                           "3D.vs.glsl", "directionalLight.fs.glsl"};
 
 // RenderedObject carMesh{loadOBJ("car.obj"), "Car1.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car2Mesh{loadOBJ("Car2.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car2Mesh{loadOBJ("Car2.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car3Mesh{loadOBJ("Car3.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car3Mesh{loadOBJ("Car3.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car4Mesh{loadOBJ("Car4.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car4Mesh{loadOBJ("Car4.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car5Mesh{loadOBJ("Car5.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car5Mesh{loadOBJ("Car5.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car6Mesh{loadOBJ("Car6.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car6Mesh{loadOBJ("Car6.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car7Mesh{loadOBJ("Car7.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car7Mesh{loadOBJ("Car7.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car8Mesh{loadOBJ("Car8.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car8Mesh{loadOBJ("Car8.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car9Mesh{loadOBJ("Car9.obj"), "cartexture.png", "3D.vs.glsl",
+// RenderedObject car9Mesh{loadOBJ("Car9.obj"), "Car.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject car10Mesh{loadOBJ("Car10.obj"), "cartexture.png",
+// RenderedObject car10Mesh{loadOBJ("Car10.obj"), "Car.png",
 // "3D.vs.glsl",
 //                           "directionalLight.fs.glsl"};
 
-// RenderedObject car11Mesh{loadOBJ("Car11.obj"), "cartexture.png",
+// RenderedObject car11Mesh{loadOBJ("Car11.obj"), "Car.png",
 // "3D.vs.glsl",
 //                           "directionalLight.fs.glsl"};
 
