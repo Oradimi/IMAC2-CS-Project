@@ -61,10 +61,15 @@ int main() {
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
-      Transform boidTransform{boid.getPosition(),
-                              velocityToRotationVector(boid.getVelocity()),
-                              {1.f, 1.f, 1.f}};
-      renderer.drawObject(boidTransform.getTransform(), boidMesh);
+      // Transform boidTransform{
+      //     boid.getPosition(),
+      //     velocityToRotationVector(boid.getVelocity(), {0.f, 0.f,
+      //     0.f}), 1.f};
+      glm::mat4 boidModelMatrix =
+          glm::translate(glm::mat4{1.f}, boid.getPosition()) *
+          computeRotationMatrix(boid.getVelocity()) *
+          glm::scale(glm::mat4{1.f}, glm::vec3{1.f});
+      renderer.drawObject(boidModelMatrix, boidMesh);
     }
   };
 
