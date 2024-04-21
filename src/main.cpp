@@ -17,6 +17,17 @@
 
 enum SimSwitchTabs { BOID, LIGHT };
 
+std::vector<Boid> initializeBoids(RandomMath &rand, int number) {
+  std::vector<Boid> swarm;
+  swarm.reserve(number);
+
+  for (int i = 0; i < number; ++i) {
+    swarm.emplace_back(rand);
+  }
+
+  return swarm;
+}
+
 int main() {
   // Run the tests
   if (doctest::Context{}.run() != 0)
@@ -31,17 +42,12 @@ int main() {
   if (math_debug_mode)
     math_test.initiate();
 
-  std::vector<Boid> swarm;
-  swarm.reserve(20);
-
-  for (int i = 0; i < 20; ++i) {
-    swarm.emplace_back(rand);
-  }
+  std::vector<Boid> swarm{initializeBoids(rand, 20)};
 
   Renderer renderer;
 
   RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
-                          "3D.vs.glsl", "tex3D.fs.glsl"};
+                          "3D.vs.glsl", "directionalLight.fs.glsl"};
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
                           "3D.vs.glsl", "directionalLight.fs.glsl"};
