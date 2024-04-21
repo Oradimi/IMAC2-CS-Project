@@ -59,10 +59,10 @@ int main() {
 
   renderer.addLight(
       {streetLightTransform.getPosition() - glm::vec3{40.f, 40.f, 5.f},
-       1000.f});
+       {1000.f, 1000.f, 100.f}});
   renderer.addLight(
       {streetLightTransform.getPosition() - glm::vec3{-40.f, -40.f, 5.f},
-       1000.f});
+       {1000.f, 1000.f, 100.f}});
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();

@@ -12,7 +12,7 @@
 
 struct Light {
   glm::vec3 position;
-  float intensity;
+  glm::vec3 color;
 };
 
 class Renderer {

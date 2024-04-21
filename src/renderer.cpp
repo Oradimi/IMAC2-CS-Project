@@ -83,8 +83,8 @@ void Renderer::drawObject(const glm::mat4 &modelMatrix,
   for (const Light &light : lightList) {
     glUniform3fv(object.uLightPos_vs + lightIndex, 1,
                  glm::value_ptr(viewMatrix * glm::vec4(light.position, 1.f)));
-    glUniform3f(object.uLightIntensity + lightIndex, light.intensity,
-                light.intensity, light.intensity);
+    glUniform3f(object.uLightIntensity + lightIndex, light.color.r,
+                light.color.g, light.color.b);
     lightIndex++;
   }
 
