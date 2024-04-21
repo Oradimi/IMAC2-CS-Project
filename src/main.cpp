@@ -47,21 +47,21 @@ int main() {
   Renderer renderer;
 
   RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
-                          "3D.vs.glsl", "pointLight.fs.glsl"};
+                          "3D.vs.glsl", "light.fs.glsl"};
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
-                          "3D.vs.glsl", "pointLight.fs.glsl"};
+                          "3D.vs.glsl", "light.fs.glsl"};
 
   RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
-                                 "3D.vs.glsl", "pointLight.fs.glsl"};
+                                 "3D.vs.glsl", "light.fs.glsl"};
 
-  Transform streetLightTransform{{40.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, 10.f};
+  Transform streetLightTransform{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, 10.f};
 
   renderer.addLight(
-      {streetLightTransform.getPosition() - glm::vec3{40.f, 10.f, -5.f},
+      {streetLightTransform.getPosition() - glm::vec3{40.f, 40.f, 5.f},
        1000.f});
   renderer.addLight(
-      {streetLightTransform.getPosition() - glm::vec3{-40.f, 10.f, -5.f},
+      {streetLightTransform.getPosition() - glm::vec3{-40.f, -40.f, 5.f},
        1000.f});
 
   renderer.ctx.update = [&]() {
