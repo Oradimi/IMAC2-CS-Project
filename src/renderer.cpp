@@ -4,6 +4,7 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
+#include <cstddef>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
@@ -11,10 +12,7 @@
 #include <imgui.h>
 #include <vector>
 
-float Renderer::uKd = 1.f;
-float Renderer::uKs = 3.f;
-float Renderer::uLightIntensity = 0.36f;
-float Renderer::uShininess = 4.f;
+float Renderer::uWorldLightIntensity = 0.36f;
 glm::vec3 Renderer::lightDir{0.5f, 0.5f, 0.5f};
 
 Renderer::Renderer() {
@@ -27,6 +25,8 @@ Renderer::Renderer() {
 void Renderer::addObject(RenderedObject object) {
   objectList.emplace_back(std::move(object));
 }
+
+void Renderer::addLight(Light light) { lightList.emplace_back(light); }
 
 void Renderer::clearAll() {
   for (int i = 0; i < 16; i++) {
@@ -60,8 +60,6 @@ void Renderer::handleZoom() {
 void Renderer::drawObject(const glm::mat4 &modelMatrix,
                           const RenderedObject &object) const {
 
-  glm::vec3 lightPos{0.f, 0.f, 0.f};
-
   lightDir = glm::vec4(lightDir, 1.f) *
              glm::rotate(glm::mat4(1.f), 0.f, {0.f, 1.f, 0.f});
 
@@ -72,15 +70,24 @@ void Renderer::drawObject(const glm::mat4 &modelMatrix,
   glBindVertexArray(object.getVAO());
   object.shader.use();
 
-  glUniform3f(object.uKd, uKd, uKd, uKd);
-  glUniform3f(object.uKs, uKs, uKs, uKs);
+  glUniform3f(object.uKd, object.Kd, object.Kd, object.Kd);
+  glUniform3f(object.uKs, object.Ks, object.Ks, object.Ks);
   glUniform3fv(object.uLightDir_vs, 1,
                glm::value_ptr(glm::vec4(lightDir, 1.f) * viewMatrix));
-  glUniform3fv(object.uLightPos_vs, 1,
-               glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
-  glUniform3f(object.uLightIntensity, uLightIntensity, uLightIntensity,
-              uLightIntensity);
-  glUniform1f(object.uShininess, uShininess);
+  glUniform3f(object.uWorldLightIntensity, uWorldLightIntensity,
+              uWorldLightIntensity, uWorldLightIntensity);
+  glUniform1f(object.uShininess, object.Shininess);
+
+  int lightIndex = 0;
+  glUniform1i(object.uLightCount, lightList.size());
+  for (const Light &light : lightList) {
+    glUniform3fv(object.uLightPos_vs + lightIndex, 1,
+                 glm::value_ptr(viewMatrix * glm::vec4(light.position, 1.f)));
+    glUniform3f(object.uLightIntensity + lightIndex, light.intensity,
+                light.intensity, light.intensity);
+    lightIndex++;
+  }
+
   glUniform1i(object.uTexture, 0);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, object.getTexturePointer(0));
@@ -97,10 +104,10 @@ void Renderer::drawObject(const glm::mat4 &modelMatrix,
 };
 
 void Renderer::initializeUIElements() {
-  ImGui::SliderFloat("Diffuse Reflection", &uKd, 0.f, 10.f);
-  ImGui::SliderFloat("Glossy Reflection", &uKs, 0.f, 10.f);
-  ImGui::SliderFloat("Light Intensity", &uLightIntensity, 0.f, 2.f);
-  ImGui::SliderFloat("Shininess", &uShininess, 0.f, 100.f);
+  // ImGui::SliderFloat("Diffuse Reflection", &uKd, 0.f, 10.f);
+  // ImGui::SliderFloat("Glossy Reflection", &uKs, 0.f, 10.f);
+  ImGui::SliderFloat("Light Intensity", &uWorldLightIntensity, 0.f, 2.f);
+  // ImGui::SliderFloat("Shininess", &uShininess, 0.f, 100.f);
   ImGui::SliderFloat("Light Direction X", &lightDir.x, -1.f, 1.f);
   ImGui::SliderFloat("Light Direction Y", &lightDir.y, -1.f, 1.f);
   ImGui::SliderFloat("Light Direction Z", &lightDir.z, -1.f, 1.f);

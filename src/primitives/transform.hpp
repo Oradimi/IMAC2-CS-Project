@@ -21,6 +21,8 @@ public:
                      float uniformScale = 1.f);
 
   glm::mat4 getTransform() const { return transform; };
+
+  glm::vec3 getPosition() const { return position; };
 };
 
 // Doesn't work correctly

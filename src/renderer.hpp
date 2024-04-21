@@ -4,19 +4,23 @@
 #include "implot/implot.h"
 #include "p6/p6.h"
 #include "primitives/object.hpp"
+#include <basetsd.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
+struct Light {
+  glm::vec3 position;
+  float intensity;
+};
+
 class Renderer {
 private:
   std::vector<RenderedObject> objectList;
+  std::vector<Light> lightList;
 
-  static float uKd;
-  static float uKs;
-  static float uLightIntensity;
-  static float uShininess;
+  static float uWorldLightIntensity;
   static glm::vec3 lightDir;
 
 public:
@@ -29,6 +33,8 @@ public:
   Renderer();
 
   void addObject(RenderedObject object);
+
+  void addLight(Light light);
 
   void clearAll();
 

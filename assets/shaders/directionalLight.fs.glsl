@@ -5,7 +5,7 @@ uniform vec3 uKd;
 uniform vec3 uKs;
 uniform float uShininess;
 uniform vec3 uLightDir_vs;
-uniform vec3 uLightIntensity;
+uniform vec3 uWorldLightIntensity;
 
 in vec3 vUV;
 in vec3 vPosition_vs;
@@ -26,7 +26,7 @@ vec3 blinnPhong() {
     float specularTerm = pow(max(dot(nNormal_vs, halfwayVector), 0.0), uShininess);
     vec3 specularColor = uKs * specularTerm;
 
-    return uLightIntensity * (diffuseColor + specularColor);
+    return uWorldLightIntensity * (diffuseColor + specularColor);
 }
 
 void main()

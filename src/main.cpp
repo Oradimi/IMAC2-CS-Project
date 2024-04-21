@@ -47,10 +47,22 @@ int main() {
   Renderer renderer;
 
   RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
-                          "3D.vs.glsl", "directionalLight.fs.glsl"};
+                          "3D.vs.glsl", "pointLight.fs.glsl"};
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
-                          "3D.vs.glsl", "directionalLight.fs.glsl"};
+                          "3D.vs.glsl", "pointLight.fs.glsl"};
+
+  RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
+                                 "3D.vs.glsl", "pointLight.fs.glsl"};
+
+  Transform streetLightTransform{{40.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, 10.f};
+
+  renderer.addLight(
+      {streetLightTransform.getPosition() - glm::vec3{40.f, 10.f, -5.f},
+       1000.f});
+  renderer.addLight(
+      {streetLightTransform.getPosition() - glm::vec3{-40.f, 10.f, -5.f},
+       1000.f});
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
@@ -62,6 +74,8 @@ int main() {
     Transform carTransform{{0.f, -Boid::getBounds(), 0.f},
                            {0.f, 0.f, 0.f},
                            Boid::getBounds() * 0.05f};
+
+    renderer.drawObject(streetLightTransform.getTransform(), streetlightMesh);
 
     glEnable(GL_CULL_FACE);
     Transform cubeTransform{

@@ -15,9 +15,12 @@ RenderedObject::RenderedObject(std::vector<ShapeVertex> mesh,
       uKd(glGetUniformLocation(shader.id(), "uKd")),
       uKs(glGetUniformLocation(shader.id(), "uKs")),
       uShininess(glGetUniformLocation(shader.id(), "uShininess")),
+      uWorldLightIntensity(
+          glGetUniformLocation(shader.id(), "uWorldLightIntensity")),
+      uLightIntensity(glGetUniformLocation(shader.id(), "uLightIntensity")),
       uLightDir_vs(glGetUniformLocation(shader.id(), "uLightDir_vs")),
       uLightPos_vs(glGetUniformLocation(shader.id(), "uLightPos_vs")),
-      uLightIntensity(glGetUniformLocation(shader.id(), "uLightIntensity")) {
+      uLightCount(glGetUniformLocation(shader.id(), "uLightCount")) {
   addTexture(std::move(texturePath));
 
   defineVBO();

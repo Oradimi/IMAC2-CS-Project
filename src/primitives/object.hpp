@@ -23,9 +23,15 @@ public:
   GLint uKd;
   GLint uKs;
   GLint uShininess;
+  GLint uWorldLightIntensity;
+  GLint uLightIntensity;
   GLint uLightDir_vs;
   GLint uLightPos_vs;
-  GLint uLightIntensity;
+  GLint uLightCount;
+
+  float Kd = 1.f;
+  float Ks = 3.f;
+  float Shininess = 4.f;
 
   explicit RenderedObject(std::vector<ShapeVertex> mesh,
                           std::string texturePath, std::string vertexShaderPath,
