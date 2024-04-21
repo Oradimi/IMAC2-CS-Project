@@ -51,32 +51,38 @@ int main() {
 
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
                           "3D.vs.glsl", "light.fs.glsl"};
+  cubeMesh.Ks = 1.f;
+  cubeMesh.Shininess = 1.f;
+
+  RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
+                                  "Intersection.png", "3D.vs.glsl",
+                                  "light.fs.glsl"};
+
+  Transform intersectionTransform{{0.f, 1.f, 0.f}, {0.f, 0.f, 0.f}, 41.f};
 
   RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
                                  "3D.vs.glsl", "light.fs.glsl"};
 
-  Transform streetLightTransform{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, 10.f};
+  Transform streetLightTransform_1{{-60.f, 0.f, -30.f}, {0.f, 0.f, 0.f}, 2.f};
+  Transform streetLightTransform_2{{60.f, 0.f, 30.f}, {0.f, 180.f, 0.f}, 2.f};
 
   renderer.addLight(
-      {streetLightTransform.getPosition() - glm::vec3{40.f, 40.f, 5.f},
-       {1000.f, 1000.f, 100.f}});
+      {streetLightTransform_1.getPosition() + glm::vec3{0.f, 10.f, 4.f},
+       {400.f, 400.f, 100.f}});
   renderer.addLight(
-      {streetLightTransform.getPosition() - glm::vec3{-40.f, -40.f, 5.f},
-       {1000.f, 1000.f, 100.f}});
+      {streetLightTransform_2.getPosition() + glm::vec3{0.f, 10.f, -4.f},
+       {400.f, 400.f, 100.f}});
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
-    Transform commonTransform{{0.f, -Boid::getBounds(), 0.f},
-                              {0.f, 0.f, 0.f},
-                              Boid::getBounds() * 0.1f};
+    // DECORATIVE
+    renderer.drawObject(streetLightTransform_1.getTransform(), streetlightMesh);
+    renderer.drawObject(streetLightTransform_2.getTransform(), streetlightMesh);
 
-    Transform carTransform{{0.f, -Boid::getBounds(), 0.f},
-                           {0.f, 0.f, 0.f},
-                           Boid::getBounds() * 0.05f};
+    renderer.drawObject(intersectionTransform.getTransform(), intersectionMesh);
 
-    renderer.drawObject(streetLightTransform.getTransform(), streetlightMesh);
-
+    // ESSENTIALS
     glEnable(GL_CULL_FACE);
     Transform cubeTransform{
         {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, Boid::getBounds()};
@@ -85,10 +91,6 @@ int main() {
 
     for (Boid &boid : swarm) {
       boid.move(swarm);
-      // Transform boidTransform{
-      //     boid.getPosition(),
-      //     velocityToRotationVector(boid.getVelocity(), {0.f, 0.f,
-      //     0.f}), 1.f};
       glm::mat4 boidModelMatrix =
           glm::translate(glm::mat4{1.f}, boid.getPosition()) *
           computeRotationMatrix(boid.getVelocity()) *
