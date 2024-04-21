@@ -1,10 +1,10 @@
 #pragma once
 
+#include "boid.hpp"
 #include "glm/gtx/transform.hpp"
 #include "math.hpp"
 #include <algorithm>
 #include <glm/glm.hpp>
-
 
 struct ViewAngle {
   float x;
@@ -46,6 +46,7 @@ public:
         glm::rotate(ViewMatrix, glm::radians(m_Angle.x), {1.f, 0.f, 0.f});
     ViewMatrix =
         glm::rotate(ViewMatrix, glm::radians(m_Angle.y), {0.f, 1.f, 0.f});
+    ViewMatrix = glm::translate(ViewMatrix, {0.f, -Boid::getBounds(), 0.f});
     return ViewMatrix;
   }
 

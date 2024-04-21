@@ -32,7 +32,7 @@ void clampVectorMagnitude(glm::vec3 &vec, float min, float max) {
 Boid::Boid(RandomMath &rand) {
   pos = glm::vec3(rand.generateUniform(-1.0, 1.0),
                   rand.generateUniform(-1.0, 1.0),
-                  rand.generateUniform(-1.0, 1.0)) *
+                  rand.generateUniform(0.0, 2.0)) *
         bounds;
 
   vel = glm::vec3(rand.generateUniform(-1.0, 1.0),
@@ -108,12 +108,23 @@ void Boid::flock(const std::vector<Boid> &swarm) {
 }
 
 void Boid::avoidBounds() {
-  for (int i = 0; i < 3; i++) {
-    if (pos[i] > bounds * 0.7f) {
-      vel[i] = vel[i] - turn_factor;
-    } else if (pos[i] < -bounds * 0.7f) {
-      vel[i] = vel[i] + turn_factor;
-    }
+  // for x
+  if (pos.x > bounds * 0.7f) {
+    vel.x = vel.x - turn_factor;
+  } else if (pos.x < -bounds * 0.7f) {
+    vel.x = vel.x + turn_factor;
+  }
+  // for y
+  if (pos.y > bounds * 1.7f) {
+    vel.y = vel.y - turn_factor;
+  } else if (pos.y < bounds * 0.3f) {
+    vel.y = vel.y + turn_factor;
+  }
+  // for z
+  if (pos.z > bounds * 0.7f) {
+    vel.z = vel.z - turn_factor;
+  } else if (pos.z < -bounds * 0.7f) {
+    vel.z = vel.z + turn_factor;
   }
   turn_factor = std::clamp(turn_factor, 0.04f * max_speed, 0.1f * max_speed);
 }
