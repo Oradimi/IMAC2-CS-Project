@@ -4,19 +4,20 @@
 #include "glm/fwd.hpp"
 #include "glm/geometric.hpp"
 #include "math.hpp"
+#include <algorithm>
 #include <imgui.h>
 #include <p6/p6.h>
 #include <vector>
 
-float Boid::bounds = 80.f;
-float Boid::turn_factor = 0.2f;
-float Boid::protected_range = 4.0f;
-float Boid::vision_range = 10.0f;
-float Boid::avoid_factor = 0.05f;
-float Boid::match_factor = 0.3f;
-float Boid::center_factor = 0.001f;
+float Boid::bounds = 120.f;
+float Boid::turn_factor = 0.04f;
+float Boid::protected_range = 10.0f;
+float Boid::vision_range = 30.0f;
+float Boid::avoid_factor = 0.005f;
+float Boid::match_factor = 0.03f;
+float Boid::center_factor = 0.0001f;
 float Boid::min_speed = 0.4f;
-float Boid::max_speed = 2.0f;
+float Boid::max_speed = 0.8f;
 float Boid::max_bias = 0.01f;
 float Boid::bias_increment = 0.00004f;
 
@@ -48,17 +49,18 @@ Boid::Boid(RandomMath &rand) {
 }
 
 void Boid::initializeUIElements() {
-  ImGui::SliderFloat("Bounds", &bounds, 2.f, 100.f);
-  ImGui::SliderFloat("Turn", &turn_factor, 0.04f, 1.0f);
+  // ImGui::SliderFloat("Bounds", &bounds, 2.f, 100.f);
+  ImGui::SliderFloat("Turn", &turn_factor, 0.04f * max_speed, 0.1f * max_speed,
+                     "%.4f");
   ImGui::SliderFloat("Protected Range", &protected_range, 0.4f,
                      vision_range - 0.1f);
   ImGui::SliderFloat("Vision Range", &vision_range, protected_range + 0.1f,
                      100.f);
-  ImGui::SliderFloat("Avoid", &avoid_factor, 0.f, 1.f);
-  ImGui::SliderFloat("Match", &match_factor, 0.f, 1.f);
-  ImGui::SliderFloat("Center", &center_factor, 0.f, 0.01f);
+  ImGui::SliderFloat("Avoid", &avoid_factor, 0.f, 0.1f, "%.4f");
+  ImGui::SliderFloat("Match", &match_factor, 0.f, 0.1f, "%.4f");
+  ImGui::SliderFloat("Center", &center_factor, 0.f, 0.001f, "%.5f");
   ImGui::SliderFloat("Min Speed", &min_speed, 0.01f, max_speed - 0.1f);
-  ImGui::SliderFloat("Max Speed", &max_speed, min_speed + 0.1f, 10.f);
+  ImGui::SliderFloat("Max Speed", &max_speed, min_speed + 0.1f, 1.2f);
   // ImGui::SliderFloat("Max Bias", &max_bias);
   // ImGui::SliderFloat("Bias Increment", &bias_increment);
 }
@@ -107,10 +109,11 @@ void Boid::flock(const std::vector<Boid> &swarm) {
 
 void Boid::avoidBounds() {
   for (int i = 0; i < 3; i++) {
-    if (pos[i] > bounds) {
+    if (pos[i] > bounds * 0.7f) {
       vel[i] = vel[i] - turn_factor;
-    } else if (pos[i] < -bounds) {
+    } else if (pos[i] < -bounds * 0.7f) {
       vel[i] = vel[i] + turn_factor;
     }
   }
+  turn_factor = std::clamp(turn_factor, 0.04f * max_speed, 0.1f * max_speed);
 }

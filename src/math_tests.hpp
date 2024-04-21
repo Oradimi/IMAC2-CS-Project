@@ -4,11 +4,12 @@
 #include "math.hpp"
 #include <iostream>
 
-enum SwitchTabs { BETA, IRWINHALL, LAPLACE };
+enum MathSwitchTabs { BETA, IRWINHALL, LAPLACE };
 
 class MathTests {
 private:
-  SwitchTabs switchTabs = BETA;
+  MathSwitchTabs switchTabs = BETA;
+  RandomMath rand;
 
   double testBeta1[10000];
   double testBeta2[10000];
@@ -18,8 +19,12 @@ private:
   double testLaplace2[10000];
 
 public:
-  MathTests() {
-    RandomMath rand;
+  MathTests() = default;
+
+  void initiate() {
+    for (int i = 0; i < 100; i++) {
+      std::cout << rand.generateUniformDiscrete(0, 5) << " ";
+    }
 
     for (double &i : testBeta1) {
       i = rand.generateBeta(2.0, 5.0);
@@ -42,7 +47,7 @@ public:
     }
 
     for (double &i : testLaplace2) {
-      i = rand.generateLaplace(0.0, 2.0);
+      i = rand.generateLaplace(-10.0, 2.0);
     }
   }
 
@@ -87,7 +92,7 @@ public:
                               ImPlotRange());
         ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
         ImPlot::SetNextMarkerStyle(ImPlotMarker_Square);
-        ImPlot::PlotHistogram("mu 0, b 2", testLaplace2, 10000, 50, 1.0,
+        ImPlot::PlotHistogram("mu -10, b 2", testLaplace2, 10000, 50, 1.0,
                               ImPlotRange());
         ImPlot::PopStyleVar();
         ImPlot::EndPlot();

@@ -15,14 +15,21 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
+enum SimSwitchTabs { BOID, LIGHT };
+
 int main() {
   // Run the tests
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
   MathTests math_test;
-
+  SimSwitchTabs switchTabs = BOID;
   RandomMath rand;
+
+  // bool math_debug_mode = true;
+  bool math_debug_mode = false;
+  if (math_debug_mode)
+    math_test.initiate();
 
   std::vector<Boid> swarm;
   swarm.reserve(20);
@@ -42,17 +49,17 @@ int main() {
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
-    Transform commonTransform{{0.f, -Boid::getBounds() * 1.2f, 0.f},
+    Transform commonTransform{{0.f, -Boid::getBounds(), 0.f},
                               {0.f, 0.f, 0.f},
                               Boid::getBounds() * 0.1f};
 
-    Transform carTransform{{0.f, -Boid::getBounds() * 1.2f, 0.f},
+    Transform carTransform{{0.f, -Boid::getBounds(), 0.f},
                            {0.f, 0.f, 0.f},
                            Boid::getBounds() * 0.05f};
 
     glEnable(GL_CULL_FACE);
     Transform cubeTransform{
-        {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, Boid::getBounds() * 1.2f};
+        {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, Boid::getBounds()};
     renderer.drawObject(cubeTransform.getTransform(), cubeMesh);
     glDisable(GL_CULL_FACE);
 
@@ -71,14 +78,25 @@ int main() {
   };
 
   renderer.ctx.imgui = [&]() {
-    ImGui::Begin("Boid Parameters");
-    Boid::initializeUIElements();
-    ImGui::End();
-    ImGui::Begin("Light Parameters");
-    Renderer::initializeUIElements();
+    ImGui::Begin("Parameters");
+    if (ImGui::Button("Boids", ImVec2(100.0f, 0.0f)))
+      switchTabs = BOID;
+    ImGui::SameLine(0.0, 2.0f);
+    if (ImGui::Button("Lights", ImVec2(100.0f, 0.0f)))
+      switchTabs = LIGHT;
+
+    switch (switchTabs) {
+    case BOID:
+      Boid::initializeUIElements();
+      break;
+    case LIGHT:
+      Renderer::initializeUIElements();
+      break;
+    }
     ImGui::End();
 
-    math_test.displayTestsGUI();
+    if (math_debug_mode)
+      math_test.displayTestsGUI();
   };
 
   renderer.handleLookAround();
@@ -94,10 +112,12 @@ int main() {
 // RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
 //                         "directionalLight.fs.glsl"};
 
-// RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
+// RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"),
+// "FireHydrant.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-// RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"), "TrafficCone.png",
+// RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"),
+// "TrafficCone.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
 // RenderedObject trashbagsMesh{loadOBJ("trashbags.obj"), "TrashBag.png",
@@ -116,7 +136,8 @@ int main() {
 // RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "MailBox.png",
 //                             "3D.vs.glsl", "directionalLight.fs.glsl"};
 
-// RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
+// RenderedObject streetlightMesh{loadOBJ("streetlight.obj"),
+// "StreetLight.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
 // RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
@@ -139,7 +160,8 @@ int main() {
 //                                 "Intersection.png", "3D.vs.glsl",
 //                                 "directionalLight.fs.glsl"};
 
-// RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
+// RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"),
+// "spiderrobot.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
 // RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "Coffee.png",

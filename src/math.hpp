@@ -1,5 +1,6 @@
 #pragma once
 
+#include "glm/fwd.hpp"
 #include <cmath>
 #include <glm/glm.hpp>
 #include <limits>
@@ -28,6 +29,13 @@ public:
     double x = generateRandom();
 
     return x * (max - min) + min;
+  }
+
+  /// Returns an integer between min included and max excluded
+  inline glm::int32 generateUniformDiscrete(int min, int max) {
+    double x = generateRandom();
+
+    return static_cast<glm::int32>(floor(x * (max - min) + min));
   }
 
   /// Returns true if the random number is strictly below p
