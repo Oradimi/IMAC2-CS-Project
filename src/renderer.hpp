@@ -1,7 +1,8 @@
 #pragma once
 
-#include "camera/TrackballCamera.hpp"
+#include "camera.hpp"
 #include "implot/implot.h"
+#include "math_tests.hpp"
 #include "p6/p6.h"
 #include "primitives/object.hpp"
 #include <basetsd.h>
@@ -15,10 +16,15 @@ struct Light {
   glm::vec3 color;
 };
 
+enum SimSwitchTabs { BOID, LIGHT, WANDERER };
+
 class Renderer {
 private:
   std::vector<RenderedObject> objectList;
   std::vector<Light> lightList;
+
+  MathTests math_test;
+  SimSwitchTabs switchTabs = BOID;
 
   static float uWorldLightIntensity;
   static glm::vec3 lightDir;
@@ -28,7 +34,7 @@ public:
                                  .height = 900,
                                  .title = "Amazing Oradimi Parzi_Val Boids"}};
 
-  TrackballCamera camera;
+  Camera camera;
 
   Renderer();
 
@@ -36,11 +42,17 @@ public:
 
   void addLight(Light light);
 
+  void renderUI(bool math_debug_mode);
+
   void clearAll();
 
   void handleLookAround();
 
   void handleZoom();
+
+  void handleKeyboard();
+
+  void handleInputs();
 
   void drawObject(const glm::mat4 &modelMatrix,
                   const RenderedObject &object) const;

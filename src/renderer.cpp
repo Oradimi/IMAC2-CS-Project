@@ -1,10 +1,8 @@
 #include "renderer.hpp"
-#include "camera/TrackballCamera.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
-#include <cstddef>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
@@ -27,6 +25,37 @@ void Renderer::addObject(RenderedObject object) {
 }
 
 void Renderer::addLight(Light light) { lightList.emplace_back(light); }
+
+void Renderer::renderUI(bool math_debug_mode) {
+  if (math_debug_mode)
+    math_test.initiate();
+  ctx.imgui = [&]() {
+    ImGui::Begin("Parameters");
+    if (ImGui::Button("Boids", ImVec2(120.0f, 0.0f)))
+      switchTabs = BOID;
+    ImGui::SameLine(0.0, 2.0f);
+    if (ImGui::Button("Lights", ImVec2(120.0f, 0.0f)))
+      switchTabs = LIGHT;
+    ImGui::SameLine(0.0, 2.0f);
+    if (ImGui::Button("Toggle Wanderer", ImVec2(120.0f, 0.0f)))
+      camera.switchCamera();
+
+    switch (switchTabs) {
+    case BOID:
+      Boid::initializeUIElements();
+      break;
+    case LIGHT:
+      Renderer::initializeUIElements();
+      break;
+    case WANDERER:
+      break;
+    }
+    ImGui::End();
+
+    if (math_debug_mode)
+      math_test.displayTestsGUI();
+  };
+}
 
 void Renderer::clearAll() {
   for (int i = 0; i < 16; i++) {
@@ -56,6 +85,44 @@ void Renderer::handleZoom() {
     }
   };
 };
+
+void Renderer::handleKeyboard() {
+  if (ctx.key_is_pressed(GLFW_KEY_W)) {
+    camera.moveFront(ctx.delta_time() * camera.getSpeed());
+  }
+
+  if (ctx.key_is_pressed(GLFW_KEY_S)) {
+    camera.moveFront(-ctx.delta_time() * camera.getSpeed());
+  }
+
+  if (ctx.key_is_pressed(GLFW_KEY_A)) {
+    camera.moveLeft(ctx.delta_time() * camera.getSpeed());
+  }
+
+  if (ctx.key_is_pressed(GLFW_KEY_D)) {
+    camera.moveLeft(-ctx.delta_time() * camera.getSpeed());
+  }
+
+  if (ctx.key_is_pressed(GLFW_KEY_SPACE)) {
+    camera.moveUp(ctx.delta_time() * camera.getSpeed());
+  }
+
+  if (ctx.key_is_pressed(GLFW_KEY_LEFT_SHIFT)) {
+    camera.moveUp(-ctx.delta_time() * camera.getSpeed());
+  }
+}
+
+void Renderer::handleInputs() {
+  switch (camera.cameraMode) {
+  case FREEFLY:
+    handleKeyboard();
+    break;
+  case TRACKBALL:
+    handleZoom();
+    break;
+  }
+  handleLookAround();
+}
 
 void Renderer::drawObject(const glm::mat4 &modelMatrix,
                           const RenderedObject &object) const {

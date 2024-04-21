@@ -3,7 +3,7 @@
 #include "boid.hpp"
 #include "doctest/doctest.h"
 #include "math.hpp"
-#include "math_tests.hpp"
+
 #include "primitives/objLoader.hpp"
 #include "primitives/transform.hpp"
 #include "renderer.hpp"
@@ -14,8 +14,6 @@
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-
-enum SimSwitchTabs { BOID, LIGHT };
 
 std::vector<Boid> initializeBoids(RandomMath &rand, int number) {
   std::vector<Boid> swarm;
@@ -33,14 +31,10 @@ int main() {
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  MathTests math_test;
-  SimSwitchTabs switchTabs = BOID;
-  RandomMath rand;
+  // const bool MATH_DEBUG_MODE = true;
+  const bool MATH_DEBUG_MODE = false;
 
-  // bool math_debug_mode = true;
-  bool math_debug_mode = false;
-  if (math_debug_mode)
-    math_test.initiate();
+  RandomMath rand;
 
   std::vector<Boid> swarm{initializeBoids(rand, 20)};
 
@@ -67,10 +61,10 @@ int main() {
   Transform streetLightTransform_2{{60.f, 0.f, 30.f}, {0.f, 180.f, 0.f}, 2.f};
 
   renderer.addLight(
-      {streetLightTransform_1.getPosition() + glm::vec3{0.f, 10.f, 4.f},
+      {streetLightTransform_1.getPosition() + glm::vec3{0.f, 18.f, 6.f},
        {400.f, 400.f, 100.f}});
   renderer.addLight(
-      {streetLightTransform_2.getPosition() + glm::vec3{0.f, 10.f, -4.f},
+      {streetLightTransform_2.getPosition() + glm::vec3{0.f, 18.f, -6.f},
        {400.f, 400.f, 100.f}});
 
   renderer.ctx.update = [&]() {
@@ -97,32 +91,11 @@ int main() {
           glm::scale(glm::mat4{1.f}, glm::vec3{1.f});
       renderer.drawObject(boidModelMatrix, boidMesh);
     }
+
+    renderer.handleInputs();
   };
 
-  renderer.ctx.imgui = [&]() {
-    ImGui::Begin("Parameters");
-    if (ImGui::Button("Boids", ImVec2(100.0f, 0.0f)))
-      switchTabs = BOID;
-    ImGui::SameLine(0.0, 2.0f);
-    if (ImGui::Button("Lights", ImVec2(100.0f, 0.0f)))
-      switchTabs = LIGHT;
-
-    switch (switchTabs) {
-    case BOID:
-      Boid::initializeUIElements();
-      break;
-    case LIGHT:
-      Renderer::initializeUIElements();
-      break;
-    }
-    ImGui::End();
-
-    if (math_debug_mode)
-      math_test.displayTestsGUI();
-  };
-
-  renderer.handleLookAround();
-  renderer.handleZoom();
+  renderer.renderUI(MATH_DEBUG_MODE);
 
   renderer.start();
 
