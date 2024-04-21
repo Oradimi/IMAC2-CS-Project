@@ -43,7 +43,7 @@ int main() {
   RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
                           "3D.vs.glsl", "light.fs.glsl"};
 
-  RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "Gray.png",
+  RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "textureCube.png",
                           "3D.vs.glsl", "light.fs.glsl"};
   cubeMesh.Ks = 1.f;
   cubeMesh.Shininess = 1.f;
