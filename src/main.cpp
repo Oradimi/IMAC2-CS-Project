@@ -52,7 +52,7 @@ int main() {
                                   "Intersection.png", "3D.vs.glsl",
                                   "light.fs.glsl"};
 
-  Transform intersectionTransform{{0.f, 1.f, 0.f}, {0.f, 0.f, 0.f}, 41.f};
+  Transform intersectionTransform{{1.f, 1.f, 0.f}, {0.f, 0.f, 0.f}, 41.f};
 
   RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
                                  "3D.vs.glsl", "light.fs.glsl"};
