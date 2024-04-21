@@ -60,6 +60,11 @@ int main() {
   Transform streetLightTransform_1{{-60.f, 0.f, -30.f}, {0.f, 0.f, 0.f}, 2.f};
   Transform streetLightTransform_2{{60.f, 0.f, 30.f}, {0.f, 180.f, 0.f}, 2.f};
 
+  RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
+                                 "3D.vs.glsl", "light.fs.glsl"};
+
+  Transform spiderrobotTransform{{50.f, 0.f, 20.f}, {0.f, 0.f, 0.f}, 3.f};
+
   renderer.addLight(
       {streetLightTransform_1.getPosition() + glm::vec3{0.f, 18.f, 6.f},
        {400.f, 400.f, 100.f}});
@@ -75,6 +80,7 @@ int main() {
     renderer.drawObject(streetLightTransform_2.getTransform(), streetlightMesh);
 
     renderer.drawObject(intersectionTransform.getTransform(), intersectionMesh);
+    renderer.drawObject(spiderrobotTransform.getTransform(), spiderrobotMesh);
 
     // ESSENTIALS
     glEnable(GL_CULL_FACE);
@@ -154,10 +160,6 @@ int main() {
 // RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
 //                                 "Intersection.png", "3D.vs.glsl",
 //                                 "directionalLight.fs.glsl"};
-
-// RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"),
-// "spiderrobot.png",
-//                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
 
 // RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "Coffee.png",
 //                           "3D.vs.glsl", "directionalLight.fs.glsl"};
