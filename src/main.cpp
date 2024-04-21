@@ -63,7 +63,29 @@ int main() {
   RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
                                  "3D.vs.glsl", "light.fs.glsl"};
 
+  RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
+                          "light.fs.glsl"};
+
+  RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
+                                 "3D.vs.glsl", "light.fs.glsl"};
+
+  RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
+                              "3D.vs.glsl", "light.fs.glsl"};
+
+  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "Coffee.png", "3D.vs.glsl",
+                            "light.fs.glsl"};
+
   Transform spiderrobotTransform{{50.f, 0.f, 20.f}, {0.f, 0.f, 0.f}, 3.f};
+
+  Transform treeTransform{{50.f, 0.f, 80.f}, {0.f, 60.f, 0.f}, 4.f};
+
+  Transform firehydrantTransform{{40.f, 2.f, 30.f}, {0.f, 180.f, 0.f}, 1.f};
+
+  Transform buildingTransform{{90.f, 1.f, 80.f}, {0.f, -112.5f, 0.f}, 6.f};
+
+  Transform buildingTransform_2{{-90.f, 1.f, -80.f}, {0.f, 45.f, 0.f}, 6.f};
+
+  Transform coffeeTransform{{-85.f, 1.f, 80.f}, {0.f, 130.f, 0.f}, 6.f};
 
   renderer.addLight(
       {streetLightTransform_1.getPosition() + glm::vec3{0.f, 18.f, 6.f},
@@ -81,6 +103,11 @@ int main() {
 
     renderer.drawObject(intersectionTransform.getTransform(), intersectionMesh);
     renderer.drawObject(spiderrobotTransform.getTransform(), spiderrobotMesh);
+    renderer.drawObject(treeTransform.getTransform(), treeMesh);
+    renderer.drawObject(firehydrantTransform.getTransform(), firehydrantMesh);
+    renderer.drawObject(buildingTransform.getTransform(), buildingMesh);
+    renderer.drawObject(buildingTransform_2.getTransform(), buildingMesh);
+    renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
 
     // ESSENTIALS
     glEnable(GL_CULL_FACE);
@@ -110,13 +137,6 @@ int main() {
   return 0;
 }
 
-// RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
-//                         "directionalLight.fs.glsl"};
-
-// RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"),
-// "FireHydrant.png",
-//                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
-
 // RenderedObject trafficconeMesh{loadOBJ("trafficcone.obj"),
 // "TrafficCone.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
@@ -140,9 +160,6 @@ int main() {
 // RenderedObject streetlightMesh{loadOBJ("streetlight.obj"),
 // "StreetLight.png",
 //                                 "3D.vs.glsl", "directionalLight.fs.glsl"};
-
-// RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
-//                             "3D.vs.glsl", "directionalLight.fs.glsl"};
 
 // RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
 //                                   "OutdoorSeating.png", "3D.vs.glsl",
