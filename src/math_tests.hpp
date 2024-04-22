@@ -4,13 +4,15 @@
 #include "math.hpp"
 #include <iostream>
 
-enum MathSwitchTabs { BETA, IRWINHALL, LAPLACE };
+enum MathSwitchTabs { EXPONENTIAL, BETA, IRWINHALL, LAPLACE };
 
 class MathTests {
 private:
-  MathSwitchTabs switchTabs = BETA;
+  MathSwitchTabs switchTabs = EXPONENTIAL;
   RandomMath rand;
 
+  double testExponential1[10000];
+  double testExponential2[10000];
   double testBeta1[10000];
   double testBeta2[10000];
   double testIrwinHall1[10000];
@@ -24,6 +26,14 @@ public:
   void initiate() {
     for (int i = 0; i < 100; i++) {
       std::cout << rand.generateUniformDiscrete(0, 5) << " ";
+    }
+
+    for (double &i : testExponential1) {
+      i = rand.generateExponential(0.2);
+    }
+
+    for (double &i : testExponential2) {
+      i = rand.generateExponential(0.8);
     }
 
     for (double &i : testBeta1) {
@@ -43,15 +53,18 @@ public:
     }
 
     for (double &i : testLaplace1) {
-      i = rand.generateLaplace(0.0, 5.0);
+      i = rand.generateLaplace(120.0, 10.0);
     }
 
     for (double &i : testLaplace2) {
-      i = rand.generateLaplace(-10.0, 2.0);
+      i = rand.generateLaplace(120.0, 3.0);
     }
   }
 
   void displayTestsGUI() {
+    if (ImGui::Button("Exponential", ImVec2(100.0f, 0.0f)))
+      switchTabs = EXPONENTIAL;
+    ImGui::SameLine(0.0, 2.0f);
     if (ImGui::Button("Beta", ImVec2(100.0f, 0.0f)))
       switchTabs = BETA;
     ImGui::SameLine(0.0, 2.0f);
@@ -62,6 +75,18 @@ public:
       switchTabs = LAPLACE;
 
     switch (switchTabs) {
+    case EXPONENTIAL:
+      if (ImPlot::BeginPlot("Exponential PDF")) {
+        ImPlot::PlotHistogram("lambda 0.2", testExponential1, 10000, 50, 1.0,
+                              ImPlotRange());
+        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+        ImPlot::SetNextMarkerStyle(ImPlotMarker_Square);
+        ImPlot::PlotHistogram("lambda 0.8", testExponential2, 10000, 50, 1.0,
+                              ImPlotRange());
+        ImPlot::PopStyleVar();
+        ImPlot::EndPlot();
+      }
+      break;
     case BETA:
       if (ImPlot::BeginPlot("Beta PDF")) {
         ImPlot::PlotHistogram("alpha 2, beta 5", testBeta1, 10000, 50, 1.0,
@@ -88,11 +113,11 @@ public:
       break;
     case LAPLACE:
       if (ImPlot::BeginPlot("Laplace PDF")) {
-        ImPlot::PlotHistogram("mu 0, b 5", testLaplace1, 10000, 50, 1.0,
+        ImPlot::PlotHistogram("mu 120, b 10", testLaplace1, 10000, 50, 1.0,
                               ImPlotRange());
         ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
         ImPlot::SetNextMarkerStyle(ImPlotMarker_Square);
-        ImPlot::PlotHistogram("mu -10, b 2", testLaplace2, 10000, 50, 1.0,
+        ImPlot::PlotHistogram("mu 120, b 3", testLaplace2, 10000, 50, 1.0,
                               ImPlotRange());
         ImPlot::PopStyleVar();
         ImPlot::EndPlot();
