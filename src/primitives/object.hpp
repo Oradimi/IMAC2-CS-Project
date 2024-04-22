@@ -1,5 +1,6 @@
 #pragma once
 
+#include "math.hpp"
 #include "p6/p6.h"
 #include "shape_vertex.hpp"
 #include "texture.hpp"
@@ -44,6 +45,8 @@ public:
   void defineVBO();
 
   void defineVAO();
+
+  void updateMesh(RandomMath &rand, p6::Context &ctx);
 
   std::vector<ShapeVertex> getMesh() const { return mesh; };
 

@@ -5,12 +5,13 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/fwd.hpp"
 #include "glm/trigonometric.hpp"
-#include "math.hpp"
 #include "p6/p6.h"
+#include "primitives/math.hpp"
 #include "primitives/transform.hpp"
 #include <algorithm>
 #include <cmath>
 #include <glm/glm.hpp>
+
 
 struct ViewAngle {
   float x;

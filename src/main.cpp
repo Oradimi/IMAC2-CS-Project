@@ -3,7 +3,7 @@
 #include "boid.hpp"
 #include "cars.hpp"
 #include "doctest/doctest.h"
-#include "math.hpp"
+#include "primitives/math.hpp"
 #include "primitives/objLoader.hpp"
 #include "primitives/transform.hpp"
 #include "renderer.hpp"
@@ -94,6 +94,11 @@ int main() {
 
   Cars cars;
 
+  Transform wavesTransform{{0.f, -20.f, 0.f}, {0.f, 0.f, 0.f}, 2.f};
+
+  RenderedObject wavesMesh{loadOBJ("waves.obj"), "Blue.png", "3D.vs.glsl",
+                           "light.fs.glsl"};
+
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
@@ -109,6 +114,8 @@ int main() {
     renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
 
     // RANDOM ELEMENTS
+    wavesMesh.updateMesh(rand, renderer.ctx);
+    renderer.drawObject(wavesTransform.getTransform(), wavesMesh);
     cars.carEvents(renderer, renderer.ctx.delta_time());
 
     // ESSENTIALS
