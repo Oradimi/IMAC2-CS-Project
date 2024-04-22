@@ -99,6 +99,8 @@ int main() {
   RenderedObject wavesMesh{loadOBJ("waves.obj"), "Blue.png", "3D.vs.glsl",
                            "light.fs.glsl"};
 
+  std::unordered_map<std::pair<float, float>, float, HashPair> waveOffsets;
+
   renderer.ctx.update = [&]() {
     renderer.clearAll();
 
@@ -114,7 +116,7 @@ int main() {
     renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
 
     // RANDOM ELEMENTS
-    wavesMesh.updateMesh(rand, renderer.ctx);
+    wavesMesh.updateWave(rand, renderer.ctx, waveOffsets);
     renderer.drawObject(wavesTransform.getTransform(), wavesMesh);
     cars.carEvents(renderer, renderer.ctx.delta_time());
 

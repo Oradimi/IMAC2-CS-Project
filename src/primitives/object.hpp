@@ -7,6 +7,15 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+struct HashPair {
+  template <typename T1, typename T2>
+  std::size_t operator()(const std::pair<T1, T2> &p) const {
+    auto hash1 = std::hash<T1>{}(p.first);
+    auto hash2 = std::hash<T2>{}(p.second);
+    return hash1 ^ hash2;
+  }
+};
+
 /// A class that stores everything needed to render an RenderedObject
 class RenderedObject {
 private:
@@ -14,6 +23,8 @@ private:
   std::vector<Texture> textureList;
   GLuint vbo{};
   GLuint vao{};
+
+  float elapsedTime = 0.f;
 
 public:
   p6::Shader shader;
@@ -46,7 +57,9 @@ public:
 
   void defineVAO();
 
-  void updateMesh(RandomMath &rand, p6::Context &ctx);
+  void updateWave(RandomMath &rand, p6::Context &ctx,
+                  std::unordered_map<std::pair<float, float>, float, HashPair>
+                      &waveOffsets);
 
   std::vector<ShapeVertex> getMesh() const { return mesh; };
 

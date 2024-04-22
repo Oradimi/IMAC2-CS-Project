@@ -1,4 +1,6 @@
 #include "object.hpp"
+#include <glm/gtx/normal.hpp>
+#include <unordered_map>
 #include <utility>
 
 RenderedObject::RenderedObject(std::vector<ShapeVertex> mesh,
@@ -83,18 +85,32 @@ void RenderedObject::defineVAO() {
   glBindVertexArray(0);
 }
 
-void RenderedObject::updateMesh(RandomMath &rand, p6::Context &ctx) {
-  float waveAmplitude = 0.5f;
+void RenderedObject::updateWave(
+    RandomMath &rand, p6::Context &ctx,
+    std::unordered_map<std::pair<float, float>, float, HashPair> &waveOffsets) {
+  float waveAmplitude = 1.0f;
   float waveFrequency = 1.0f;
-  for (int i = 0; i < mesh.size(); ++i) {
-    glm::vec3 &vertex = mesh[i].position;
-    float x = vertex.x;
-    float z = vertex.z;
+  elapsedTime += ctx.delta_time();
 
-    float displacement = waveAmplitude * rand.generateIrwinHall();
-    float waveOffset =
-        glm::sin(ctx.delta_time() * waveFrequency + x + z) * displacement;
-    vertex.y = waveOffset;
+  std::vector<glm::vec3> vertexNormals(mesh.size(), glm::vec3(0.0f));
+
+  for (auto &vertex : mesh) {
+    glm::vec3 &position = vertex.position;
+    float x = position.x;
+    float z = position.z;
+
+    auto coordPair = std::make_pair(x, z);
+    float waveOffset = 0.f;
+
+    auto it = waveOffsets.find(coordPair);
+    if (it != waveOffsets.end()) {
+      waveOffset = it->second;
+    } else {
+      waveOffset = waveAmplitude * rand.generateIrwinHall();
+      waveOffsets[coordPair] = waveOffset;
+    }
+
+    position.y = waveOffset * glm::sin(elapsedTime * waveFrequency);
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
