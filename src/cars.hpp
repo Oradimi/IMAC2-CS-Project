@@ -45,7 +45,7 @@ public:
     if (car_on_road) {
       car_position += deltaTime * car_speed;
 
-      float position1 = horizontal_road ? car_position : 12.f;
+      float position1 = horizontal_road ? car_position : -12.f;
       float position2 = horizontal_road ? 12.f : car_position;
 
       Transform carTransform{
@@ -55,7 +55,7 @@ public:
 
       renderer.drawObject(carTransform.getTransform(), carList[random_car]);
 
-      if (car_position > (Boid::getBounds() + 80.f)) {
+      if (car_position > (Boid::getBounds() + 40.f)) {
         car_position = -Boid::getBounds() - 40.f;
         car_on_road = false;
       }
