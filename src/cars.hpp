@@ -49,7 +49,7 @@ public:
       float position2 = horizontal_road ? 12.f : car_position;
 
       Transform carTransform{
-          {car_direction * position1, 2.f, car_direction * position2},
+          {car_direction * position1, 0.f, car_direction * position2},
           {0.f, car_direction * 90.f + (horizontal_road ? 0.f : -90.f), 0.f},
           10.f};
 
