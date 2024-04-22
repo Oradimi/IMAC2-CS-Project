@@ -3,10 +3,11 @@
 #include "boid.hpp"
 #include "glm/common.hpp"
 #include "glm/ext/matrix_transform.hpp"
-#include "glm/gtx/transform.hpp"
+#include "glm/fwd.hpp"
 #include "glm/trigonometric.hpp"
 #include "math.hpp"
 #include "p6/p6.h"
+#include "primitives/transform.hpp"
 #include <algorithm>
 #include <cmath>
 #include <glm/glm.hpp>
@@ -25,13 +26,14 @@ private:
   ViewAngle m_Angle;
 
   // Freefly mode
+  // Transform m_WandererTransform;
   glm::vec3 m_Position;
-  float m_Phi;
-  float m_Theta;
+  float m_Phi;   // in radians
+  float m_Theta; // in radians
   glm::vec3 m_FrontVector;
   glm::vec3 m_LeftVector;
   glm::vec3 m_UpVector;
-  float speed = 20.f;
+  float m_Speed = 30.f;
 
   void computeDirectionVectors() {
     m_FrontVector = {std::cosf(m_Theta) * std::sinf(m_Phi), std::sinf(m_Theta),
@@ -45,7 +47,7 @@ public:
   CameraMode cameraMode = TRACKBALL;
 
   Camera()
-      : m_Distance(173.2f), m_Angle(0.f), m_Position(0.f, 2.f, 0.f),
+      : m_Distance(173.2f), m_Angle(0.f), m_Position(0.f, 12.f, 0.f),
         m_Phi(p6::PI), m_Theta(0.f) {
     computeDirectionVectors();
   };
@@ -110,7 +112,8 @@ public:
   glm::mat4 getViewMatrix() const {
     switch (cameraMode) {
     case FREEFLY:
-      return glm::lookAt(m_Position, m_Position + m_FrontVector, m_UpVector);
+      return glm::lookAt(m_Position, m_Position + m_FrontVector,
+                         glm::vec3(0.0f, 1.0f, 0.0f));
       break;
     case TRACKBALL:
       glm::mat4 ViewMatrix = glm::mat4(1.f);
@@ -128,7 +131,15 @@ public:
   // Trackball function
   float getDistance() const { return m_Distance; }
 
-  float getSpeed() const { return speed; }
+  // Freefly function
+  float getSpeed() const { return m_Speed; }
+
+  // Freefly function
+  Transform getWandererTransform() const {
+    return Transform{m_Position + 30.f * m_FrontVector + -15.f * m_UpVector,
+                     {glm::degrees(-m_Theta), glm::degrees(m_Phi), 0.f},
+                     3.f};
+  }
 
   void switchCamera() {
     switch (cameraMode) {

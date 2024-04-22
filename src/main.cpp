@@ -75,8 +75,6 @@ int main() {
   RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "Coffee.png", "3D.vs.glsl",
                             "light.fs.glsl"};
 
-  Transform spiderrobotTransform{{50.f, 0.f, 20.f}, {0.f, 0.f, 0.f}, 3.f};
-
   Transform treeTransform{{50.f, 0.f, 80.f}, {0.f, 60.f, 0.f}, 4.f};
 
   Transform firehydrantTransform{{40.f, 2.f, 30.f}, {0.f, 180.f, 0.f}, 1.f};
@@ -102,7 +100,6 @@ int main() {
     renderer.drawObject(streetLightTransform_2.getTransform(), streetlightMesh);
 
     renderer.drawObject(intersectionTransform.getTransform(), intersectionMesh);
-    renderer.drawObject(spiderrobotTransform.getTransform(), spiderrobotMesh);
     renderer.drawObject(treeTransform.getTransform(), treeMesh);
     renderer.drawObject(firehydrantTransform.getTransform(), firehydrantMesh);
     renderer.drawObject(buildingTransform.getTransform(), buildingMesh);
@@ -110,6 +107,11 @@ int main() {
     renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
 
     // ESSENTIALS
+    Transform wandererTransform{renderer.camera.getWandererTransform()};
+    if (renderer.camera.cameraMode == FREEFLY) {
+      renderer.drawObject(wandererTransform.getTransform(), spiderrobotMesh);
+    }
+
     glEnable(GL_CULL_FACE);
     Transform cubeTransform{
         {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, Boid::getBounds()};

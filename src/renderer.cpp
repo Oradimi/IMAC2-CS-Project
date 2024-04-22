@@ -87,28 +87,30 @@ void Renderer::handleZoom() {
 };
 
 void Renderer::handleKeyboard() {
+  float speed = camera.getSpeed();
+
+  if (ctx.key_is_pressed(GLFW_KEY_LEFT_SHIFT)) {
+    speed *= 3.f;
+  }
+
   if (ctx.key_is_pressed(GLFW_KEY_W)) {
-    camera.moveFront(ctx.delta_time() * camera.getSpeed());
+    camera.moveFront(ctx.delta_time() * speed);
   }
 
   if (ctx.key_is_pressed(GLFW_KEY_S)) {
-    camera.moveFront(-ctx.delta_time() * camera.getSpeed());
+    camera.moveFront(-ctx.delta_time() * speed);
   }
 
   if (ctx.key_is_pressed(GLFW_KEY_A)) {
-    camera.moveLeft(ctx.delta_time() * camera.getSpeed());
+    camera.moveLeft(ctx.delta_time() * speed);
   }
 
   if (ctx.key_is_pressed(GLFW_KEY_D)) {
-    camera.moveLeft(-ctx.delta_time() * camera.getSpeed());
+    camera.moveLeft(-ctx.delta_time() * speed);
   }
 
   if (ctx.key_is_pressed(GLFW_KEY_SPACE)) {
-    camera.moveUp(ctx.delta_time() * camera.getSpeed());
-  }
-
-  if (ctx.key_is_pressed(GLFW_KEY_LEFT_SHIFT)) {
-    camera.moveUp(-ctx.delta_time() * camera.getSpeed());
+    camera.moveUp(ctx.delta_time() * speed);
   }
 }
 
