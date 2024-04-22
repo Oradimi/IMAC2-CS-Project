@@ -82,3 +82,25 @@ void RenderedObject::defineVAO() {
 
   glBindVertexArray(0);
 }
+
+void RenderedObject::updateMesh(RandomMath &rand, p6::Context &ctx) {
+  float waveAmplitude = 0.5f;
+  float waveFrequency = 1.0f;
+  for (int i = 0; i < mesh.size(); ++i) {
+    glm::vec3 &vertex = mesh[i].position;
+    float x = vertex.x;
+    float z = vertex.z;
+
+    float displacement = waveAmplitude * rand.generateIrwinHall();
+    float waveOffset =
+        glm::sin(ctx.delta_time() * waveFrequency + x + z) * displacement;
+    vertex.y = waveOffset;
+  }
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+  glBufferData(GL_ARRAY_BUFFER, mesh.size() * sizeof(ShapeVertex), mesh.data(),
+               GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

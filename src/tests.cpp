@@ -1,5 +1,5 @@
 #include "doctest/doctest.h"
-#include "math.hpp"
+#include "primitives/math.hpp"
 
 // This is just an example of how to use Doctest in order to write tests.
 // To learn more about Doctest, see

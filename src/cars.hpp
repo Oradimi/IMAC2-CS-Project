@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math.hpp"
+#include "primitives/math.hpp"
 #include "primitives/objLoader.hpp"
 #include "primitives/object.hpp"
 #include "primitives/transform.hpp"

@@ -3,7 +3,7 @@
 #include "boid.hpp"
 #include "glm/fwd.hpp"
 #include "glm/geometric.hpp"
-#include "math.hpp"
+#include "primitives/math.hpp"
 #include <algorithm>
 #include <imgui.h>
 #include <p6/p6.h>

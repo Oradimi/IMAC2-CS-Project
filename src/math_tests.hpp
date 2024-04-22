@@ -1,7 +1,7 @@
 #pragma once
 
 #include "implot/implot.h"
-#include "math.hpp"
+#include "primitives/math.hpp"
 #include <iostream>
 
 enum MathSwitchTabs { EXPONENTIAL, BETA, IRWINHALL, LAPLACE };

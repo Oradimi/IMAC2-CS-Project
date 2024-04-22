@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glm/fwd.hpp"
-#include "math.hpp"
+#include "primitives/math.hpp"
 #include <p6/p6.h>
 #include <vector>
 

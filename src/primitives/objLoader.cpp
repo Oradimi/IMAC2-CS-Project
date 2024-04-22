@@ -78,16 +78,16 @@ void addVertices(std::vector<ShapeVertex> &vertices,
                  const std::vector<int> &vnIndices) {
   if (vIndices.size() >= 3) {
     for (size_t i = 1; i < vIndices.size() - 1; ++i) {
-      size_t pos0 = vIndices[0];
-      size_t pos1 = vIndices[i];
-      size_t pos2 = vIndices[i + 1];
+      glm::vec3 pos0 = positions[vIndices[0]];
+      glm::vec3 pos1 = positions[vIndices[i]];
+      glm::vec3 pos2 = positions[vIndices[i + 1]];
 
       glm::vec3 normal0(0.f);
       glm::vec3 normal1(0.f);
       glm::vec3 normal2(0.f);
-      glm::vec2 texCoord0(0.f);
-      glm::vec2 texCoord1(0.f);
-      glm::vec2 texCoord2(0.f);
+      glm::vec2 texCoords0(0.f);
+      glm::vec2 texCoords1(0.f);
+      glm::vec2 texCoords2(0.f);
 
       if (!vnIndices.empty() && i < vnIndices.size()) {
         normal0 = normals[vnIndices[0]];
@@ -96,14 +96,14 @@ void addVertices(std::vector<ShapeVertex> &vertices,
       }
 
       if (!vtIndices.empty() && i < vtIndices.size()) {
-        texCoord0 = texCoords[vtIndices[0]];
-        texCoord1 = texCoords[vtIndices[i]];
-        texCoord2 = texCoords[vtIndices[i + 1]];
+        texCoords0 = texCoords[vtIndices[0]];
+        texCoords1 = texCoords[vtIndices[i]];
+        texCoords2 = texCoords[vtIndices[i + 1]];
       }
 
-      vertices.emplace_back(ShapeVertex{positions[pos0], normal0, texCoord0});
-      vertices.emplace_back(ShapeVertex{positions[pos1], normal1, texCoord1});
-      vertices.emplace_back(ShapeVertex{positions[pos2], normal2, texCoord2});
+      vertices.emplace_back(ShapeVertex{pos0, normal0, texCoords0});
+      vertices.emplace_back(ShapeVertex{pos1, normal1, texCoords1});
+      vertices.emplace_back(ShapeVertex{pos2, normal2, texCoords2});
     }
   }
 }
