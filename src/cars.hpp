@@ -73,4 +73,8 @@ public:
       horizontal_road = rand.generateBernoulli(0.5);
     }
   }
+
+  float getCarHeight() const { return car_height; }
+
+  RenderedObject *getCar(int index) { return &carList[index]; }
 };

@@ -36,11 +36,7 @@ void Transform::easeToTargetPosition(float deltaTime, float easingFactor) {
         glm::clamp((direction / distance) * movementAmount, -0.5f, 0.5f);
   }
 
-  transform =
-      glm::translate(glm::mat4{1.f}, position) *
-      glm::eulerAngleYXZ(glm::radians(rotation.y), glm::radians(rotation.x),
-                         glm::radians(rotation.z)) *
-      glm::scale(glm::mat4{1.f}, scale);
+  updateModelMatrix();
 }
 
 // glm::vec3 velocityToRotationVector(const glm::vec3 &velocity,
