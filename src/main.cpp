@@ -17,9 +17,10 @@
 
 std::vector<Boid> initializeBoids(RandomMath &rand, const int &number) {
   std::vector<Boid> swarm;
-  swarm.reserve(number);
+  int boidCount = static_cast<int>(rand.generateBeta(2.0, 2.0) * 60.f) + 20;
+  swarm.reserve(boidCount);
 
-  for (int i = 0; i < number; ++i) {
+  for (int i = 0; i < boidCount; ++i) {
     swarm.emplace_back(rand);
   }
 
