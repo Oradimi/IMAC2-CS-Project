@@ -67,8 +67,14 @@ int main() {
   Renderer renderer;
 
   // Boids
-  RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
-                          "3D.vs.glsl", "light.fs.glsl"};
+  RenderedObject boidMesh_1{loadOBJ("spaceship.obj"), "spaceship.png",
+                            "3D.vs.glsl", "light.fs.glsl"};
+
+  RenderedObject boidMesh_2{loadOBJ("spaceship2.obj"), "spaceship.png",
+                            "3D.vs.glsl", "light.fs.glsl"};
+
+  RenderedObject boidMesh_3{loadOBJ("spaceship3.obj"), "spaceship.png",
+                            "3D.vs.glsl", "light.fs.glsl"};
 
   // Wanderer
   RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
@@ -183,7 +189,18 @@ int main() {
           glm::translate(glm::mat4{1.f}, boid.getPosition()) *
           computeRotationMatrix(boid.getVelocity()) *
           glm::scale(glm::mat4{1.f}, glm::vec3{1.f});
-      renderer.drawObject(boidModelMatrix, boidMesh);
+      switch (static_cast<int>(Boid::getLevelOfDetail())) {
+      case 3:
+        renderer.drawObject(boidModelMatrix, boidMesh_1);
+        break;
+      case 2:
+        renderer.drawObject(boidModelMatrix, boidMesh_2);
+        break;
+      case 1:
+      default:
+        renderer.drawObject(boidModelMatrix, boidMesh_3);
+        break;
+      }
     }
 
     renderer.handleInputs();

@@ -18,6 +18,7 @@ float Boid::match_factor = 0.03f;
 float Boid::center_factor = 0.0001f;
 float Boid::min_speed = 0.4f;
 float Boid::max_speed = 0.8f;
+float Boid::level_of_detail = 3.f;
 float Boid::max_bias = 0.01f;
 float Boid::bias_increment = 0.00004f;
 
@@ -61,6 +62,7 @@ void Boid::initializeUIElements() {
   ImGui::SliderFloat("Center", &center_factor, 0.f, 0.001f, "%.5f");
   ImGui::SliderFloat("Min Speed", &min_speed, 0.01f, max_speed - 0.1f);
   ImGui::SliderFloat("Max Speed", &max_speed, min_speed + 0.1f, 1.2f);
+  ImGui::SliderFloat("LOD", &level_of_detail, 1.f, 3.f, "%.0f");
   // ImGui::SliderFloat("Max Bias", &max_bias);
   // ImGui::SliderFloat("Bias Increment", &bias_increment);
 }
