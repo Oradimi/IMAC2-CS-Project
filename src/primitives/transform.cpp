@@ -1,22 +1,47 @@
 #include "transform.hpp"
-#include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/quaternion.hpp"
+#include <iostream>
 
 Transform::Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
-    : position(position), rotation(rotation), scale(scale),
+    : position(position), targetPosition(position), rotation(rotation),
+      scale(scale), transform(glm::translate(glm::mat4{1.f}, position) *
+                              glm::eulerAngleYXZ(glm::radians(rotation.y),
+                                                 glm::radians(rotation.x),
+                                                 glm::radians(rotation.z)) *
+                              glm::scale(glm::mat4{1.f}, scale)){};
+
+Transform::Transform(glm::vec3 position, glm::vec3 rotation, float uniformScale)
+    : position(position), targetPosition(position), rotation(rotation),
+      scale(glm::vec3{uniformScale}),
       transform(glm::translate(glm::mat4{1.f}, position) *
                 glm::eulerAngleYXZ(glm::radians(rotation.y),
                                    glm::radians(rotation.x),
                                    glm::radians(rotation.z)) *
                 glm::scale(glm::mat4{1.f}, scale)){};
 
-Transform::Transform(glm::vec3 position, glm::vec3 rotation, float uniformScale)
-    : position(position), rotation(rotation), scale(glm::vec3{uniformScale}),
-      transform(glm::translate(glm::mat4{1.f}, position) *
-                glm::eulerAngleYXZ(glm::radians(rotation.y),
-                                   glm::radians(rotation.x),
-                                   glm::radians(rotation.z)) *
-                glm::scale(glm::mat4{1.f}, scale)){};
+void Transform::easeToTargetPosition(float deltaTime, float easingFactor) {
+  glm::vec3 direction = targetPosition - position;
+
+  if (direction == glm::vec3{0.f})
+    return;
+
+  float distance = glm::length(direction);
+
+  if (distance < 0.001f) {
+    position = targetPosition;
+  } else {
+    float movementAmount = distance * easingFactor * deltaTime;
+    movementAmount = glm::min(movementAmount, distance);
+    position +=
+        glm::clamp((direction / distance) * movementAmount, -0.5f, 0.5f);
+  }
+
+  transform =
+      glm::translate(glm::mat4{1.f}, position) *
+      glm::eulerAngleYXZ(glm::radians(rotation.y), glm::radians(rotation.x),
+                         glm::radians(rotation.z)) *
+      glm::scale(glm::mat4{1.f}, scale);
+}
 
 // glm::vec3 velocityToRotationVector(const glm::vec3 &velocity,
 //                                    const glm::vec3 &angle_offset) {

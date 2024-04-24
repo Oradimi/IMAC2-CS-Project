@@ -24,8 +24,6 @@ private:
   GLuint vbo{};
   GLuint vao{};
 
-  float elapsedTime = 0.f;
-
 public:
   p6::Shader shader;
   GLint uMVPMatrix;

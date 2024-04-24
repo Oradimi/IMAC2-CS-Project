@@ -90,7 +90,6 @@ void RenderedObject::updateWave(
     std::unordered_map<std::pair<float, float>, float, HashPair> &waveOffsets) {
   float waveAmplitude = 1.0f;
   float waveFrequency = 1.0f;
-  elapsedTime += ctx.delta_time();
 
   std::vector<glm::vec3> vertexNormals(mesh.size(), glm::vec3(0.0f));
 
@@ -110,7 +109,7 @@ void RenderedObject::updateWave(
       waveOffsets[coordPair] = waveOffset;
     }
 
-    position.y = waveOffset * glm::sin(elapsedTime * waveFrequency);
+    position.y = waveOffset * glm::sin(ctx.time() * waveFrequency);
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo);

@@ -26,6 +26,35 @@ std::vector<Boid> initializeBoids(RandomMath &rand, const int &number) {
   return swarm;
 }
 
+void handleWaveEvent(Transform &wave, MarkovState &newState,
+                     MarkovState &currentState) {
+  if (newState != currentState) {
+    switch (newState) {
+    case LOW:
+      wave.move({0.f, -20.f, 0.f});
+      break;
+    case HIGH:
+      switch (currentState) {
+      case LOW:
+        wave.move({0.f, +20.f, 0.f});
+        break;
+      case HIGH:
+        break;
+      case FLOOD:
+        wave.move({0.f, -40.f, 0.f});
+        break;
+      }
+      break;
+    case FLOOD:
+      wave.move({0.f, +40.f, 0.f});
+      break;
+    }
+    std::cout << wave.getPosition().y << '\n';
+    currentState = newState;
+    std::cout << "Current State: " << currentState << '\n';
+  }
+}
+
 int main() {
   // Run the tests
   if (doctest::Context{}.run() != 0)
@@ -96,10 +125,13 @@ int main() {
 
   Transform wavesTransform{{0.f, -20.f, 0.f}, {0.f, 0.f, 0.f}, 2.f};
 
-  RenderedObject wavesMesh{loadOBJ("waves.obj"), "Blue.png", "3D.vs.glsl",
+  RenderedObject wavesMesh{loadOBJ("waves.obj"), "Water.png", "3D.vs.glsl",
                            "light.fs.glsl"};
 
   std::unordered_map<std::pair<float, float>, float, HashPair> waveOffsets;
+
+  MarkovState currentState = HIGH;
+  MarkovState newState = HIGH;
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
@@ -116,9 +148,16 @@ int main() {
     renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
 
     // RANDOM ELEMENTS
+    cars.carEvents(renderer, renderer.ctx.delta_time(),
+                   wavesTransform.getPosition().y);
+
     wavesMesh.updateWave(rand, renderer.ctx, waveOffsets);
+    if (rand.generateBernoulli(0.1)) {
+      newState = rand.getNextMarkovState(currentState);
+      handleWaveEvent(wavesTransform, newState, currentState);
+    }
     renderer.drawObject(wavesTransform.getTransform(), wavesMesh);
-    cars.carEvents(renderer, renderer.ctx.delta_time());
+    wavesTransform.easeToTargetPosition(renderer.ctx.delta_time(), 0.4f);
 
     // ESSENTIALS
     Transform wandererTransform{renderer.camera.getWandererTransform()};

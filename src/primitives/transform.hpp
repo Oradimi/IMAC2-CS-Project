@@ -1,11 +1,15 @@
 #pragma once
 
+#include "glm/fwd.hpp"
+#include "glm/gtx/euler_angles.hpp"
 #include <glm/glm.hpp>
+#include <iostream>
 
 /// A class that creates a model matrix
 class Transform {
 private:
   glm::vec3 position;
+  glm::vec3 targetPosition;
   glm::vec3 rotation;
   glm::vec3 scale;
 
@@ -19,6 +23,10 @@ public:
   explicit Transform(glm::vec3 position = glm::vec3{0.f},
                      glm::vec3 rotation = glm::vec3{0.f},
                      float uniformScale = 1.f);
+
+  void move(glm::vec3 vector) { targetPosition += vector; }
+
+  void easeToTargetPosition(float deltaTime, float easingFactor);
 
   glm::mat4 getTransform() const { return transform; };
 
