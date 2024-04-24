@@ -12,7 +12,6 @@
 #include <cmath>
 #include <glm/glm.hpp>
 
-
 struct ViewAngle {
   float x;
   float y;
