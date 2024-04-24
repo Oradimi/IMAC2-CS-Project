@@ -104,8 +104,15 @@ int main() {
   RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
                               "3D.vs.glsl", "light.fs.glsl"};
 
-  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "Coffee.png", "3D.vs.glsl",
+  RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "car.png", "3D.vs.glsl",
                             "light.fs.glsl"};
+
+  RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
+                                    "OutdoorSeating.png", "3D.vs.glsl",
+                                    "light.fs.glsl"};
+
+  RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
+                           "light.fs.glsl"};
 
   Transform treeTransform{{50.f, 0.f, 80.f}, {0.f, 60.f, 0.f}, 4.f};
 
@@ -115,7 +122,11 @@ int main() {
 
   Transform buildingTransform_2{{-90.f, 1.f, -80.f}, {0.f, 45.f, 0.f}, 6.f};
 
-  Transform coffeeTransform{{-85.f, 1.f, 80.f}, {0.f, 130.f, 0.f}, 6.f};
+  Transform coffeeTransform{{-95.f, -4.f, 80.f}, {0.f, 90.f, 0.f}, 6.f};
+
+  Transform outdoorseatingTransform{{-55.f, 0.f, 95.f}, {0.f, 140.f, 0.f}, 3.f};
+
+  Transform benchTransform{{-55.f, 0.f, 75.f}, {0.f, 110.f, 0.f}, 3.f};
 
   Cars cars;
 
@@ -144,6 +155,9 @@ int main() {
     renderer.drawObject(buildingTransform.getTransform(), buildingMesh);
     renderer.drawObject(buildingTransform_2.getTransform(), buildingMesh);
     renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
+    renderer.drawObject(outdoorseatingTransform.getTransform(),
+                        outdoorseatingMesh);
+    renderer.drawObject(benchTransform.getTransform(), benchMesh);
 
     // RANDOM ELEMENTS
     cars.carEvents(renderer, renderer.ctx.delta_time(),
@@ -204,19 +218,12 @@ int main() {
 //                                 "TrafficLight.png", "3D.vs.glsl",
 //                                 "light.fs.glsl"};
 
-// RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
-//                           "light.fs.glsl"};
-
 // RenderedObject mailboxMesh{loadOBJ("Mailbox.obj"), "MailBox.png",
 //                             "3D.vs.glsl", "light.fs.glsl"};
 
 // RenderedObject streetlightMesh{loadOBJ("streetlight.obj"),
 // "StreetLight.png",
 //                                 "3D.vs.glsl", "light.fs.glsl"};
-
-// RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
-//                                   "OutdoorSeating.png", "3D.vs.glsl",
-//                                   "light.fs.glsl"};
 
 // RenderedObject garbagecanMesh{loadOBJ("garbagecan.obj"), "GarbageCan.png",
 //                               "3D.vs.glsl", "light.fs.glsl"};
