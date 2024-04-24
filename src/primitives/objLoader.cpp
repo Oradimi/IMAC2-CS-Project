@@ -8,6 +8,7 @@
 #include <vector>
 
 std::vector<ShapeVertex> loadOBJ(const std::string &filename) {
+  std::cout << "Loading " << filename << "...\n";
   std::ifstream file("assets/models/" + filename);
   if (!file.is_open()) {
     std::cerr << "Failed to open file: " << filename << '\n';
