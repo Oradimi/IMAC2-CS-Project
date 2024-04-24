@@ -15,9 +15,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
-std::vector<Boid> initializeBoids(RandomMath &rand, const int &number) {
+std::vector<Boid> initializeBoids(RandomMath &rand, const int &minCount) {
   std::vector<Boid> swarm;
-  int boidCount = static_cast<int>(rand.generateBeta(2.0, 2.0) * 60.f) + 20;
+  int boidCount =
+      static_cast<int>(rand.generateBeta(2.0, 2.0) * 60.f) + minCount;
   swarm.reserve(boidCount);
 
   for (int i = 0; i < boidCount; ++i) {
@@ -65,26 +66,30 @@ int main() {
 
   Renderer renderer;
 
+  // Boids
   RenderedObject boidMesh{loadOBJ("spaceship.obj"), "spaceship.png",
                           "3D.vs.glsl", "light.fs.glsl"};
 
+  // Wanderer
+  RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
+                                 "3D.vs.glsl", "light.fs.glsl"};
+
+  // Bounds
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "textureCube.png",
                           "3D.vs.glsl", "light.fs.glsl"};
   cubeMesh.Ks = 1.f;
   cubeMesh.Shininess = 1.f;
 
+  // Decorations
   RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
                                   "Intersection.png", "3D.vs.glsl",
                                   "light.fs.glsl"};
-
   Transform intersectionTransform{{1.f, 1.f, 0.f}, {0.f, 0.f, 0.f}, 41.f};
 
   RenderedObject streetlightMesh{loadOBJ("streetlight.obj"), "StreetLight.png",
                                  "3D.vs.glsl", "light.fs.glsl"};
-
   Transform streetLightTransform_1{{-60.f, 0.f, -30.f}, {0.f, 0.f, 0.f}, 2.f};
   Transform streetLightTransform_2{{60.f, 0.f, 30.f}, {0.f, 180.f, 0.f}, 2.f};
-
   renderer.addLight(
       {streetLightTransform_1.getPosition() + glm::vec3{0.f, 18.f, 6.f},
        {400.f, 400.f, 100.f}});
@@ -92,55 +97,43 @@ int main() {
       {streetLightTransform_2.getPosition() + glm::vec3{0.f, 18.f, -6.f},
        {400.f, 400.f, 100.f}});
 
-  RenderedObject spiderrobotMesh{loadOBJ("SpiderRobot.obj"), "spiderrobot.png",
-                                 "3D.vs.glsl", "light.fs.glsl"};
-
   RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
                           "light.fs.glsl"};
+  Transform treeTransform{{50.f, 0.f, 80.f}, {0.f, 60.f, 0.f}, 4.f};
 
   RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
                                  "3D.vs.glsl", "light.fs.glsl"};
+  Transform firehydrantTransform{{40.f, 2.f, 30.f}, {0.f, 180.f, 0.f}, 1.f};
 
   RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
                               "3D.vs.glsl", "light.fs.glsl"};
+  Transform buildingTransform_1{{90.f, 1.f, 80.f}, {0.f, -112.5f, 0.f}, 6.f};
+  Transform buildingTransform_2{{-90.f, 1.f, -80.f}, {0.f, 45.f, 0.f}, 6.f};
 
   RenderedObject coffeeMesh{loadOBJ("coffee.obj"), "car.png", "3D.vs.glsl",
                             "light.fs.glsl"};
 
+  Transform coffeeTransform{{-85.f, 1.f, 80.f}, {0.f, 130.f, 0.f}, 6.f};
+
   RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
                                     "OutdoorSeating.png", "3D.vs.glsl",
                                     "light.fs.glsl"};
+  Transform outdoorseatingTransform{{-55.f, 0.f, 95.f}, {0.f, 140.f, 0.f}, 3.f};
 
   RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
                            "light.fs.glsl"};
-
-  Transform treeTransform{{50.f, 0.f, 80.f}, {0.f, 60.f, 0.f}, 4.f};
-
-  Transform firehydrantTransform{{40.f, 2.f, 30.f}, {0.f, 180.f, 0.f}, 1.f};
-
-  Transform buildingTransform{{90.f, 1.f, 80.f}, {0.f, -112.5f, 0.f}, 6.f};
-
-  Transform buildingTransform_2{{-90.f, 1.f, -80.f}, {0.f, 45.f, 0.f}, 6.f};
-
-  Transform coffeeTransform{{-95.f, -4.f, 80.f}, {0.f, 90.f, 0.f}, 6.f};
-
-  Transform outdoorseatingTransform{{-55.f, 0.f, 95.f}, {0.f, 140.f, 0.f}, 3.f};
-
   Transform benchTransform{{-55.f, 0.f, 75.f}, {0.f, 110.f, 0.f}, 3.f};
 
   Cars cars;
 
-  Transform wavesTransform{{0.f, -20.f, 0.f}, {0.f, 0.f, 0.f}, 2.f};
-
   RenderedObject wavesMesh{loadOBJ("waves.obj"), "Water.png", "3D.vs.glsl",
                            "light.fs.glsl"};
-
+  Transform wavesTransform{{0.f, -20.f, 0.f}, {0.f, 0.f, 0.f}, 2.f};
   std::unordered_map<std::pair<float, float>, float, HashPair> waveOffsets;
-
-  glm::mat3 markovMatrix = {
+  glm::mat3 waveStateTransitions = {
       {0.98f, 0.02f, 0.f}, {0.03f, 0.96f, 0.01f}, {0.f, 0.02f, 0.98f}};
-  MarkovState currentState = HIGH;
-  MarkovState newState = HIGH;
+  MarkovState currentWaveState = HIGH;
+  MarkovState newWaveState = HIGH;
 
   renderer.ctx.update = [&]() {
     renderer.clearAll();
@@ -152,7 +145,7 @@ int main() {
     renderer.drawObject(intersectionTransform.getTransform(), intersectionMesh);
     renderer.drawObject(treeTransform.getTransform(), treeMesh);
     renderer.drawObject(firehydrantTransform.getTransform(), firehydrantMesh);
-    renderer.drawObject(buildingTransform.getTransform(), buildingMesh);
+    renderer.drawObject(buildingTransform_1.getTransform(), buildingMesh);
     renderer.drawObject(buildingTransform_2.getTransform(), buildingMesh);
     renderer.drawObject(coffeeTransform.getTransform(), coffeeMesh);
     renderer.drawObject(outdoorseatingTransform.getTransform(),
@@ -165,8 +158,9 @@ int main() {
 
     wavesMesh.updateWave(rand, renderer.ctx, waveOffsets);
     if (rand.generateBinomial(0.4, 3) == 3) {
-      newState = rand.getNextMarkovState(markovMatrix, currentState);
-      handleWaveEvent(wavesTransform, newState, currentState);
+      newWaveState =
+          rand.getNextMarkovState(waveStateTransitions, currentWaveState);
+      handleWaveEvent(wavesTransform, newWaveState, currentWaveState);
     }
     renderer.drawObject(wavesTransform.getTransform(), wavesMesh);
     wavesTransform.easeToTargetPosition(renderer.ctx.delta_time(), 0.4f);
