@@ -24,10 +24,6 @@ public:
   MathTests() = default;
 
   void initiate() {
-    for (int i = 0; i < 100; i++) {
-      std::cout << rand.generateUniformDiscrete(0, 5) << " ";
-    }
-
     for (double &i : testExponential1) {
       i = rand.generateExponential(0.2);
     }
@@ -61,7 +57,7 @@ public:
     }
   }
 
-  void displayTestsGUI() {
+  bool displayTestsGUI() {
     if (ImGui::Button("Exponential", ImVec2(100.0f, 0.0f)))
       switchTabs = EXPONENTIAL;
     ImGui::SameLine(0.0, 2.0f);
@@ -73,6 +69,9 @@ public:
     ImGui::SameLine(0.0, 2.0f);
     if (ImGui::Button("Laplace", ImVec2(100.0f, 0.0f)))
       switchTabs = LAPLACE;
+    ImGui::SameLine(0.0, 2.0f);
+    if (ImGui::Button("Close", ImVec2(100.0f, 0.0f)))
+      return false;
 
     switch (switchTabs) {
     case EXPONENTIAL:
@@ -124,5 +123,6 @@ public:
       }
       break;
     }
+    return true;
   }
 };

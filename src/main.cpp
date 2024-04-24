@@ -59,9 +59,6 @@ int main() {
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
 
-  // const bool MATH_DEBUG_MODE = true;
-  const bool MATH_DEBUG_MODE = false;
-
   RandomMath rand;
 
   std::vector<Boid> swarm{initializeBoids(rand, 20)};
@@ -184,7 +181,7 @@ int main() {
     renderer.handleInputs();
   };
 
-  renderer.renderUI(MATH_DEBUG_MODE);
+  renderer.renderUI();
 
   renderer.start();
 

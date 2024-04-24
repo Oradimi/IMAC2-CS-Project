@@ -24,6 +24,7 @@ private:
   std::vector<Light> lightList;
 
   MathTests math_test;
+  bool math_debug_mode = false;
   SimSwitchTabs switchTabs = BOID;
 
   static float uWorldLightIntensity;
@@ -42,7 +43,7 @@ public:
 
   void addLight(Light light);
 
-  void renderUI(bool math_debug_mode);
+  void renderUI();
 
   void clearAll();
 

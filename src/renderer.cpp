@@ -26,9 +26,7 @@ void Renderer::addObject(RenderedObject object) {
 
 void Renderer::addLight(Light light) { lightList.emplace_back(light); }
 
-void Renderer::renderUI(bool math_debug_mode) {
-  if (math_debug_mode)
-    math_test.initiate();
+void Renderer::renderUI() {
   ctx.imgui = [&]() {
     ImGui::Begin("Parameters");
     if (ImGui::Button("Boids", ImVec2(120.0f, 0.0f)))
@@ -39,6 +37,11 @@ void Renderer::renderUI(bool math_debug_mode) {
     ImGui::SameLine(0.0, 2.0f);
     if (ImGui::Button("Toggle Wanderer", ImVec2(120.0f, 0.0f)))
       camera.switchCamera();
+    ImGui::SameLine(0.0, 2.0f);
+    if (ImGui::Button("Math Debug", ImVec2(120.0f, 0.0f))) {
+      math_test.initiate();
+      math_debug_mode = true;
+    }
 
     switch (switchTabs) {
     case BOID:
@@ -53,7 +56,7 @@ void Renderer::renderUI(bool math_debug_mode) {
     ImGui::End();
 
     if (math_debug_mode)
-      math_test.displayTestsGUI();
+      math_debug_mode = math_test.displayTestsGUI();
   };
 }
 
