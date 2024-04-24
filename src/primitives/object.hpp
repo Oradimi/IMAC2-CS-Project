@@ -40,8 +40,8 @@ public:
   GLint uLightCount;
 
   float Kd = 1.f;
-  float Ks = 3.f;
-  float Shininess = 4.f;
+  float Ks = 1.f;
+  float Shininess = 1.f;
 
   explicit RenderedObject(std::vector<ShapeVertex> mesh,
                           std::string texturePath, std::string vertexShaderPath,

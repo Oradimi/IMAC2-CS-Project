@@ -83,8 +83,6 @@ int main() {
   // Bounds
   RenderedObject cubeMesh{loadOBJ("insideOutCube.obj"), "textureCube.png",
                           "3D.vs.glsl", "light.fs.glsl"};
-  cubeMesh.Ks = 1.f;
-  cubeMesh.Shininess = 1.f;
 
   // Decorations
   RenderedObject intersectionMesh{loadOBJ("intersection.obj"),
