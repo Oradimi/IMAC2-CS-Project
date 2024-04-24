@@ -18,6 +18,7 @@ private:
   static float center_factor;
   static float min_speed;
   static float max_speed;
+  static float level_of_detail;
   static float max_bias;
   static float bias_increment;
 
@@ -34,6 +35,7 @@ public:
   void avoidBounds();
 
   static float getBounds() { return bounds; };
+  static float getLevelOfDetail() { return level_of_detail; };
   glm::vec3 getPosition() const { return pos; };
   glm::vec3 getVelocity() const { return vel; };
 };
