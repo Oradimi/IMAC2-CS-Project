@@ -49,9 +49,7 @@ void handleWaveEvent(Transform &wave, MarkovState &newState,
       wave.move({0.f, +40.f, 0.f});
       break;
     }
-    std::cout << wave.getPosition().y << '\n';
     currentState = newState;
-    std::cout << "Current State: " << currentState << '\n';
   }
 }
 
@@ -130,6 +128,8 @@ int main() {
 
   std::unordered_map<std::pair<float, float>, float, HashPair> waveOffsets;
 
+  glm::mat3 markovMatrix = {
+      {0.98f, 0.02f, 0.f}, {0.03f, 0.96f, 0.01f}, {0.f, 0.02f, 0.98f}};
   MarkovState currentState = HIGH;
   MarkovState newState = HIGH;
 
@@ -152,8 +152,8 @@ int main() {
                    wavesTransform.getPosition().y);
 
     wavesMesh.updateWave(rand, renderer.ctx, waveOffsets);
-    if (rand.generateBernoulli(0.1)) {
-      newState = rand.getNextMarkovState(currentState);
+    if (rand.generateBinomial(0.4, 3) == 3) {
+      newState = rand.getNextMarkovState(markovMatrix, currentState);
       handleWaveEvent(wavesTransform, newState, currentState);
     }
     renderer.drawObject(wavesTransform.getTransform(), wavesMesh);

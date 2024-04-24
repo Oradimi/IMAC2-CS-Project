@@ -13,8 +13,6 @@ enum MarkovState { LOW, HIGH, FLOOD };
 class RandomMath {
 private:
   std::mt19937 generator = getRandomGenerator();
-  glm::mat3 markovMatrix = {
-      {0.98f, 0.02f, 0.f}, {0.015f, 0.98f, 0.005f}, {0.f, 0.005f, 0.995f}};
 
 public:
   static inline std::mt19937 getRandomGenerator() {
@@ -52,7 +50,7 @@ public:
     return x < p;
   }
 
-  inline int generateBinomial(double p, double n) {
+  inline int generateBinomial(double p, int n) {
     int x = 0; // number of successes
     for (int i = 0; i < n; i++) {
       generateBernoulli(p) && x++;
@@ -103,7 +101,8 @@ public:
 
   ///* MARKOV CHAIN *///
 
-  inline MarkovState getNextMarkovState(int currentState) {
+  inline MarkovState getNextMarkovState(const glm::mat3 &markovMatrix,
+                                        int currentState) {
     double x = generateRandom();
 
     double cumulativeProbability = 0.0;
