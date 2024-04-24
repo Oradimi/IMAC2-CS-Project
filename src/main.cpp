@@ -107,16 +107,13 @@ int main() {
 
   RenderedObject treeMesh{loadOBJ("tree.obj"), "Tree.png", "3D.vs.glsl",
                           "light.fs.glsl"};
-  Transform treeTransform{{50.f, 0.f, 80.f}, {0.f, 60.f, 0.f}, 4.f};
+  Transform treeTransform{{100.f, 0.f, 50.f}, {0.f, 240.f, 0.f}, 4.f};
 
-  Transform treeTransform{{100.f, 0.f, 50.f}, {0.f, 0.f, 0.f}, 5.f};
   Transform treeTransform_2{{-100.f, 0.f, -50.f}, {0.f, 205.f, 0.f}, 5.f};
 
   RenderedObject firehydrantMesh{loadOBJ("firehydrant.obj"), "FireHydrant.png",
                                  "3D.vs.glsl", "light.fs.glsl"};
   Transform firehydrantTransform{{40.f, 2.f, 30.f}, {0.f, 180.f, 0.f}, 1.f};
-
-  Transform firehydrantTransform{{90.f, 2.f, 32.5f}, {0.f, 180.f, 0.f}, 2.f};
 
   RenderedObject buildingMesh{loadOBJ("building.obj"), "Building.png",
                               "3D.vs.glsl", "light.fs.glsl"};
@@ -138,8 +135,6 @@ int main() {
   RenderedObject outdoorseatingMesh{loadOBJ("outdoorseating.obj"),
                                     "OutdoorSeating.png", "3D.vs.glsl",
                                     "light.fs.glsl"};
-  Transform outdoorseatingTransform{{-55.f, 0.f, 95.f}, {0.f, 140.f, 0.f}, 3.f};
-
   Transform outdoorseatingTransform{{-55.f, 0.f, 95.f}, {0.f, 140.f, 0.f}, 3.f};
 
   RenderedObject benchMesh{loadOBJ("bench.obj"), "Bench.png", "3D.vs.glsl",
@@ -239,11 +234,8 @@ int main() {
 
   Transform wavesTransform{{0.f, -20.f, 0.f}, {0.f, 0.f, 0.f}, 2.f};
 
-  Cars cars;
-
   RenderedObject wavesMesh{loadOBJ("waves.obj"), "Water.png", "3D.vs.glsl",
                            "light.fs.glsl"};
-  Transform wavesTransform{{0.f, -20.f, 0.f}, {0.f, 0.f, 0.f}, 2.f};
   std::unordered_map<std::pair<float, float>, float, HashPair> waveOffsets;
   glm::mat3 waveStateTransitions = {
       {0.98f, 0.02f, 0.f}, {0.03f, 0.96f, 0.01f}, {0.f, 0.02f, 0.98f}};
