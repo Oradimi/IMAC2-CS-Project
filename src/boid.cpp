@@ -31,8 +31,8 @@ void clampVectorMagnitude(glm::vec3 &vec, float min, float max) {
 
 Boid::Boid(RandomMath &rand) {
   pos = glm::vec3(rand.generateUniform(-1.0, 1.0),
-                  rand.generateUniform(-1.0, 1.0),
-                  rand.generateUniform(0.0, 2.0)) *
+                  rand.generateUniform(-0.0, 2.0),
+                  rand.generateUniform(-1.0, 1.0)) *
         bounds;
 
   vel = glm::vec3(rand.generateUniform(-1.0, 1.0),
