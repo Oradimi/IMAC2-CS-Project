@@ -76,7 +76,7 @@ public:
 
   /// Irwin-Hall distribution
   /// n represents the number of iterations, mu is the position
-  /// defaut values approximate a normal distribution between -6 and 6
+  /// defaut values approximate a normal distribution between -3 and 3
   inline double generateIrwinHall(int n = 12, double mu = -6.0) {
     double x = 0.0;
     for (int i = 0; i < n; i++) {
