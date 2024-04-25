@@ -24,13 +24,35 @@ public:
                      glm::vec3 rotation = glm::vec3{0.f},
                      float uniformScale = 1.f);
 
-  void move(glm::vec3 vector) { targetPosition += vector; }
+  void updateModelMatrix() {
+    transform =
+        glm::translate(glm::mat4{1.f}, position) *
+        glm::eulerAngleYXZ(glm::radians(rotation.y), glm::radians(rotation.x),
+                           glm::radians(rotation.z)) *
+        glm::scale(glm::mat4{1.f}, scale);
+  }
+
+  glm::mat4 temporarySnap(glm::vec3 &vector) {
+    transform =
+        glm::translate(glm::mat4{1.f}, position + vector) *
+        glm::eulerAngleYXZ(glm::radians(rotation.y), glm::radians(rotation.x),
+                           glm::radians(rotation.z)) *
+        glm::scale(glm::mat4{1.f}, scale);
+    return transform;
+  }
+
+  void move(glm::vec3 vector) {
+    position += vector;
+    updateModelMatrix();
+  }
+
+  void moveEase(glm::vec3 vector) { targetPosition += vector; }
 
   void easeToTargetPosition(float deltaTime, float easingFactor);
 
-  glm::mat4 getTransform() const { return transform; };
+  glm::mat4 getTransform() const { return transform; }
 
-  glm::vec3 getPosition() const { return position; };
+  glm::vec3 getPosition() const { return position; }
 };
 
 // Doesn't work correctly
