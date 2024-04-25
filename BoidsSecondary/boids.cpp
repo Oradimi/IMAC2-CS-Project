@@ -3,7 +3,6 @@
 #include "glm/gtx/norm.hpp"
 #include <p6/p6.h>
 
-
 float Boid::max_speed = 3.0f;
 float Boid::max_force = 0.1f;
 float Boid::separation_weight = 0.5f;
