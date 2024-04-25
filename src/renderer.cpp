@@ -131,10 +131,6 @@ void Renderer::handleInputs() {
 
 void Renderer::drawObject(const glm::mat4 &modelMatrix,
                           const RenderedObject &object) const {
-
-  lightDir = glm::vec4(lightDir, 1.f) *
-             glm::rotate(glm::mat4(1.f), 0.f, {0.f, 1.f, 0.f});
-
   glm::mat4 viewMatrix = camera.getViewMatrix();
   glm::mat4 projMatrix =
       glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), 0.1f, 1000.f);
@@ -144,8 +140,9 @@ void Renderer::drawObject(const glm::mat4 &modelMatrix,
 
   glUniform3f(object.uKd, object.Kd, object.Kd, object.Kd);
   glUniform3f(object.uKs, object.Ks, object.Ks, object.Ks);
-  glUniform3fv(object.uLightDir_vs, 1,
-               glm::value_ptr(glm::vec4(lightDir, 1.f) * viewMatrix));
+  glUniform3fv(
+      object.uLightDir_vs, 1,
+      glm::value_ptr(glm::vec4(lightDir, 1.f) * glm::inverse(viewMatrix)));
   glUniform3f(object.uWorldLightIntensity, uWorldLightIntensity,
               uWorldLightIntensity, uWorldLightIntensity);
   glUniform1f(object.uShininess, object.Shininess);
